@@ -72,7 +72,7 @@ export const DEFAULT_SETTINGS: Settings = {
   sound: true,
   reduceMotion: "auto",
   ghOwner: "felipemaciasito-cmyk",
-  ghRepo: "forma-7-data",
+  ghRepo: "FORMA-7-data",
   ghToken: "",
   apiKey: "",
   model: "claude-opus-5-5",

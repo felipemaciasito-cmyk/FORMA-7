@@ -2,9 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-// Le site est publié sur https://<compte>.github.io/forma-7/ : toutes les URL sont relatives à /forma-7/.
+// Le site est publié sur https://<compte>.github.io/FORMA-7/ : toutes les URL sont relatives à /FORMA-7/.
 export default defineConfig({
-  base: "/forma-7/",
+  base: "/FORMA-7/",
   plugins: [
     react(),
     VitePWA({

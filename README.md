@@ -41,13 +41,13 @@ Icônes : `node scripts/gen-icons.mjs` (nécessite Playwright et Chromium).
 
 Chaque push sur `main` lance `.github/workflows/deploy.yml` : validation, build, publication sur
 GitHub Pages (Settings › Pages › Source : **GitHub Actions**). Adresse :
-`https://<compte>.github.io/forma-7/`.
+`https://<compte>.github.io/FORMA-7/`.
 
 ## Pipeline des mails
 
-Les missions privées vivent dans le dépôt **privé** `forma-7-data`. Une tâche planifiée Claude
-(connecteurs Gmail et Google Drive) suit `forma-7-data/PIPELINE.md` chaque matin : lecture du nouveau
-mail, génération de la mission, validation (`node ../forma-7/scripts/validate-content.mjs --data .`),
+Les missions privées vivent dans le dépôt **privé** `FORMA-7-data`. Une tâche planifiée Claude
+(connecteurs Gmail et Google Drive) suit `FORMA-7-data/PIPELINE.md` chaque matin : lecture du nouveau
+mail, génération de la mission, validation (`node ../FORMA-7/scripts/validate-content.mjs --data .`),
 push, puis fiche Google Docs. L'appli lit le dépôt privé avec un jeton GitHub en lecture seule.
 
 Exemple de mission fictive pour les tests : `pipeline/fixtures/`.

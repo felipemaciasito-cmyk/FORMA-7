@@ -81,7 +81,7 @@ export function SettingsView() {
           <ol className="small" style={{ paddingLeft: 18, lineHeight: 1.6 }}>
             <li>Sur github.com : photo de profil › <b>Settings</b> › <b>Developer settings</b> › <b>Personal access tokens</b> › <b>Fine-grained tokens</b> › <b>Generate new token</b>.</li>
             <li>Nom : « FORMA-7 iPhone ». Expiration : 90 jours (tu le renouvelleras).</li>
-            <li><b>Repository access</b> : « Only select repositories » › <b>forma-7-data</b> uniquement.</li>
+            <li><b>Repository access</b> : « Only select repositories » › <b>FORMA-7-data</b> uniquement.</li>
             <li><b>Permissions › Repository permissions › Contents</b> : <b>Read-only</b>. Rien d'autre.</li>
             <li>Génère, copie le jeton, colle-le ici, puis « Tester la connexion ».</li>
           </ol>

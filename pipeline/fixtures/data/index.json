@@ -1,0 +1,6 @@
+{
+  "updatedAt": "2026-11-14T08:42:00.000Z",
+  "missions": [
+    { "id": "j1-exemple", "day": 1, "room": "r1", "title": "Un seul assistant, bien maîtrisé", "file": "missions/j1-exemple.json", "receivedAt": "2026-11-14T08:00:00.000Z" }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "id": "r0",
+  "index": 0,
+  "code": "SALLE 00",
+  "name": "Hall d'initialisation",
+  "day": 0,
+  "roadmapTitle": "Avant le jour 1 : les fondations",
+  "tagline": "Les trois briques sans lesquelles rien ne s'allume.",
+  "hue": 190,
+  "requires": [],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Qu'est-ce qu'une IA ?",
+      "kicker": "Avant de piloter une machine, on apprend de quoi elle est faite.",
+      "introduces": ["ia", "modele", "entrainement"],
+      "uses": [],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Bienvenue au Hall d'initialisation. Ici, on pose les fondations : **trois mots** que tu vas croiser partout. Touche n'importe quel mot en surbrillance pour ouvrir sa fiche, à tout moment." },
+        { "type": "definition", "notion": "ia" },
+        { "type": "example", "title": "Règles écrites ou apprentissage ?", "before": { "label": "Programme classique", "md": "Un humain écrit la règle : **si** le mail contient « facture », **alors** le ranger dans le dossier Factures. Un mail qui dit « note d'honoraires » passe à côté." }, "after": { "label": "Avec une IA", "md": "On lui montre des milliers de mails déjà classés. Elle repère elle-même ce qui ressemble à une facture, **même formulé autrement**." }, "note": "C'est la grande différence : l'[[ia]] apprend à partir d'exemples au lieu de suivre des règles écrites une par une." },
+        { "type": "definition", "notion": "modele" },
+        { "type": "analogy", "title": "Le moteur et la carrosserie", "md": "Le [[modele]] est le moteur : invisible, mais c'est lui qui fait le travail. L'application que tu ouvres sur ton téléphone n'est que la carrosserie autour.", "art": "engine" },
+        { "type": "definition", "notion": "entrainement" },
+        { "type": "exercise", "ex": { "kind": "truefalse", "q": "Vrai ou faux ? Branche chaque affirmation sur le bon voyant.", "items": [
+          { "s": "Une IA moderne apprend surtout à partir d'exemples, pas de règles écrites à la main.", "ok": true, "why": "Exact : c'est tout l'intérêt de l'apprentissage automatique." },
+          { "s": "Quand tu discutes avec une IA, tu es en train de l'entraîner en direct.", "ok": false, "why": "Non : l'[[entrainement]] a eu lieu avant. Le [[modele]] que tu utilises est figé ; discuter avec lui ne le modifie pas." },
+          { "s": "Le modèle et l'application sont la même chose.", "ok": false, "why": "Non : le [[modele]] est le moteur, l'application est la carrosserie qui te permet de l'utiliser." }
+        ] } },
+        { "type": "recap", "points": ["Une [[ia]] apprend à partir d'exemples.", "Le [[modele]] est le résultat de cet apprentissage : le « moteur ».", "L'[[entrainement]] est terminé quand tu l'utilises : le modèle ne change pas pendant que tu discutes."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Le modèle de langage : prédire la suite",
+      "kicker": "Le secret le mieux gardé de l'IA tient en une phrase.",
+      "introduces": ["llm", "token"],
+      "uses": ["modele", "entrainement"],
+      "blocks": [
+        { "type": "text", "md": "Les assistants que tu vas découvrir (Claude, ChatGPT, Gemini) reposent tous sur le même type de moteur. Son principe est étonnamment simple." },
+        { "type": "definition", "notion": "llm" },
+        { "type": "interactive", "widget": "NextWord", "caption": "Joue le rôle du modèle : choisis la suite, et observe les probabilités." },
+        { "type": "definition", "notion": "token" },
+        { "type": "analogy", "title": "Des briques de LEGO", "md": "Le texte est découpé en briques standard : les [[token|tokens]]. Le [[llm]] ne voit jamais une phrase d'un bloc, il assemble ses briques une à une, chacune choisie parce qu'elle est la plus probable après les précédentes.", "art": "lego" },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Fondamentalement, que fait un LLM quand il te répond ?", "options": [
+          { "t": "Il cherche la réponse exacte dans une base de données.", "ok": false, "why": "Non : il ne consulte pas de base de réponses toutes faites. Il génère le texte." },
+          { "t": "Il prédit, token après token, la suite la plus probable du texte.", "ok": true, "why": "Exactement. Toutes ses capacités viennent de cette prédiction répétée à très grande échelle." },
+          { "t": "Il comprend le monde comme un humain et raisonne avec des émotions.", "ok": false, "why": "Non : il manipule des [[token|tokens]] et des probabilités. Le résultat peut sembler humain, mais le mécanisme est statistique." }
+        ] } },
+        { "type": "exercise", "ex": { "kind": "cloze", "q": "Complète le journal système.", "text": "Un {{LLM}} écrit sa réponse {{token}} par token, en choisissant à chaque fois la suite la plus {{probable}}.", "distractors": ["image", "certaine", "page"], "why": "Le [[llm]] produit un [[token]] à la fois, en fonction des probabilités apprises pendant l'[[entrainement]]." } },
+        { "type": "recap", "points": ["Un [[llm]] prédit la suite d'un texte.", "Il lit et écrit en [[token|tokens]] (morceaux de mots).", "Les limites et les prix des IA se comptent en tokens."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Parler à un assistant",
+      "kicker": "Le guichet, la commande, et le fil de la discussion.",
+      "introduces": ["prompt", "assistant", "conversation"],
+      "uses": ["llm", "token"],
+      "blocks": [
+        { "type": "definition", "notion": "prompt" },
+        { "type": "example", "title": "Même demande, deux commandes", "before": { "label": "Commande vague", "md": "« Écris un mail. »" }, "after": { "label": "Commande précise", "md": "« Écris un mail court et chaleureux à Julie pour décaler notre rendez-vous de jeudi à vendredi 10 h. »" }, "note": "Plus ton [[prompt]] est précis, moins l'IA doit deviner. Tu apprendras toute la technique en Salle 03." },
+        { "type": "definition", "notion": "assistant" },
+        { "type": "analogy", "title": "Le guichet de la banque", "md": "Derrière le guichet, toute la machinerie (le [[llm]]). Devant, quelqu'un avec qui tu parles simplement : l'[[assistant]].", "art": "counter" },
+        { "type": "definition", "notion": "conversation" },
+        { "type": "callout", "tone": "info", "md": "Retiens bien ceci, ça servira tout le parcours : **une nouvelle [[conversation]] repart de zéro.** L'assistant ne voit pas les autres fils, sauf fonctions spéciales que tu découvriras plus loin." },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : relie chaque mot à sa description.", "pairs": [
+          { "l": "Modèle", "r": "Le moteur entraîné" },
+          { "l": "Assistant", "r": "L'appli où tu discutes" },
+          { "l": "Prompt", "r": "Ta demande écrite" },
+          { "l": "Conversation", "r": "Un fil de messages" },
+          { "l": "Token", "r": "Un morceau de texte" }
+        ], "why": "Ces cinq mots forment le vocabulaire de base. Si l'un d'eux reste flou, touche-le dans le texte pour revoir sa fiche." } },
+        { "type": "exercise", "ex": { "kind": "feynman", "q": "Explique avec tes mots, comme à un ami, la différence entre un modèle et un assistant.", "model": "Le modèle, c'est le moteur : le programme entraîné qui prédit la suite d'un texte. L'assistant, c'est l'application autour (Claude, ChatGPT…) où l'on discute avec lui ; elle ajoute l'historique, les fichiers, etc. Un même assistant peut même proposer plusieurs modèles.", "criteria": ["Le modèle est décrit comme le moteur ou le programme entraîné", "L'assistant est décrit comme l'application ou l'interface où l'on discute", "Une image ou une comparaison rend l'explication claire"] } },
+        { "type": "recap", "points": ["Un [[prompt]] est ta demande : plus il est précis, meilleure est la réponse.", "Un [[assistant]] est l'application construite autour d'un [[llm]].", "Une [[conversation]] est un fil ; un nouveau fil repart de zéro."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Panne d'initialisation",
+    "brief": "Trois alertes clignotent dans le Hall. Diagnostique-les avant que les fusibles ne sautent.",
+    "scenarios": [
+      { "alert": "Un collègue affirme : « L'IA apprend de chacun de mes messages en direct, donc elle devient plus intelligente pendant qu'on discute. »", "q": "Ton diagnostic ?", "options": [
+        { "t": "Il a raison : chaque message réentraîne le modèle.", "ok": false, "why": "Non. Le [[modele]] est figé après son [[entrainement]]. Selon tes réglages, tes conversations peuvent servir à entraîner de FUTURS modèles, mais jamais à modifier celui que tu utilises en direct." },
+        { "t": "Faux : le modèle est déjà entraîné, discuter avec lui ne le modifie pas.", "ok": true, "why": "Exact. Ce qui change pendant la discussion, c'est ce que le modèle a sous les yeux (le fil de la [[conversation]]), pas le modèle lui-même." },
+        { "t": "Ça dépend de la longueur des messages.", "ok": false, "why": "Non, la longueur n'y change rien : l'[[entrainement]] est une phase séparée, faite avant." }
+      ] },
+      { "alert": "Hier, tu as donné le nom de ton entreprise à l'assistant. Aujourd'hui, dans un nouveau fil, il ne le connaît plus.", "q": "Pourquoi ?", "options": [
+        { "t": "L'assistant est en panne.", "ok": false, "why": "Non, c'est le fonctionnement normal." },
+        { "t": "Chaque nouvelle conversation repart de zéro : l'information était dans l'autre fil.", "ok": true, "why": "Exact. Une [[conversation]] ne voit pas les autres. Tu découvriras en Salles 02 et 04 comment éviter de te répéter." },
+        { "t": "Il faut écrire le nom en majuscules pour qu'il le retienne.", "ok": false, "why": "Non, la mise en forme n'a aucun effet sur ce point." }
+      ] },
+      { "alert": "Le compteur affiche : « Message de 1 000 mots = environ 1 500 tokens ». Un stagiaire pense que c'est une erreur.", "q": "Qu'en dis-tu ?", "options": [
+        { "t": "C'est normal : un mot peut être découpé en plusieurs tokens.", "ok": true, "why": "Exact. En français, un mot fait souvent 1 à 2 [[token|tokens]] ; les mots longs ou rares en font davantage." },
+        { "t": "C'est une erreur : 1 mot = 1 token, toujours.", "ok": false, "why": "Non : les [[token|tokens]] sont des morceaux de mots, pas des mots entiers." },
+        { "t": "Les tokens comptent les lettres.", "ok": false, "why": "Non : ce serait bien plus que 1 500 pour 1 000 mots. Un token est un fragment, souvent plusieurs lettres." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Ton premier échange conscient",
+    "goal": "Observer concrètement l'effet d'un prompt précis.",
+    "steps": [
+      "Ouvre l'assistant de ton choix (une formule gratuite suffit).",
+      "Envoie « Écris un mail. » et lis le résultat.",
+      "Ouvre une NOUVELLE conversation et envoie une demande précise : destinataire, objectif, ton, longueur.",
+      "Compare les deux réponses : qu'est-ce qui a changé ?"
+    ],
+    "success": ["Tu as constaté que le prompt précis donne une réponse directement utilisable.", "Tu as vérifié que la nouvelle conversation ne connaissait pas la première."]
+  }
+}

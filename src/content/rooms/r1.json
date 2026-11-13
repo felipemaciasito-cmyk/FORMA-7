@@ -1,0 +1,108 @@
+{
+  "id": "r1",
+  "index": 1,
+  "code": "SALLE 01",
+  "name": "Salle des Processeurs",
+  "day": 1,
+  "roadmapTitle": "Jour 1 · Claude, ChatGPT ou Gemini ?",
+  "tagline": "Trois cœurs de calcul. Lequel installer dans ton datacenter ?",
+  "hue": 265,
+  "requires": ["r0"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Trois cœurs, trois styles",
+      "kicker": "Ils se ressemblent beaucoup… mais pas tout à fait.",
+      "introduces": ["claude", "chatgpt", "gemini"],
+      "uses": ["assistant", "llm", "modele"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Trois [[assistant|assistants]] dominent aujourd'hui. Bonne nouvelle : ils reposent tous sur un [[llm]], donc tout ce que tu as appris au Hall s'applique aux trois." },
+        { "type": "definition", "notion": "claude" },
+        { "type": "definition", "notion": "chatgpt" },
+        { "type": "definition", "notion": "gemini" },
+        { "type": "interactive", "widget": "CoreCompare", "caption": "Touche un besoin : les cœurs adaptés s'allument." },
+        { "type": "callout", "tone": "volatile", "md": "**Infos vérifiées en novembre 2026.** Ces outils changent tous les mois : fonctions, noms de [[modele|modèles]], prix. Si un détail te semble daté, vérifie sur le site officiel." },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu veux générer une illustration originale pour un post Instagram. Quel assistant ne sait PAS le faire nativement ?", "options": [
+          { "t": "ChatGPT", "ok": false, "why": "ChatGPT génère des images directement." },
+          { "t": "Gemini", "ok": false, "why": "Gemini génère aussi des images (et des vidéos selon la formule)." },
+          { "t": "Claude", "ok": true, "why": "Exact : Claude ne crée pas de photos ni d'illustrations (au moment de la vérification). Il sait en revanche produire des graphiques, des schémas et du code." }
+        ] } },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : relie chaque cœur à son point fort le plus souvent cité.", "pairs": [
+          { "l": "Claude", "r": "Rédaction soignée, analyse, code" },
+          { "l": "ChatGPT", "r": "Polyvalence grand public, images, voix" },
+          { "l": "Gemini", "r": "Intégré à Gmail, Docs, Drive" }
+        ], "why": "Les trois sont polyvalents ; ces points forts sont des tendances, pas des exclusivités. Le meilleur choix dépend de tes outils et de tes usages." } },
+        { "type": "recap", "points": ["[[claude]] (Anthropic), [[chatgpt]] (OpenAI), [[gemini]] (Google) : trois [[assistant|assistants]] basés sur des [[llm|LLM]].", "Ils font l'essentiel des choses pareil ; les différences sont dans les détails et l'écosystème.", "Les fonctions évoluent vite : garde l'habitude de vérifier."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Lire, voir, écouter",
+      "kicker": "Tes assistants ne lisent pas que du texte.",
+      "introduces": ["multimodal"],
+      "uses": ["claude", "chatgpt", "gemini", "prompt"],
+      "blocks": [
+        { "type": "definition", "notion": "multimodal" },
+        { "type": "example", "title": "Une photo vaut mieux qu'un long message", "before": { "label": "Sans image", "md": "Tu recopies à la main les lignes d'une facture pour demander le total." }, "after": { "label": "Avec image", "md": "Tu prends la facture en photo et tu écris : « Quel est le montant TTC, et la TVA est-elle bien calculée ? »" }, "note": "Les trois assistants savent lire une photo ou un PDF joint à ton [[prompt]]." },
+        { "type": "exercise", "ex": { "kind": "truefalse", "q": "Vrai ou faux ?", "items": [
+          { "s": "Je peux joindre un PDF à mon message et poser des questions dessus.", "ok": true, "why": "Oui : c'est l'un des usages les plus utiles des assistants [[multimodal|multimodaux]]." },
+          { "s": "Multimodal veut dire que l'assistant utilise plusieurs modèles en même temps.", "ok": false, "why": "Non : multimodal veut dire « plusieurs types de contenus » (texte, image, son…), pas plusieurs modèles." },
+          { "s": "Tous les assistants qui lisent des images savent aussi en créer.", "ok": false, "why": "Non : lire et créer sont deux capacités distinctes. Claude lit les images mais n'en génère pas." }
+        ] } },
+        { "type": "recap", "points": ["[[multimodal|Multimodal]] = plusieurs types de contenus en entrée (et parfois en sortie).", "Photographier ou joindre un document évite de recopier et réduit les erreurs."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Quelle formule te suffit ?",
+      "kicker": "Inutile de payer trois abonnements pour commencer.",
+      "introduces": ["formule", "limite-usage"],
+      "uses": ["assistant", "claude", "chatgpt", "gemini"],
+      "blocks": [
+        { "type": "definition", "notion": "formule" },
+        { "type": "analogy", "title": "Le forfait téléphonique", "md": "Le gratuit dépanne. Le forfait standard couvre presque tout le monde. Le forfait illimité sert à ceux qui y passent leurs journées, souvent avec des tâches lourdes et automatisées.", "art": "plans" },
+        { "type": "definition", "notion": "limite-usage" },
+        { "type": "callout", "tone": "volatile", "md": "**Repères (prix US relevés en novembre 2026, à vérifier) :** gratuit · ~8 $ pour les formules d'entrée (ChatGPT Go, Google AI Plus) · ~20 $ pour les formules standard (Claude Pro, ChatGPT Plus, Google AI Pro) · 100 à 200 $ pour les formules avancées (Claude Max, ChatGPT Pro, Google AI Ultra). Les prix en euros diffèrent." },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu débutes, tu veux suivre cette formation et automatiser 2 ou 3 tâches de ton activité. Que choisis-tu ?", "options": [
+          { "t": "Les trois formules avancées, pour ne rien rater.", "ok": false, "why": "Coûteux et inutile au départ : les formules avancées servent aux usages intensifs." },
+          { "t": "Une formule standard chez UN assistant principal, et la version gratuite des autres pour comparer.", "ok": true, "why": "C'est le choix le plus rationnel : tu approfondis un seul assistant et ses fonctions de travail (que tu découvriras dans les salles suivantes) sans disperser ton budget." },
+          { "t": "Uniquement des formules gratuites, quoi qu'il arrive.", "ok": false, "why": "Pour découvrir, oui. Mais les fonctions de travail avancées (que tu verras en Salles 04 à 07) et des [[limite-usage|limites]] plus larges demandent souvent une formule payante." }
+        ] } },
+        { "type": "exercise", "ex": { "kind": "cloze", "q": "Complète le journal de bord.", "text": "Une longue conversation avec de gros fichiers consomme {{plus vite}} ma limite d'utilisation. Quand elle est atteinte, je dois {{attendre}} ou changer de {{formule}}.", "distractors": ["moins vite", "redémarrer", "mot de passe"], "why": "Les [[limite-usage|limites]] dépendent du volume traité : longs échanges, gros fichiers et modèles puissants consomment davantage." } },
+        { "type": "recap", "points": ["Commence avec UN assistant principal en [[formule]] standard (~20 $/mois).", "Les [[limite-usage|limites d'utilisation]] dépendent de la formule et du volume de travail.", "Prix et noms changent : vérifie toujours sur le site officiel."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Surchauffe des processeurs",
+    "brief": "Trois demandes arrivent en même temps. Oriente chacune vers la bonne solution.",
+    "scenarios": [
+      { "alert": "Une amie freelance veut résumer ses fils Gmail directement dans Gmail, sans changer d'outil.", "q": "Que lui conseilles-tu en premier ?", "options": [
+        { "t": "Gemini, intégré à Gmail et Google Docs.", "ok": true, "why": "C'est le point fort de [[gemini]] : l'intégration à l'écosystème Google." },
+        { "t": "Payer les trois formules avancées.", "ok": false, "why": "Disproportionné pour ce besoin." },
+        { "t": "Aucun assistant ne peut lire de mails.", "ok": false, "why": "Faux : tu verras en Salle 06 que les assistants peuvent être branchés à tes outils." }
+      ] },
+      { "alert": "Message à l'écran : « Vous avez atteint votre limite, réessayez à 15 h. » Ton collègue pense que son compte est piraté.", "q": "Ton diagnostic ?", "options": [
+        { "t": "Le compte est piraté, il faut changer de mot de passe.", "ok": false, "why": "Non : ce message est normal." },
+        { "t": "Il a atteint la limite d'utilisation de sa formule ; il peut attendre ou passer à une formule supérieure.", "ok": true, "why": "Exact : c'est la [[limite-usage]] de sa [[formule]]." },
+        { "t": "L'assistant a définitivement supprimé ses conversations.", "ok": false, "why": "Non : les conversations restent, l'accès reprend après le délai." }
+      ] },
+      { "alert": "Un client veut une photo réaliste générée par IA pour sa plaquette. Il utilise uniquement Claude.", "q": "Que lui dis-tu ?", "options": [
+        { "t": "Claude va la générer en haute définition.", "ok": false, "why": "Non : [[claude]] ne génère pas de photos ou d'illustrations (au moment de la vérification)." },
+        { "t": "Pour ce besoin précis, il faut un outil qui génère des images, comme ChatGPT ou Gemini.", "ok": true, "why": "Exact : choisir l'outil selon la tâche, c'est tout l'esprit du Jour 1." },
+        { "t": "Aucune IA ne sait générer d'images.", "ok": false, "why": "Faux : [[chatgpt]] et [[gemini]] le font." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Le banc d'essai",
+    "goal": "Choisir ton assistant principal en connaissance de cause.",
+    "steps": [
+      "Choisis une tâche réelle de ton activité (ex. : répondre à un mail client).",
+      "Envoie EXACTEMENT le même prompt à deux assistants (versions gratuites).",
+      "Note pour chacun : justesse, ton, utilité immédiate (sur 5).",
+      "Décide quel assistant sera ton outil principal pour la suite du parcours."
+    ],
+    "success": ["Tu as un assistant principal choisi pour de bonnes raisons.", "Tu sais que tu pourras toujours utiliser les autres en complément."]
+  }
+}

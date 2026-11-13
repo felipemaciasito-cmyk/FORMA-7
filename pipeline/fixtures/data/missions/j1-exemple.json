@@ -1,0 +1,54 @@
+{
+  "id": "j1-exemple",
+  "day": 1,
+  "room": "r1",
+  "title": "Un seul assistant, bien maîtrisé",
+  "receivedAt": "2026-11-14T08:00:00.000Z",
+  "source": { "subject": "Jour 1 — Claude, ChatGPT ou Gemini : lequel choisir ? (EXEMPLE FICTIF)", "from": "exemple@example.com" },
+  "summary": [
+    "Les trois grands [[assistant|assistants]] font l'essentiel des choses de la même façon.",
+    "Le conseil du jour : une seule [[formule]] payante au départ, chez l'assistant que tu utiliseras le plus.",
+    "Mieux vaut bien maîtriser UN outil que survoler les trois.",
+    "Un [[tableau-comparatif]] est un excellent premier exercice pour tester ton assistant."
+  ],
+  "tonight": [
+    "Demande à ton assistant de comparer deux offres de ton secteur dans un tableau à 4 colonnes.",
+    "Note ce qui t'a plu ou déplu dans la réponse."
+  ],
+  "notions": [
+    {
+      "id": "tableau-comparatif", "term": "Tableau comparatif", "icon": "📊",
+      "def": {
+        "simple": "Un tableau qui met plusieurs options côte à côte selon les mêmes critères.",
+        "standard": "Une façon de demander à l'IA un [[format-sortie]] très lisible : une ligne par option, une colonne par critère. Idéal pour décider vite.",
+        "expert": "Format structuré qui force l'IA à traiter chaque option sur chaque critère, ce qui limite les oublis et rend les écarts visibles."
+      },
+      "analogy": "Les fiches techniques posées côte à côte chez un vendeur d'électroménager.",
+      "example": "« Compare ces 3 devis dans un tableau : prix, délai, garantie, avis. »",
+      "prereq": ["format-sortie"],
+      "watch": []
+    }
+  ],
+  "links": [
+    { "url": "https://example.com/video-jour-1", "title": "Vidéo du jour (6 min)", "kind": "video", "why": "Le résumé en vidéo des différences entre les trois [[assistant|assistants]]." },
+    { "url": "https://example.com/comparatif.pdf", "title": "Comparatif téléchargeable", "kind": "ressource", "why": "Un support à garder sous la main ; vérifie les prix, ils changent souvent." }
+  ],
+  "exercises": [
+    { "kind": "qcm", "q": "Quel est le conseil principal du jour ?", "options": [
+      { "t": "Prendre les trois abonnements pour comparer.", "ok": false, "why": "C'est justement ce qui est déconseillé au départ : budget dispersé, apprentissage superficiel." },
+      { "t": "Une seule formule payante, et apprendre à bien s'en servir.", "ok": true, "why": "Exact : la maîtrise d'un outil rapporte plus que la dispersion." },
+      { "t": "Rester sur les versions gratuites pour toujours.", "ok": false, "why": "Pour démarrer oui, mais les fonctions de travail demandent souvent une [[formule]] payante." }
+    ] },
+    { "kind": "cloze", "q": "Complète.", "text": "Pour décider vite entre plusieurs options, je demande un {{tableau}} avec une ligne par {{option}} et une colonne par {{critère}}.", "distractors": ["poème", "image"], "why": "C'est la structure d'un [[tableau-comparatif]]." },
+    { "kind": "truefalse", "items": [
+      { "s": "Un tableau comparatif est un format de sortie.", "ok": true, "why": "Oui : tu précises la forme de la réponse." },
+      { "s": "Il faut toujours comparer au moins 10 options.", "ok": false, "why": "Non : 2 à 5 options suffisent pour rester lisible." }
+    ] }
+  ],
+  "project": {
+    "title": "Mon premier tableau de décision",
+    "goal": "Utiliser l'IA pour une vraie décision de ton activité.",
+    "steps": ["Choisis une décision en attente (logiciel, fournisseur, formation).", "Demande un [[tableau-comparatif]] avec 4 critères qui comptent pour toi.", "Vérifie au moins un chiffre sur le site officiel."],
+    "success": ["Tu as un tableau utile et vérifié."]
+  }
+}

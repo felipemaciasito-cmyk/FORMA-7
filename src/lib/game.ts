@@ -1,0 +1,135 @@
+import { addDays, getState, today, updateProgress, type Progress } from "./store";
+import { sfx } from "./sound";
+
+// ---------------- Événements visuels (toasts, célébrations) ----------------
+export type FxEvent =
+  | { type: "toast"; icon: string; text: string; tone?: "led" | "cyan" | "amber" | "red" }
+  | { type: "burst"; x?: number; y?: number; color?: string }
+  | { type: "badge"; id: string };
+const fxListeners = new Set<(e: FxEvent) => void>();
+export function onFx(l: (e: FxEvent) => void) { fxListeners.add(l); return () => { fxListeners.delete(l); }; }
+export function fx(e: FxEvent) { fxListeners.forEach((l) => l(e)); }
+
+// ---------------- Niveaux d'accréditation ----------------
+export const LEVELS = [
+  { at: 0, title: "Recrue" },
+  { at: 150, title: "Stagiaire" },
+  { at: 400, title: "Pilote de baie" },
+  { at: 800, title: "Spécialiste systèmes" },
+  { at: 1300, title: "Responsable de salle" },
+  { at: 1900, title: "Architecte" },
+  { at: 2600, title: "Architecte en chef" },
+  { at: 3400, title: "Humain augmenté" },
+];
+export function levelOf(energy: number) {
+  let i = 0;
+  for (let k = 0; k < LEVELS.length; k++) if (energy >= LEVELS[k].at) i = k;
+  const cur = LEVELS[i];
+  const next = LEVELS[i + 1];
+  const pct = next ? Math.round(((energy - cur.at) / (next.at - cur.at)) * 100) : 100;
+  return { index: i + 1, title: cur.title, next, pct };
+}
+
+// ---------------- Énergie ----------------
+export const REWARD = {
+  step: 40,
+  exerciseFirst: 10,
+  exerciseRetry: 4,
+  incident: 120,
+  mission: 60,
+  review: 5,
+  skill: 80,
+  feynman: 20,
+};
+
+export function addEnergy(amount: number, label?: string) {
+  const before = levelOf(getState().progress.energy).index;
+  updateProgress((p) => {
+    p.energy += amount;
+    markActiveDay(p);
+  });
+  const after = levelOf(getState().progress.energy);
+  if (label) fx({ type: "toast", icon: "⚡", text: `+${amount} kW · ${label}`, tone: "cyan" });
+  if (after.index > before) {
+    sfx("levelup");
+    fx({ type: "toast", icon: "🛡️", text: `Accréditation : ${after.title}`, tone: "led" });
+    fx({ type: "burst", color: "#4dffa0" });
+  }
+  checkBadges();
+}
+
+function markActiveDay(p: Progress) {
+  const t = today();
+  if (!p.days.includes(t)) p.days = [...p.days, t].slice(-400);
+}
+
+export function uptime(days: string[]) {
+  const set = new Set(days);
+  let d = today();
+  if (!set.has(d)) d = addDays(d, -1); // la série reste vivante jusqu'à la fin de la journée
+  let n = 0;
+  while (set.has(d)) { n++; d = addDays(d, -1); }
+  return n;
+}
+
+// ---------------- Révision espacée (méthode Leitner) ----------------
+// Boîte 1 : revoir demain · 2 : dans 2 j · 3 : 4 j · 4 : 8 j · 5 : 16 j.
+export const BOX_DAYS = [0, 1, 2, 4, 8, 16];
+
+export function learnNotions(ids: string[], room: string) {
+  updateProgress((p) => {
+    for (const id of ids) {
+      if (!p.notions[id]) p.notions[id] = { box: 1, due: addDays(today(), 1), seenAt: today(), room };
+    }
+  });
+}
+
+export function reviewNotion(id: string, ok: boolean) {
+  updateProgress((p) => {
+    const n = p.notions[id];
+    if (!n) return;
+    n.box = ok ? Math.min(5, n.box + 1) : 1;
+    n.due = addDays(today(), BOX_DAYS[n.box]);
+    p.stats.reviews += 1;
+  });
+}
+
+export function dueNotions(p: Progress) {
+  const t = today();
+  return Object.entries(p.notions).filter(([, n]) => n.due <= t).map(([id]) => id);
+}
+
+// ---------------- Badges ----------------
+export const BADGES: { id: string; icon: string; title: string; desc: string; test: (p: Progress, ctx: BadgeCtx) => boolean }[] = [
+  { id: "boot", icon: "🔌", title: "Premier démarrage", desc: "Tu as abaissé le levier principal.", test: (p) => p.bootedOnce },
+  { id: "room1", icon: "💡", title: "Première salle", desc: "Une salle entièrement rallumée.", test: (_p, c) => c.roomsDone >= 1 },
+  { id: "half", icon: "🔋", title: "Mi-parcours", desc: "4 salles rallumées.", test: (_p, c) => c.roomsDone >= 4 },
+  { id: "all", icon: "🏛️", title: "Datacenter en ligne", desc: "Toutes les salles du programme sont rallumées.", test: (_p, c) => c.roomsDone >= c.roomsTotal },
+  { id: "nofuse", icon: "🧯", title: "Zéro fusible grillé", desc: "Un incident résolu sans aucune erreur.", test: (p) => Object.values(p.incidents).some((i) => i.fusesLeft === 3) },
+  { id: "up3", icon: "🔥", title: "Uptime 3 jours", desc: "3 jours d'affilée en ligne.", test: (p) => uptime(p.days) >= 3 },
+  { id: "up7", icon: "🌋", title: "Uptime 7 jours", desc: "Une semaine sans coupure.", test: (p) => uptime(p.days) >= 7 },
+  { id: "maint", icon: "🧰", title: "Maintenance assidue", desc: "10 révisions de notions.", test: (p) => p.stats.reviews >= 10 },
+  { id: "base20", icon: "📚", title: "Base bien remplie", desc: "20 notions collectées.", test: (p) => Object.keys(p.notions).length >= 20 },
+  { id: "feyn", icon: "🎙️", title: "Pédagogue", desc: "Une explication « avec tes mots » notée 80 ou plus.", test: (p) => Object.values(p.feynman).some((s) => s >= 80) },
+  { id: "skill", icon: "🛠️", title: "Forgeron de Skills", desc: "Un Skill finalisé dans l'Atelier.", test: (p) => p.skills.some((s) => s.finalized) },
+  { id: "signal", icon: "📡", title: "Signal capté", desc: "Une mission issue d'un mail terminée.", test: (p) => Object.keys(p.missions).length >= 1 },
+];
+
+export interface BadgeCtx { roomsDone: number; roomsTotal: number }
+let badgeCtx: BadgeCtx = { roomsDone: 0, roomsTotal: 8 };
+export function setBadgeCtx(c: BadgeCtx) { badgeCtx = c; }
+
+export function checkBadges() {
+  const p = getState().progress;
+  const newOnes = BADGES.filter((b) => !p.badges[b.id] && b.test(p, badgeCtx));
+  if (!newOnes.length) return;
+  updateProgress((d) => { for (const b of newOnes) d.badges[b.id] = today(); });
+  newOnes.forEach((b, i) => setTimeout(() => {
+    sfx("badge");
+    fx({ type: "toast", icon: b.icon, text: `Badge débloqué : ${b.title}`, tone: "amber" });
+  }, 600 + i * 900));
+}
+
+export function recordAnswer(ok: boolean) {
+  updateProgress((p) => { p.stats.answers += 1; if (ok) p.stats.correct += 1; markActiveDay(p); });
+}

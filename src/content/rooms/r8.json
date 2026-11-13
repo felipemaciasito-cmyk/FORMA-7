@@ -1,0 +1,42 @@
+{
+  "id": "r8",
+  "index": 8,
+  "code": "BONUS",
+  "name": "La Bibliothèque",
+  "day": 8,
+  "roadmapTitle": "Bonus · La librairie de Skills",
+  "tagline": "Ta collection de compétences, prête à servir.",
+  "hue": 48,
+  "requires": ["r7"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Constituer ta bibliothèque",
+      "kicker": "Les meilleurs Skills sont ceux que tu utilises vraiment.",
+      "introduces": [],
+      "uses": ["skill", "entete-skill", "chargement-demande", "agent", "projet"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Le datacenter est rallumé. Dernière salle : celle où l'on range les compétences. Une bonne bibliothèque de [[skill|Skills]] transforme chaque [[agent]] en collègue efficace." },
+        { "type": "text", "md": "**Par où commencer ?** Les Skills les plus rentables couvrent des tâches **fréquentes**, **répétitives** et **à format stable** : devis, relances, comptes-rendus, réponses types, posts réguliers, veille mensuelle, onboarding client.\n\n**Comment les organiser ?**\n- Un Skill = une tâche (pas un « Skill fourre-tout »).\n- Un nom clair en minuscules avec tirets : `relance-impayes`, `compte-rendu-reunion`.\n- Une description qui dit QUOI et QUAND, avec tes mots.\n- Une révision tous les mois : ce qui ne sert pas, tu le supprimes." },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu as 10 idées de Skills. Lequel crées-tu en premier ?", "options": [
+          { "t": "Celui de la tâche que tu fais le plus souvent, avec un format stable.", "ok": true, "why": "Exact : c'est là que le gain de temps est le plus grand, et le Skill sera vite testé." },
+          { "t": "Le plus impressionnant à montrer.", "ok": false, "why": "Un Skill qui ne sert pas ne rapporte rien." },
+          { "t": "Un seul Skill géant qui fait tout.", "ok": false, "why": "Un Skill fourre-tout a une description floue : il se déclenche mal (souviens-toi du [[chargement-demande]])." }
+        ] } },
+        { "type": "interactive", "widget": "SkillWorkshop", "caption": "Forge les Skills de ta bibliothèque. Ils restent enregistrés dans l'Atelier." },
+        { "type": "recap", "points": ["Priorité aux tâches fréquentes et à format stable.", "Un Skill par tâche, nommé clairement, décrit précisément.", "Ta bibliothèque vit : ajoute, améliore, supprime."] }
+      ]
+    }
+  ],
+  "project": {
+    "title": "Ta bibliothèque de 3 Skills",
+    "goal": "Avoir 3 Skills actifs qui te font gagner du temps chaque semaine.",
+    "steps": [
+      "Liste tes 10 tâches les plus fréquentes et coche les 3 au format le plus stable.",
+      "Forge-les dans l'Atelier, enregistre les fichiers SKILL.md.",
+      "Installe-les dans ton assistant et teste chacun avec une demande naturelle.",
+      "Dans un mois : fais le point et améliore celui qui sert le plus."
+    ],
+    "success": ["3 Skills installés et testés.", "Une routine de révision mensuelle notée dans ton agenda."]
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "id": "r7",
+  "index": 7,
+  "code": "SALLE 07",
+  "name": "Salle de Contrôle",
+  "day": 7,
+  "roadmapTitle": "Jour 7 · Les agents",
+  "tagline": "Quand l'IA ne se contente plus de répondre : elle agit.",
+  "hue": 350,
+  "requires": ["r6"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Quand l'IA passe à l'action",
+      "kicker": "Des outils, une boucle, un objectif.",
+      "introduces": ["outil", "boucle-agent", "agent"],
+      "uses": ["llm", "connecteur", "contexte", "autorisation"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Dernière salle du programme. Tout ce que tu as rallumé converge ici : le [[llm]], le [[contexte]], les [[connecteur|connecteurs]]. Il manque deux pièces pour qu'une IA agisse seule." },
+        { "type": "definition", "notion": "outil" },
+        { "type": "definition", "notion": "boucle-agent" },
+        { "type": "definition", "notion": "agent" },
+        { "type": "interactive", "widget": "AgentLoop", "caption": "Lance l'agent sur une vraie tâche et suis chaque tour de boucle." },
+        { "type": "exercise", "ex": { "kind": "order", "q": "Remets dans l'ordre un tour de boucle d'agent.", "items": [
+          "Relire l'objectif et ce qui a déjà été fait",
+          "Choisir la prochaine action",
+          "Utiliser un outil",
+          "Observer le résultat",
+          "Décider : continuer, demander, ou terminer"
+        ], "why": "Cette boucle se répète jusqu'à ce que l'objectif soit atteint ou que l'agent ait besoin de toi." } },
+        { "type": "recap", "points": ["Un [[outil]] = une action que l'IA peut déclencher.", "La [[boucle-agent|boucle]] = comprendre → agir → observer → recommencer.", "Un [[agent]] = un LLM + des outils + une boucle, au service d'un objectif."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Garder la main",
+      "kicker": "Déléguer n'est pas abdiquer.",
+      "introduces": ["validation-humaine", "autonomie"],
+      "uses": ["agent", "boucle-agent", "autorisation", "donnees-sensibles"],
+      "blocks": [
+        { "type": "definition", "notion": "validation-humaine" },
+        { "type": "definition", "notion": "autonomie" },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : quel niveau de contrôle pour chaque action d'un agent ?", "pairs": [
+          { "l": "Lire et résumer des mails", "r": "Automatique" },
+          { "l": "Classer des fichiers dans un dossier", "r": "Automatique, vérifié ensuite" },
+          { "l": "Envoyer un mail à un client", "r": "Validation humaine avant" },
+          { "l": "Payer une facture", "r": "Toujours toi, jamais l'agent seul" }
+        ], "why": "Plus une action est irréversible ou visible de l'extérieur, plus la [[validation-humaine]] s'impose." } },
+        { "type": "recap", "points": ["[[validation-humaine|Validation humaine]] avant toute action importante ou irréversible.", "L'[[autonomie]] se règle action par action, et s'élargit avec la confiance."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Les agents du moment",
+      "kicker": "Claude Code, Codex, Cowork : qui fait quoi ?",
+      "introduces": ["terminal", "claude-code", "codex", "cowork"],
+      "uses": ["agent", "claude", "chatgpt", "validation-humaine"],
+      "blocks": [
+        { "type": "definition", "notion": "terminal" },
+        { "type": "definition", "notion": "claude-code" },
+        { "type": "definition", "notion": "codex" },
+        { "type": "definition", "notion": "cowork" },
+        { "type": "callout", "tone": "volatile", "md": "**Infos vérifiées en novembre 2026.** Les agents évoluent encore plus vite que les assistants : disponibilité selon les formules, noms, plateformes. Vérifie sur les sites officiels avant de choisir." },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : quel agent pour quelle mission ?", "pairs": [
+          { "l": "Renommer et classer 200 PDF dans un dossier de ton ordinateur", "r": "Cowork" },
+          { "l": "Ajouter une fonctionnalité au code de ton site", "r": "Claude Code ou Codex" },
+          { "l": "Agir pendant que tu le pilotes depuis une fenêtre de commandes", "r": "Terminal" }
+        ], "why": "Cowork vise les tâches de bureau sans code ; Claude Code et Codex visent la programmation." } },
+        { "type": "exercise", "ex": { "kind": "feynman", "q": "Explique avec tes mots ce qui distingue un agent d'un assistant classique, avec un exemple de ton quotidien.", "model": "Un assistant classique répond à une question : je lui demande, il écrit. Un agent reçoit un objectif et agit en plusieurs étapes avec des outils : il lit, classe, prépare, vérifie, et me demande validation avant les actions importantes. Exemple : au lieu de me dire comment classer mes factures, l'agent les lit dans mes mails, les range dans Drive, prépare le récapitulatif et me demande avant de l'envoyer au comptable.", "criteria": ["Distingue répondre (assistant) et agir en plusieurs étapes (agent)", "Mentionne les outils ou la boucle", "Donne un exemple concret", "Évoque la validation humaine ou le contrôle"] } },
+        { "type": "recap", "points": ["[[claude-code|Claude Code]] et [[codex|Codex]] : agents de programmation.", "[[cowork|Cowork]] : agent de bureau sur tes fichiers, sans code.", "Le [[terminal]] : la fenêtre de commandes où certains agents travaillent."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Agent hors de contrôle",
+    "brief": "Dernier incident avant la remise en service complète. Reprends la main.",
+    "scenarios": [
+      { "alert": "Un agent chargé de « faire du tri dans la boîte mail » a supprimé 300 mails, dont des factures.", "q": "Quelle erreur de configuration ?", "options": [
+        { "t": "Il avait le droit de supprimer sans validation humaine.", "ok": true, "why": "Exact : une suppression est irréversible, elle exige une [[validation-humaine]] (ou un droit de lecture seule)." },
+        { "t": "Le modèle n'était pas assez récent.", "ok": false, "why": "Le problème est l'[[autonomie]] accordée, pas le modèle." },
+        { "t": "La boîte mail était trop pleine.", "ok": false, "why": "Non." }
+      ] },
+      { "alert": "Ton agent te demande validation avant d'envoyer un récapitulatif au comptable. Ton collègue trouve ça « inutile ».", "q": "Qui a raison ?", "options": [
+        { "t": "Toi : un envoi externe mérite une validation, au moins au début.", "ok": true, "why": "Exact. Avec le temps et la confiance, tu pourras ajuster l'[[autonomie]]." },
+        { "t": "Ton collègue : un agent doit tout faire seul.", "ok": false, "why": "Un bon agent sait quand s'arrêter pour demander." },
+        { "t": "Personne : il faut désactiver l'agent.", "ok": false, "why": "Excessif : la validation suffit." }
+      ] },
+      { "alert": "Tu veux qu'un agent range les fichiers d'UN dossier de ton ordinateur, sans écrire de code.", "q": "Quel outil choisis-tu ?", "options": [
+        { "t": "Cowork, en lui donnant accès à ce seul dossier.", "ok": true, "why": "Exact : [[cowork]] travaille sur un dossier choisi, sans code. Et un seul dossier = moindre privilège." },
+        { "t": "Un connecteur Slack.", "ok": false, "why": "Hors sujet : il s'agit de fichiers locaux." },
+        { "t": "Un simple prompt dans un assistant web, sans accès aux fichiers.", "ok": false, "why": "Sans accès aux fichiers, il ne peut que donner des conseils." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Ta première délégation",
+    "goal": "Confier une vraie tâche en plusieurs étapes à un agent, sous contrôle.",
+    "steps": [
+      "Choisis une tâche répétitive à plusieurs étapes (ex. : trier des fichiers, préparer un récapitulatif).",
+      "Écris l'objectif, les étapes attendues et ce qui exige ta validation.",
+      "Lance-la avec un agent (Cowork pour des fichiers, ou l'assistant avec ses connecteurs).",
+      "Observe chaque étape, valide ou corrige, puis note ce que tu laisserais faire seul la prochaine fois."
+    ],
+    "success": ["La tâche est terminée sans action irréversible non validée.", "Tu as défini ton niveau d'autonomie pour ce type de tâche."]
+  }
+}

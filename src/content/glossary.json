@@ -1,0 +1,645 @@
+[
+  {
+    "id": "ia", "term": "Intelligence artificielle (IA)", "icon": "🧠",
+    "watch": ["intelligence artificielle", "IA"],
+    "def": {
+      "simple": "Un programme informatique capable de faire des choses qui demandent normalement de la réflexion humaine : comprendre une phrase, résumer un texte, reconnaître une image.",
+      "standard": "Un ensemble de techniques qui permettent à un ordinateur d'accomplir des tâches « intelligentes » (comprendre, rédiger, classer, prédire) en s'appuyant sur des exemples plutôt que sur des règles écrites une par une.",
+      "expert": "Champ de l'informatique visant à reproduire des capacités cognitives. Les IA actuelles les plus visibles reposent sur l'apprentissage automatique : un système ajuste des millions (voire des milliards) de paramètres à partir de données, puis généralise à des situations nouvelles."
+    },
+    "analogy": "Un apprenti qui a observé des millions d'exemples et en a tiré des réflexes, sans qu'on lui ait jamais donné de mode d'emploi.",
+    "example": "Quand ton téléphone trie tes photos par visage, c'est une IA. Quand Claude résume un mail, aussi.",
+    "prereq": []
+  },
+  {
+    "id": "modele", "term": "Modèle (d'IA)", "icon": "🧩",
+    "watch": ["modèle d'ia", "modèles d'ia"],
+    "def": {
+      "simple": "Le « cerveau » d'une IA : un gros fichier qui contient tout ce qu'elle a appris.",
+      "standard": "Le résultat de l'apprentissage d'une [[ia]] : un ensemble de réglages (des nombres) qui transforme ce qu'on lui donne (une question) en résultat (une réponse).",
+      "expert": "Une fonction paramétrée (souvent un réseau de neurones) dont les poids ont été optimisés sur des données. On parle de modèle pour l'objet technique ; l'application que tu utilises (une appli de chat) est construite autour de lui."
+    },
+    "analogy": "Le moteur d'une voiture : tu ne le vois pas, mais c'est lui qui fait tout avancer. L'appli, c'est la carrosserie.",
+    "example": "Claude Opus et Claude Sonnet sont deux modèles différents de la même famille.",
+    "prereq": ["ia"]
+  },
+  {
+    "id": "entrainement", "term": "Entraînement", "icon": "🏋️",
+    "watch": ["entraînement", "entraîné", "entraînée"],
+    "def": {
+      "simple": "La période où l'IA apprend, en lisant d'énormes quantités de textes. Ensuite, elle n'apprend plus toute seule.",
+      "standard": "La phase de fabrication d'un [[modele]] : on lui montre des quantités massives de textes et on corrige ses erreurs de prédiction, des milliards de fois, jusqu'à ce qu'il devienne bon.",
+      "expert": "Pré-entraînement sur un large corpus (prédiction du token suivant), puis ajustements (instructions, retours humains) pour le rendre utile et sûr. Les poids sont ensuite figés : utiliser le modèle ne le modifie pas."
+    },
+    "analogy": "Les années d'études d'un médecin. Une fois diplômé, il exerce avec ce qu'il a appris, il ne repasse pas ses examens à chaque patient.",
+    "example": "Quand tu discutes avec Claude, tu ne l'entraînes pas : tu utilises un modèle déjà entraîné.",
+    "prereq": ["modele"]
+  },
+  {
+    "id": "llm", "term": "Modèle de langage (LLM)", "icon": "💬",
+    "watch": ["llm", "modèle de langage", "modèles de langage", "grand modèle de langage"],
+    "def": {
+      "simple": "Une IA spécialisée dans le texte : elle lit ce que tu écris et écrit une réponse, mot après mot.",
+      "standard": "Un [[modele]] entraîné sur d'immenses quantités de textes pour prédire la suite la plus probable d'un texte. En répétant cette prédiction, il rédige des réponses complètes. LLM = Large Language Model (grand modèle de langage).",
+      "expert": "Réseau de neurones (architecture Transformer) qui modélise la probabilité du token suivant. Les capacités (raisonner, traduire, coder) émergent de cette tâche simple appliquée à très grande échelle."
+    },
+    "analogy": "La saisie intuitive de ton téléphone, mais qui aurait lu une bibliothèque entière et pourrait écrire une lettre complète au lieu de proposer un mot.",
+    "example": "Claude, ChatGPT et Gemini reposent tous sur des LLM.",
+    "prereq": ["modele", "entrainement"]
+  },
+  {
+    "id": "token", "term": "Token", "icon": "🔤",
+    "watch": ["token", "tokens"],
+    "def": {
+      "simple": "Un petit morceau de texte (un mot entier, un bout de mot ou un signe). L'IA lit et écrit token par token.",
+      "standard": "L'unité de texte que manipule un [[llm]]. En français, un mot fait souvent 1 à 2 tokens. Les limites et les tarifs des IA se comptent en tokens.",
+      "expert": "Unité produite par le découpeur (tokenizer) : sous-mots issus d'un vocabulaire fixe. Le coût et la taille maximale d'un échange s'expriment en tokens ; un même texte peut compter différemment selon le modèle."
+    },
+    "analogy": "Des briques de LEGO : le texte est découpé en briques standard, l'IA assemble les siennes une à une.",
+    "example": "« Bonjour » = 1 token ; « anticonstitutionnellement » ≈ plusieurs tokens.",
+    "prereq": ["llm"]
+  },
+  {
+    "id": "prompt", "term": "Prompt", "icon": "⌨️",
+    "watch": ["prompt", "prompts"],
+    "def": {
+      "simple": "Le message que tu écris à l'IA : ta question ou ta demande.",
+      "standard": "Le texte que tu envoies à un [[llm]] pour obtenir une réponse. Sa qualité (clarté, précision, informations fournies) change énormément la qualité du résultat.",
+      "expert": "L'entrée textuelle (et éventuellement les fichiers) fournie au modèle. On distingue souvent les instructions générales (consignes système) du message de l'utilisateur."
+    },
+    "analogy": "La commande que tu passes au restaurant : « un plat » ne donne pas le même résultat que « des pâtes sans gluten, peu salées, pour deux ».",
+    "example": "« Résume ce mail en 3 points pour mon associé » est un prompt.",
+    "prereq": ["llm"]
+  },
+  {
+    "id": "assistant", "term": "Assistant IA (chatbot)", "icon": "🤖",
+    "watch": ["chatbot", "chatbots", "assistant ia", "assistants ia"],
+    "def": {
+      "simple": "Une appli où tu discutes avec une IA comme dans une messagerie.",
+      "standard": "Une application construite autour d'un [[llm]] qui te permet d'échanger par écrit (ou à la voix) : tu envoies un [[prompt]], il répond. Claude, ChatGPT et Gemini sont des assistants.",
+      "expert": "Interface conversationnelle qui ajoute au modèle des fonctions (historique, fichiers, recherche, outils) et des règles d'usage. Un même assistant peut proposer plusieurs modèles."
+    },
+    "analogy": "Le guichet d'une banque : derrière, il y a toute la machinerie (le modèle) ; devant, une personne avec qui tu parles (l'assistant).",
+    "example": "Ouvrir l'appli Claude et lui demander une idée de recette, c'est utiliser un assistant IA.",
+    "prereq": ["llm", "prompt"]
+  },
+  {
+    "id": "conversation", "term": "Conversation", "icon": "🧵",
+    "watch": [],
+    "def": {
+      "simple": "Un fil de discussion avec l'assistant. Une nouvelle conversation repart de zéro.",
+      "standard": "La suite des messages échangés avec un [[assistant]] dans un même fil. Tout ce qui est dans le fil peut servir à la réponse suivante ; une nouvelle conversation ne « voit » pas les autres (sauf fonctions spéciales que tu découvriras plus tard).",
+      "expert": "Séquence de tours utilisateur/assistant renvoyée au modèle à chaque nouvelle réponse. Le modèle n'a pas de souvenir propre : c'est l'application qui lui renvoie l'historique."
+    },
+    "analogy": "Un appel téléphonique : pendant l'appel, ton interlocuteur se souvient de ce que tu as dit. Tu raccroches et rappelles : il faut tout réexpliquer.",
+    "example": "Si tu ouvres une nouvelle conversation, l'assistant ne sait plus que tu lui avais donné le nom de ton entreprise dans l'ancienne.",
+    "prereq": ["assistant"]
+  },
+
+  {
+    "id": "claude", "term": "Claude", "icon": "✳️", "checked": "2026-11",
+    "watch": [],
+    "def": {
+      "simple": "L'assistant IA de l'entreprise Anthropic. Réputé pour la qualité de ses textes et de son code, et pour ses fonctions de travail (Projets, Skills, connecteurs).",
+      "standard": "Un [[assistant]] créé par Anthropic, disponible sur le web, sur ordinateur et sur mobile. Il propose plusieurs [[modele|modèles]] (familles Haiku, Sonnet, Opus) et des outils de travail : Projets, Skills, connecteurs, agents. Il ne génère pas d'images photo ou d'illustrations (il peut en revanche créer des graphiques et des schémas).",
+      "expert": "Famille de LLM d'Anthropic. L'offre grand public (claude.ai) se décline en formules gratuite et payantes ; l'accès développeur passe par l'API. Les noms et versions de modèles évoluent souvent."
+    },
+    "analogy": "Un collègue rédacteur et analyste très soigneux, qui s'outille bien.",
+    "example": "Rédiger un compte-rendu, analyser un long PDF, écrire du code, automatiser une tâche avec un agent.",
+    "prereq": ["assistant"]
+  },
+  {
+    "id": "chatgpt", "term": "ChatGPT", "icon": "◎", "checked": "2026-11",
+    "watch": [],
+    "def": {
+      "simple": "L'assistant IA de l'entreprise OpenAI, le plus connu du grand public. Il sait aussi générer des images.",
+      "standard": "Un [[assistant]] créé par OpenAI. Très polyvalent : texte, voix, création d'images, recherche web, assistants personnalisés et agents.",
+      "expert": "Interface grand public des modèles GPT d'OpenAI. Plusieurs formules (dont une avec publicité côté gratuit, selon les pays). Fonctions et noms de modèles changent fréquemment."
+    },
+    "analogy": "Un couteau suisse très populaire : il fait beaucoup de choses, et tout le monde en a entendu parler.",
+    "example": "Générer une illustration pour un post, discuter à voix haute, faire une recherche rapide.",
+    "prereq": ["assistant"]
+  },
+  {
+    "id": "gemini", "term": "Gemini", "icon": "✦", "checked": "2026-11",
+    "watch": [],
+    "def": {
+      "simple": "L'assistant IA de Google, très lié à Gmail, Google Docs, Drive et Android.",
+      "standard": "Un [[assistant]] créé par Google. Son point fort : l'intégration à l'écosystème Google (Gmail, Docs, Drive, Agenda, Android). Il génère aussi des images et des vidéos selon la formule.",
+      "expert": "Famille de modèles multimodaux de Google, déclinée dans l'appli Gemini et dans Google Workspace. Les formules payantes sont regroupées sous le nom « Google AI » (Plus, Pro, Ultra)."
+    },
+    "analogy": "L'assistant qui habite déjà dans ta maison Google : il a les clés de presque toutes les pièces.",
+    "example": "Résumer un fil Gmail directement dans Gmail, ou rédiger dans Google Docs.",
+    "prereq": ["assistant"]
+  },
+  {
+    "id": "multimodal", "term": "Multimodal", "icon": "🎛️",
+    "watch": ["multimodal", "multimodale", "multimodaux"],
+    "def": {
+      "simple": "Se dit d'une IA qui comprend plusieurs types de contenus : texte, images, voix, fichiers.",
+      "standard": "Un [[assistant]] multimodal accepte plusieurs « modes » en entrée (photo, PDF, audio…) et parfois en sortie (image, voix). Les trois grands assistants lisent les images ; tous ne savent pas en créer.",
+      "expert": "Capacité d'un modèle à traiter conjointement plusieurs modalités (texte, image, audio, vidéo) dans un même espace de représentation."
+    },
+    "analogy": "Un collègue qui peut lire ton tableau, regarder ta photo et écouter ton message vocal, pas seulement lire tes mails.",
+    "example": "Prendre en photo une facture et demander : « Quel est le montant TTC ? »",
+    "prereq": ["assistant"]
+  },
+  {
+    "id": "formule", "term": "Formule d'abonnement", "icon": "💳", "checked": "2026-11",
+    "watch": ["abonnement", "abonnements"],
+    "def": {
+      "simple": "Le niveau d'accès que tu paies (ou pas) : gratuit pour découvrir, autour de 20 $ par mois pour un usage sérieux, 100 à 200 $ pour un usage intensif.",
+      "standard": "Chaque [[assistant]] propose une formule gratuite limitée, une formule « standard » (environ 20 $ par mois : Claude Pro, ChatGPT Plus, Google AI Pro) et des formules avancées (environ 100 à 200 $ par mois : Claude Max, ChatGPT Pro, Google AI Ultra). Prix US relevés en novembre 2026 ; les prix en euros et les noms changent : vérifie sur les sites officiels.",
+      "expert": "Les formules différent surtout par les limites d'utilisation, l'accès aux modèles les plus puissants et aux fonctions agentiques. Des formules intermédiaires existent (ex. ChatGPT Go, Google AI Plus, vers 8 $)."
+    },
+    "analogy": "Un forfait téléphonique : le gratuit dépanne, le forfait standard couvre presque tout le monde, le forfait illimité sert à ceux qui y passent leurs journées.",
+    "example": "Pour suivre cette formation et commencer à automatiser, une formule standard (~20 $/mois) chez UN seul assistant suffit largement.",
+    "prereq": ["assistant"]
+  },
+  {
+    "id": "limite-usage", "term": "Limite d'utilisation", "icon": "⏳", "checked": "2026-11",
+    "watch": ["limite d'utilisation", "limites d'utilisation", "quota", "quotas"],
+    "def": {
+      "simple": "Le nombre de messages (ou la quantité de travail) que tu peux faire avant que l'assistant te demande d'attendre.",
+      "standard": "Chaque [[formule]] fixe un plafond d'usage sur une période (quelques heures, une semaine). Les longues conversations, les gros fichiers et les modèles puissants consomment plus vite ce quota.",
+      "expert": "Quotas calculés en tokens ou en « unités d'usage » pondérées par modèle, souvent sur fenêtres glissantes. Les détails exacts sont rarement publiés et évoluent."
+    },
+    "analogy": "Le forfait data de ton téléphone : regarder des vidéos l'épuise plus vite que lire des mails.",
+    "example": "Message « Vous avez atteint la limite, réessayez à 15 h » : tu as consommé ton quota.",
+    "prereq": ["formule"]
+  },
+
+  {
+    "id": "contexte", "term": "Contexte", "icon": "📋",
+    "watch": [],
+    "def": {
+      "simple": "Tout ce que l'IA a sous les yeux au moment de répondre : tes messages, ses réponses, les fichiers joints.",
+      "standard": "L'ensemble du texte (en [[token|tokens]]) que l'[[assistant]] relit avant chaque réponse : consignes, historique de la [[conversation]], documents. L'IA ne sait rien de ta situation en dehors de ce contexte et de ce qu'elle a appris pendant son [[entrainement]].",
+      "expert": "Séquence d'entrée complète envoyée au modèle à chaque appel. Les applications y injectent aussi des éléments invisibles pour toi (consignes système, préférences, résultats de recherche)."
+    },
+    "analogy": "Le bureau sur lequel l'IA travaille : elle ne voit que les feuilles posées dessus, pas celles rangées dans tes tiroirs.",
+    "example": "Si tu joins le devis, il est dans le contexte : l'IA peut le citer. Si tu en parles sans le joindre, elle devine.",
+    "prereq": ["token", "conversation", "entrainement"]
+  },
+  {
+    "id": "fenetre-contexte", "term": "Fenêtre de contexte", "icon": "🪟",
+    "watch": ["fenêtre de contexte"],
+    "def": {
+      "simple": "La taille maximale du « bureau » de l'IA. Quand il déborde, les plus vieilles informations sont oubliées ou résumées.",
+      "standard": "Le nombre maximal de [[token|tokens]] que le [[contexte]] peut contenir. Les modèles récents acceptent beaucoup (des centaines de milliers de tokens), mais une conversation très longue finit par perdre des détails anciens.",
+      "expert": "Limite architecturale de la longueur d'entrée. Au-delà, l'application tronque, résume (compaction) ou refuse. Même sous la limite, l'attention aux détails noyés dans un long contexte peut baisser."
+    },
+    "analogy": "Une barrette de mémoire vive : elle a une capacité fixe ; si tu en mets trop, il faut sortir quelque chose.",
+    "example": "Dans une conversation de 200 messages, l'IA peut oublier une consigne donnée tout au début.",
+    "prereq": ["contexte"]
+  },
+  {
+    "id": "memoire", "term": "Mémoire (persistante)", "icon": "🗄️", "checked": "2026-11",
+    "watch": ["mémoire persistante"],
+    "def": {
+      "simple": "Des notes que l'assistant garde sur toi d'une conversation à l'autre, si la fonction est activée.",
+      "standard": "Une fonction des assistants qui enregistre quelques informations utiles (ton métier, tes préférences) et les réinjecte dans le [[contexte]] des nouvelles [[conversation|conversations]]. Ce n'est pas l'IA qui « apprend » : ce sont des notes relues à chaque fois. Tu peux la consulter, la modifier ou la désactiver.",
+      "expert": "Stockage externe au modèle (notes, résumés, recherche dans l'historique) injecté dans le contexte. Le modèle reste inchangé : aucune « ré-entraînement » n'a lieu."
+    },
+    "analogy": "Le carnet d'un serveur qui note « M. Martin : café serré, sans sucre ». Ce n'est pas sa mémoire, c'est son carnet.",
+    "example": "Tu as dit une fois « je suis freelance en graphisme » ; un mois plus tard, l'assistant adapte ses exemples au graphisme.",
+    "prereq": ["contexte", "conversation"]
+  },
+  {
+    "id": "date-coupure", "term": "Date de coupure", "icon": "📅",
+    "watch": ["date de coupure"],
+    "def": {
+      "simple": "La date à laquelle l'IA a arrêté d'apprendre. Ce qui s'est passé après, elle ne le sait pas (sauf si elle cherche sur le web).",
+      "standard": "Les textes utilisés pour l'[[entrainement]] s'arrêtent à une date précise. Un [[llm]] ignore les événements plus récents, et peut présenter une information périmée comme actuelle.",
+      "expert": "Limite temporelle du corpus d'entraînement. Les connaissances proches de cette date sont souvent moins fiables, car moins documentées au moment de la collecte."
+    },
+    "analogy": "Une encyclopédie imprimée : très riche, mais figée à l'année de son impression.",
+    "example": "Demander « Quel est le dernier modèle sorti ? » sans recherche web peut donner une réponse dépassée.",
+    "prereq": ["entrainement", "llm"]
+  },
+  {
+    "id": "hallucination", "term": "Hallucination", "icon": "🌀",
+    "watch": ["hallucination", "hallucinations", "halluciner", "hallucine"],
+    "def": {
+      "simple": "Quand l'IA invente une information fausse mais la présente avec assurance.",
+      "standard": "Un [[llm]] prédit la suite la plus probable : s'il manque d'informations, il peut produire quelque chose de plausible mais faux (chiffre, citation, source, nom). Plus le [[contexte]] est pauvre, plus le risque est grand.",
+      "expert": "Génération non fondée sur les données d'entrée ni sur des faits établis. On la réduit en fournissant des sources, en autorisant l'IA à dire « je ne sais pas » et en vérifiant les points critiques."
+    },
+    "analogy": "Un élève qui n'a pas révisé mais répond quand même avec aplomb pour ne pas rester muet.",
+    "example": "L'IA te cite un article « paru dans Le Monde en 2023 » qui n'a jamais existé.",
+    "prereq": ["llm", "contexte"]
+  },
+  {
+    "id": "recherche-web", "term": "Recherche web", "icon": "🔎",
+    "watch": ["recherche web"],
+    "def": {
+      "simple": "La capacité de l'assistant à aller chercher des informations récentes sur internet avant de répondre.",
+      "standard": "Une fonction qui permet à l'[[assistant]] de consulter des pages web et d'ajouter leur contenu à son [[contexte]]. Elle compense la [[date-coupure]] et permet de citer des sources (à vérifier quand même).",
+      "expert": "Outil de recherche appelé par le modèle ; les extraits trouvés sont injectés dans le contexte. La qualité dépend des sources trouvées."
+    },
+    "analogy": "Le stagiaire qui, au lieu de répondre de mémoire, va vérifier dans les journaux du jour.",
+    "example": "« Cherche les prix actuels des formules Claude et donne-moi les liens. »",
+    "prereq": ["assistant", "date-coupure", "contexte"]
+  },
+  {
+    "id": "reflexion", "term": "Mode réflexion", "icon": "🤔",
+    "watch": ["mode réflexion", "raisonnement étendu"],
+    "def": {
+      "simple": "Un réglage où l'IA prend le temps de réfléchir étape par étape avant de répondre. Plus lent, souvent plus juste.",
+      "standard": "Certains [[modele|modèles]] peuvent « raisonner » avant d'écrire la réponse : ils décomposent le problème, testent des pistes, se corrigent. Utile pour les calculs, l'analyse, la planification ; inutile pour une question simple.",
+      "expert": "Génération de jetons de raisonnement intermédiaires (souvent masqués ou résumés) avant la réponse finale. Améliore les tâches complexes au prix de plus de temps et de consommation."
+    },
+    "analogy": "Répondre à un problème de maths de tête, ou poser le calcul sur un brouillon d'abord.",
+    "example": "Pour comparer 3 devis sur 10 critères, active la réflexion ; pour traduire « merci », pas besoin.",
+    "prereq": ["modele"]
+  },
+
+  {
+    "id": "role", "term": "Rôle", "icon": "🎭",
+    "watch": [],
+    "def": {
+      "simple": "Dire à l'IA qui elle doit être : « Tu es expert-comptable ». Elle adapte son vocabulaire et ses priorités.",
+      "standard": "Une phrase de [[prompt]] qui donne une identité professionnelle à l'IA. Elle oriente le ton, le niveau de détail et les réflexes métier de la réponse.",
+      "expert": "Amorçage de persona : il active les connaissances et conventions d'un domaine. Efficace surtout combiné à une tâche et des critères précis."
+    },
+    "analogy": "Choisir à quel spécialiste tu poses la question : le même sujet n'est pas traité pareil par un juriste et par un commercial.",
+    "example": "« Tu es un expert-comptable qui conseille des freelances débutants. »",
+    "prereq": ["prompt"]
+  },
+  {
+    "id": "tache", "term": "Tâche", "icon": "🎯",
+    "watch": [],
+    "def": {
+      "simple": "Ce que tu veux exactement que l'IA fasse, avec un verbe d'action clair.",
+      "standard": "La partie du [[prompt]] qui dit précisément quoi produire : « rédige », « compare », « résume en 5 points », « liste les risques ». Une tâche floue donne une réponse floue.",
+      "expert": "Spécification de l'objectif et du livrable. Gagne à être unique par message ou découpée en étapes numérotées."
+    },
+    "analogy": "La différence entre « occupe-toi du jardin » et « tonds la pelouse et taille la haie côté rue ».",
+    "example": "Faible : « Parle-moi de ma facture. » Fort : « Vérifie si cette facture contient une erreur de TVA. »",
+    "prereq": ["prompt"]
+  },
+  {
+    "id": "format-sortie", "term": "Format de sortie", "icon": "📐",
+    "watch": ["format de sortie"],
+    "def": {
+      "simple": "La forme que doit avoir la réponse : un tableau, 3 puces, un mail prêt à envoyer, 100 mots maximum…",
+      "standard": "Une consigne de [[prompt]] qui décrit la structure attendue. Elle t'évite de reformater toi-même et rend la réponse directement utilisable.",
+      "expert": "Contrainte de structure (longueur, sections, tableau, JSON). Combinée à un exemple, elle donne des résultats très réguliers."
+    },
+    "analogy": "Préciser au traiteur : « en bouchées individuelles », pas « en grand plat ».",
+    "example": "« Présente le résultat dans un tableau à 3 colonnes : option, prix, avis. »",
+    "prereq": ["prompt"]
+  },
+  {
+    "id": "contraintes", "term": "Contraintes", "icon": "🚧",
+    "watch": [],
+    "def": {
+      "simple": "Les règles à respecter : ton, longueur, ce qu'il ne faut pas faire.",
+      "standard": "Les limites que tu fixes dans le [[prompt]] : « pas de jargon », « tutoiement », « ne pas inventer de chiffres », « 150 mots max ». Elles évitent les mauvaises surprises.",
+      "expert": "Garde-fous explicites. Préférer des formulations positives et vérifiables (« écris pour un public débutant ») aux interdits vagues."
+    },
+    "analogy": "Le cahier des charges d'un artisan : budget, délais, matériaux interdits.",
+    "example": "« Ton chaleureux, vouvoiement, sans emoji, et si une info te manque, dis-le au lieu d'inventer. »",
+    "prereq": ["prompt"]
+  },
+  {
+    "id": "exemple-modele", "term": "Exemple modèle", "icon": "🧪",
+    "watch": ["exemple modèle", "exemples modèles", "few-shot"],
+    "def": {
+      "simple": "Montrer à l'IA un exemple de ce que tu veux. Elle imite le style et la structure.",
+      "standard": "Placer dans le [[prompt]] un ou plusieurs exemples de réponse idéale. C'est souvent plus efficace qu'une longue explication du [[format-sortie]].",
+      "expert": "Technique dite « few-shot ». Varier les exemples évite que l'IA recopie un détail par erreur."
+    },
+    "analogy": "Montrer une photo au coiffeur au lieu de décrire la coupe.",
+    "example": "« Voici un post LinkedIn que j'ai aimé : […]. Écris-en un sur mon sujet, dans le même style. »",
+    "prereq": ["prompt", "format-sortie"]
+  },
+  {
+    "id": "questions-prealables", "term": "Questions préalables", "icon": "❓",
+    "watch": ["questions préalables"],
+    "def": {
+      "simple": "Demander à l'IA de te poser des questions avant de répondre, pour qu'elle ait toutes les infos.",
+      "standard": "Une consigne du type « Pose-moi trois questions avant de répondre ». L'IA identifie ce qui lui manque, ce qui enrichit le [[contexte]] et réduit les [[hallucination|hallucinations]].",
+      "expert": "Inversion de l'interaction : le modèle explicite ses incertitudes avant de produire. Très utile quand tu ne sais pas encore quoi préciser."
+    },
+    "analogy": "Un bon médecin qui t'interroge avant de prescrire.",
+    "example": "« Tu es expert-comptable. Pose-moi trois questions avant de répondre. »",
+    "prereq": ["prompt", "contexte", "hallucination"]
+  },
+  {
+    "id": "iteration", "term": "Itération", "icon": "🔁",
+    "watch": ["itérer", "itération", "itérations"],
+    "def": {
+      "simple": "Améliorer la réponse en plusieurs allers-retours : « plus court », « plus formel », « ajoute un exemple ».",
+      "standard": "La première réponse est un brouillon. Tu affines dans la même [[conversation]] en donnant des retours précis, comme à un collègue.",
+      "expert": "Boucle de rétroaction humaine. Quand un bon résultat est atteint, transforme les consignes accumulées en prompt réutilisable (ou en Skill)."
+    },
+    "analogy": "Un sculpteur qui dégrossit, puis affine, puis polit.",
+    "example": "« C'est bien. Garde la structure, mais coupe de moitié et remplace le jargon. »",
+    "prereq": ["conversation", "prompt"]
+  },
+
+  {
+    "id": "projet", "term": "Projet", "icon": "🗂️", "checked": "2026-11",
+    "watch": ["projet claude", "projets claude"],
+    "def": {
+      "simple": "Un dossier dans l'assistant où tu ranges une fois pour toutes tes consignes et tes fichiers. Toutes les conversations du dossier en profitent.",
+      "standard": "Un espace de travail (chez Claude et ChatGPT) qui regroupe des [[instructions-projet]], des [[fichiers-projet]] et des [[conversation|conversations]]. Chaque nouvelle conversation du projet démarre avec ce [[contexte]] déjà chargé : tu n'as plus à te répéter.",
+      "expert": "Conteneur qui injecte automatiquement instructions et documents dans le contexte de chaque conversation (parfois via une recherche dans les documents quand ils sont volumineux)."
+    },
+    "analogy": "La salle de réunion dédiée à un client : les dossiers sont déjà sur la table à chaque réunion.",
+    "example": "Projet « Cabinet Dupont » : la charte, les tarifs et le ton à employer sont chargés dans chaque nouvelle conversation.",
+    "prereq": ["conversation", "contexte"]
+  },
+  {
+    "id": "instructions-projet", "term": "Instructions de projet", "icon": "📝",
+    "watch": ["instructions de projet"],
+    "def": {
+      "simple": "Le texte de consignes permanent d'un projet : qui tu es, ce que tu attends, le ton à employer.",
+      "standard": "Un [[prompt]] permanent rattaché à un [[projet]]. Il s'applique à toutes ses conversations : [[role]], public visé, [[contraintes]], [[format-sortie]] habituel.",
+      "expert": "Consignes système de niveau projet, combinées aux préférences globales et au message de l'utilisateur."
+    },
+    "analogy": "La fiche d'accueil d'un nouvel employé, affichée en permanence au mur.",
+    "example": "« Tu assistes un cabinet comptable. Vouvoiement. Toujours citer le document source. »",
+    "prereq": ["prompt", "role", "contraintes", "format-sortie"]
+  },
+  {
+    "id": "fichiers-projet", "term": "Fichiers de projet", "icon": "📎",
+    "watch": ["fichiers de projet"],
+    "def": {
+      "simple": "Les documents que tu déposes dans un projet pour que l'IA puisse s'en servir à chaque fois.",
+      "standard": "Des documents (PDF, tableaux, textes) joints au [[projet]]. Ils font partie du [[contexte]] de chaque conversation du projet, ce qui réduit les [[hallucination|hallucinations]] sur tes propres informations.",
+      "expert": "Base documentaire du projet. Selon la taille, l'assistant charge tout ou recherche les passages pertinents."
+    },
+    "analogy": "La documentation rangée dans le classeur de la salle de réunion.",
+    "example": "Tes tarifs 2026, ta charte graphique et un modèle de devis.",
+    "prereq": ["projet", "hallucination"]
+  },
+  {
+    "id": "preferences", "term": "Préférences personnelles", "icon": "⚙️", "checked": "2026-11",
+    "watch": ["préférences personnelles", "instructions personnalisées"],
+    "def": {
+      "simple": "Des consignes générales qui s'appliquent à toutes tes conversations, même hors projet.",
+      "standard": "Un réglage de l'[[assistant]] (appelé selon les cas « préférences » ou « instructions personnalisées ») où tu décris qui tu es et comment tu veux qu'on te réponde. Il s'ajoute au [[contexte]] de chaque [[conversation]].",
+      "expert": "Instructions globales au niveau du compte, combinées avec celles des projets. À garder courtes et générales."
+    },
+    "analogy": "Tes réglages de base sur un nouveau téléphone : langue, taille du texte… valables partout.",
+    "example": "« Je suis freelance en communication, réponds en français, de façon concise. »",
+    "prereq": ["assistant", "contexte", "conversation"]
+  },
+  {
+    "id": "assistant-perso", "term": "Assistant personnalisé (GPT, Gem)", "icon": "🧑‍🔧", "checked": "2026-11",
+    "watch": ["gpts", "gems"],
+    "def": {
+      "simple": "Un assistant spécialisé que tu configures une fois (consignes + fichiers) et que tu réutilises : les « GPTs » chez ChatGPT, les « Gems » chez Gemini.",
+      "standard": "Proche du [[projet]] : des [[instructions-projet|instructions]] et des fichiers figés dans un assistant dédié à une tâche. La différence : on l'appelle comme un outil, et on peut parfois le partager.",
+      "expert": "Configuration réutilisable (consignes, fichiers, parfois outils) ; l'équivalent chez Claude passe plutôt par les Projets et les Skills."
+    },
+    "analogy": "Un employé formé à un seul poste, à qui tu confies toujours le même type de dossier.",
+    "example": "Un Gem « Relecteur d'offres » qui vérifie toujours les mêmes points.",
+    "prereq": ["projet", "instructions-projet"]
+  },
+
+  {
+    "id": "markdown", "term": "Markdown", "icon": "#️⃣",
+    "watch": ["markdown"],
+    "def": {
+      "simple": "Une façon simple d'écrire du texte mis en forme avec des symboles : # pour un titre, - pour une puce, **mot** pour du gras.",
+      "standard": "Un format de texte brut lisible par les humains et par les IA. Les fichiers Markdown finissent par « .md ». Les IA l'utilisent beaucoup, et les Skills (que tu découvres dans cette salle) sont écrits dans ce format.",
+      "expert": "Langage de balisage léger. Les en-têtes (#), listes (-, 1.), emphase (**, _) et blocs de code structurent un document sans logiciel spécial."
+    },
+    "analogy": "Des annotations au crayon sur un brouillon : « titre ici », « liste là ». Simple, et tout le monde comprend.",
+    "example": "# Mon titre\n- point 1\n- point 2",
+    "prereq": []
+  },
+  {
+    "id": "skill", "term": "Skill", "icon": "🛠️", "checked": "2026-11",
+    "watch": ["skill", "skills"],
+    "def": {
+      "simple": "Une fiche « méthode » que tu donnes à l'IA pour qu'elle fasse une tâche exactement à ta façon, à chaque fois.",
+      "standard": "Un dossier qui contient au minimum un fichier [[skill-md]] : un nom, une description (« quand l'utiliser ») et des étapes précises. L'IA l'utilise automatiquement quand ta demande correspond à la description. C'est ta façon de faire, apprise une fois pour toutes, comme à un collègue.",
+      "expert": "Format de compétences réutilisables (instructions, et éventuellement scripts ou modèles de documents) chargées à la demande par l'agent. Introduit par Anthropic, aussi repris par d'autres outils."
+    },
+    "analogy": "Une fiche procédure plastifiée dans l'atelier : « Relancer un impayé : étape 1, étape 2… ».",
+    "example": "Un Skill « relance-impayes » qui rédige toujours tes relances avec le bon ton, les bonnes mentions et les 3 niveaux de fermeté.",
+    "prereq": ["prompt", "markdown"]
+  },
+  {
+    "id": "skill-md", "term": "Fichier SKILL.md", "icon": "📄",
+    "watch": ["skill.md"],
+    "def": {
+      "simple": "Le fichier texte qui contient le Skill : un en-tête (nom + description), puis les instructions.",
+      "standard": "Un fichier [[markdown]] nommé SKILL.md. Il commence par un [[entete-skill]] entre deux lignes « --- », puis contient les étapes, le [[format-sortie]] attendu, des exemples et les pièges à éviter.",
+      "expert": "Le frontmatter YAML (name, description) sert à la découverte ; le corps n'est lu que si le Skill est sélectionné. Le dossier peut contenir d'autres fichiers référencés par le SKILL.md."
+    },
+    "analogy": "Une recette de cuisine : le titre et une phrase « pour quand ? » en haut, puis les étapes.",
+    "example": "---\nname: compte-rendu\ndescription: Rédige un compte-rendu de réunion…\n---",
+    "prereq": ["skill", "markdown", "format-sortie"]
+  },
+  {
+    "id": "entete-skill", "term": "En-tête d'un Skill", "icon": "🏷️",
+    "watch": ["en-tête", "frontmatter"],
+    "def": {
+      "simple": "Le haut du fichier : le nom du Skill et une description qui dit QUAND l'utiliser.",
+      "standard": "Deux champs entre deux lignes « --- » : name (en minuscules avec tirets, ex. relance-impayes) et description. La description est capitale : c'est elle que l'IA lit pour décider si le [[skill]] correspond à ta demande.",
+      "expert": "Frontmatter YAML. La description doit dire ce que fait le Skill ET dans quels cas le déclencher, avec les mots que l'utilisateur emploierait."
+    },
+    "analogy": "L'étiquette sur la tranche d'un classeur : on ne l'ouvre que si l'étiquette correspond à ce qu'on cherche.",
+    "example": "description: Rédige une relance d'impayé. À utiliser quand l'utilisateur parle de facture en retard ou de relance client.",
+    "prereq": ["skill"]
+  },
+  {
+    "id": "chargement-demande", "term": "Chargement à la demande", "icon": "📥",
+    "watch": ["chargement à la demande"],
+    "def": {
+      "simple": "L'IA ne lit pas tous tes Skills en entier : elle lit seulement leurs étiquettes, et ouvre celui qui correspond.",
+      "standard": "Au départ, seuls le nom et la description de chaque [[skill]] sont placés dans le [[contexte]]. Quand ta demande correspond, l'IA charge le contenu complet du Skill. Tu peux donc en avoir beaucoup sans encombrer la [[fenetre-contexte]].",
+      "expert": "Divulgation progressive (progressive disclosure) : métadonnées toujours présentes, corps et ressources chargés seulement si nécessaires."
+    },
+    "analogy": "Une bibliothèque : tu lis les titres sur les tranches, tu n'ouvres que le livre utile.",
+    "example": "Tu as 30 Skills. Tu demandes une relance : seul « relance-impayes » est ouvert.",
+    "prereq": ["skill", "entete-skill", "fenetre-contexte"]
+  },
+
+  {
+    "id": "api", "term": "API", "icon": "🔌",
+    "watch": ["api", "apis"],
+    "def": {
+      "simple": "Une « prise » prévue par un logiciel pour que d'autres programmes puissent lui parler.",
+      "standard": "Une API (interface de programmation) est une porte d'entrée officielle d'un service (Gmail, Drive…) : elle définit quelles demandes un programme peut faire (lire un mail, créer un fichier) et sous quelle forme.",
+      "expert": "Contrat d'échange entre logiciels, souvent via des requêtes HTTP. L'accès passe par une authentification et des droits limités."
+    },
+    "analogy": "Le guichet d'une administration : tu ne vas pas dans les bureaux, tu déposes un formulaire au guichet et tu reçois une réponse.",
+    "example": "Quand une appli affiche la météo, elle interroge l'API d'un service météo.",
+    "prereq": []
+  },
+  {
+    "id": "connecteur", "term": "Connecteur", "icon": "🔗", "checked": "2026-11",
+    "watch": ["connecteur", "connecteurs"],
+    "def": {
+      "simple": "Un branchement entre ton assistant IA et un de tes outils (Gmail, Drive, Notion, Slack…) pour qu'il puisse lire ou agir dedans.",
+      "standard": "Une extension de l'[[assistant]] qui utilise l'[[api]] d'un service. Une fois branché et autorisé, l'assistant peut aller chercher tes données (mails, documents, agenda) et les ajouter à son [[contexte]], voire agir (créer un brouillon, un événement).",
+      "expert": "Intégration qui expose à l'agent des outils appelables (rechercher, lire, créer). Souvent bâtie sur le protocole MCP."
+    },
+    "analogy": "Un câble de brassage dans une baie réseau : sans lui, deux machines ne se parlent pas.",
+    "example": "Avec le connecteur Gmail, tu peux demander : « Résume les mails non lus de ce matin. »",
+    "prereq": ["api", "assistant", "contexte"]
+  },
+  {
+    "id": "mcp", "term": "MCP (Model Context Protocol)", "icon": "🧷",
+    "watch": ["mcp", "model context protocol"],
+    "def": {
+      "simple": "Une « prise universelle » pour brancher n'importe quel outil à n'importe quelle IA compatible.",
+      "standard": "Un standard ouvert, lancé par Anthropic, qui décrit comment un [[connecteur]] présente ses actions à une IA. Un outil compatible MCP peut être branché à Claude, ChatGPT et d'autres, sans tout redévelopper.",
+      "expert": "Protocole client-serveur : un serveur MCP expose des outils, ressources et modèles de prompts ; le client (l'assistant) les découvre et les appelle."
+    },
+    "analogy": "La prise USB-C : un seul format, et tous les appareils se branchent.",
+    "example": "Le connecteur Gmail que tu utiliseras avec Claude est un serveur MCP.",
+    "prereq": ["connecteur", "api"]
+  },
+  {
+    "id": "autorisation", "term": "Autorisation (permissions)", "icon": "🛂",
+    "watch": ["permission", "permissions", "autorisation", "autorisations"],
+    "def": {
+      "simple": "Ce que tu permets à l'IA de faire avec tes outils : seulement lire, ou aussi écrire, envoyer, supprimer.",
+      "standard": "Quand tu branches un [[connecteur]], tu accordes des droits. Bonne pratique : donner le minimum utile (lecture seule si possible) et exiger une confirmation avant toute action importante (envoyer, payer, supprimer).",
+      "expert": "Principe du moindre privilège : périmètre (scopes) limité, droits révocables, journalisation des actions."
+    },
+    "analogy": "Donner un badge d'accès : le stagiaire a accès à la salle de pause, pas à la salle des coffres.",
+    "example": "Autoriser Claude à LIRE ton Gmail, mais pas à ENVOYER sans ta validation.",
+    "prereq": ["connecteur"]
+  },
+  {
+    "id": "jeton-acces", "term": "Jeton d'accès", "icon": "🔑",
+    "watch": ["jeton d'accès", "jetons d'accès"],
+    "def": {
+      "simple": "Un mot de passe spécial, limité, qu'un service te donne pour qu'une appli puisse accéder à tes données à ta place. À ne pas confondre avec les tokens de texte !",
+      "standard": "Une longue chaîne secrète (ex. clé API, jeton GitHub) qui prouve qu'un programme a le droit d'utiliser une [[api]]. Il porte des [[autorisation|autorisations]] précises et peut expirer. Attention : en anglais on dit aussi « token », mais rien à voir avec les [[token|tokens]] de texte.",
+      "expert": "Credential porteur (bearer) : quiconque le possède agit avec ses droits. On le garde secret, on limite son périmètre et sa durée, on le révoque en cas de doute."
+    },
+    "analogy": "La carte magnétique d'un hôtel : elle ouvre UNE chambre, pour UNE durée, et se désactive à la réception.",
+    "example": "FORMA-7 lit tes missions privées grâce à un jeton GitHub en lecture seule.",
+    "prereq": ["api", "autorisation", "token"]
+  },
+  {
+    "id": "donnees-sensibles", "term": "Données sensibles", "icon": "🔒",
+    "watch": ["données sensibles"],
+    "def": {
+      "simple": "Les informations qu'il faut protéger : mots de passe, données bancaires, santé, données de tes clients.",
+      "standard": "Avant de brancher un [[connecteur]] ou d'envoyer un fichier, demande-toi qui pourrait voir ces données et ce que l'IA a le droit d'en faire. Ne colle jamais un mot de passe ou un [[jeton-acces]] dans une conversation.",
+      "expert": "Données personnelles (RGPD), secrets d'entreprise, secrets d'authentification. Vérifier les réglages de confidentialité et d'utilisation des données de chaque formule."
+    },
+    "analogy": "Ce que tu ne laisserais pas traîner sur ton bureau en partant.",
+    "example": "Anonymiser les noms de clients avant d'envoyer un tableau à analyser.",
+    "prereq": ["connecteur", "jeton-acces"]
+  },
+
+  {
+    "id": "agent", "term": "Agent (IA)", "icon": "🦾",
+    "watch": ["agent", "agents", "agentique", "agentiques"],
+    "def": {
+      "simple": "Une IA qui ne se contente pas de répondre : elle agit, étape par étape, jusqu'à ce que la tâche soit finie.",
+      "standard": "Un [[llm]] équipé d'[[outil|outils]] et placé dans une [[boucle-agent]] : il reçoit un objectif, choisit une action, regarde le résultat, recommence… jusqu'à avoir terminé. Il peut lire tes mails, classer des fichiers, préparer un récapitulatif.",
+      "expert": "Système où le modèle décide lui-même de la séquence d'appels d'outils pour atteindre un objectif, avec un état et des critères d'arrêt."
+    },
+    "analogy": "La différence entre un conseiller qui te dit quoi faire et un assistant qui le fait pendant que tu bois ton café.",
+    "example": "« Lis les 12 factures du mois, classe-les dans Drive, prépare le récap et envoie-le au comptable. »",
+    "prereq": ["llm", "outil", "boucle-agent"]
+  },
+  {
+    "id": "outil", "term": "Outil (pour une IA)", "icon": "🔧",
+    "watch": [],
+    "def": {
+      "simple": "Une action précise que l'IA a le droit de déclencher : chercher sur le web, lire un fichier, envoyer un mail…",
+      "standard": "Une fonction mise à disposition du [[llm]], souvent fournie par un [[connecteur]]. L'IA décide quand l'utiliser ; le résultat est ajouté à son [[contexte]].",
+      "expert": "Fonction décrite par un nom, une description et un schéma de paramètres ; le modèle émet un appel, l'application l'exécute et renvoie le résultat."
+    },
+    "analogy": "Les outils d'une caisse : le modèle est l'artisan, il prend le tournevis quand il en a besoin.",
+    "example": "Outil « rechercher_mails(requête) », outil « créer_fichier(dossier, nom) ».",
+    "prereq": ["llm", "connecteur", "contexte"]
+  },
+  {
+    "id": "boucle-agent", "term": "Boucle d'agent", "icon": "♻️",
+    "watch": ["boucle d'agent"],
+    "def": {
+      "simple": "Le cycle que suit un agent : comprendre l'objectif → planifier → agir → observer le résultat → vérifier → recommencer si besoin.",
+      "standard": "Le fonctionnement répétitif d'un agent : à chaque tour, le [[llm]] relit son [[contexte]], choisit un [[outil]], l'utilise, lit le résultat, puis décide de la suite, jusqu'à ce que l'objectif soit atteint ou qu'il ait besoin de toi.",
+      "expert": "Boucle « raisonner → agir → observer ». Les garde-fous : nombre de tours limité, budget, points de validation humaine."
+    },
+    "analogy": "Un GPS : il planifie, tu roules, il observe ta position, il recalcule si tu t'es trompé.",
+    "example": "Tour 1 : chercher les factures. Tour 2 : les ouvrir. Tour 3 : les classer… Tour 6 : demander ta validation.",
+    "prereq": ["llm", "outil", "contexte"]
+  },
+  {
+    "id": "validation-humaine", "term": "Validation humaine", "icon": "✋",
+    "watch": ["validation humaine"],
+    "def": {
+      "simple": "Le moment où l'agent s'arrête et te demande « je peux y aller ? » avant une action importante.",
+      "standard": "Un point de contrôle prévu dans la [[boucle-agent]] : avant d'envoyer, payer, publier ou supprimer, l'[[agent]] présente ce qu'il va faire et attend ton accord.",
+      "expert": "Humain dans la boucle (human-in-the-loop). On l'impose pour les actions irréversibles ou externes ; on peut le relâcher pour les tâches sans risque."
+    },
+    "analogy": "La double signature sur un chèque important.",
+    "example": "« J'ai préparé le mail au comptable avec les 12 factures. Je l'envoie ? [Oui / Modifier] »",
+    "prereq": ["agent", "boucle-agent"]
+  },
+  {
+    "id": "autonomie", "term": "Niveau d'autonomie", "icon": "🎚️",
+    "watch": ["autonomie"],
+    "def": {
+      "simple": "Jusqu'où tu laisses l'agent agir seul avant qu'il te demande ton avis.",
+      "standard": "Un réglage de confiance : un [[agent]] peut tout faire valider, ou agir seul sur les tâches sans risque et demander une [[validation-humaine]] pour le reste. On commence prudent, on élargit avec l'expérience.",
+      "expert": "Politique de permissions par type d'action (lecture libre, écriture validée, actions externes interdites…)."
+    },
+    "analogy": "Un nouvel employé : la première semaine il fait tout valider, au bout d'un an il gère seul.",
+    "example": "Lire et classer : automatique. Envoyer un mail : validation obligatoire.",
+    "prereq": ["agent", "validation-humaine", "autorisation"]
+  },
+  {
+    "id": "terminal", "term": "Terminal", "icon": "🖥️",
+    "watch": ["terminal", "ligne de commande"],
+    "def": {
+      "simple": "Une fenêtre où l'on donne des ordres à l'ordinateur en tapant du texte, sans boutons.",
+      "standard": "Une application (Terminal sur Mac, PowerShell sur Windows) où l'on tape des commandes. Certains [[agent|agents]] pour développeurs y travaillent directement : ils lisent, modifient et testent du code.",
+      "expert": "Interface en ligne de commande donnant accès au système (fichiers, programmes). Puissante, donc à utiliser avec des permissions maîtrisées."
+    },
+    "analogy": "Parler directement au chef de cuisine au lieu de passer par le menu.",
+    "example": "Taper « claude » dans un terminal lance Claude Code dans le dossier courant.",
+    "prereq": ["agent"]
+  },
+  {
+    "id": "claude-code", "term": "Claude Code", "icon": "✳️", "checked": "2026-11",
+    "watch": ["claude code"],
+    "def": {
+      "simple": "L'agent d'Anthropic pour programmer : il écrit, corrige et teste du code à ta place.",
+      "standard": "Un [[agent]] de [[claude]] qui travaille sur un dossier de code, depuis un [[terminal]], un éditeur, l'appli de bureau ou le web. Il lit le projet, propose des modifications, lance des tests et peut publier le résultat.",
+      "expert": "Agent de développement avec outils fichiers/commande, permissions configurables, Skills, connecteurs MCP et sous-agents."
+    },
+    "analogy": "Un développeur qui s'installe à ton poste et code pendant que tu lui expliques ce que tu veux.",
+    "example": "FORMA-7 a été construite avec Claude Code.",
+    "prereq": ["agent", "claude", "terminal"]
+  },
+  {
+    "id": "codex", "term": "Codex", "icon": "◎", "checked": "2026-11",
+    "watch": ["codex"],
+    "def": {
+      "simple": "L'agent d'OpenAI (ChatGPT) pour programmer.",
+      "standard": "L'équivalent chez [[chatgpt|OpenAI]] de Claude Code : un [[agent]] qui écrit et corrige du code, en local ([[terminal]], éditeur, appli) ou dans le cloud.",
+      "expert": "Agent de code d'OpenAI disponible en ligne de commande, en extension d'éditeur, en application et en exécution cloud. Fonctions et formules évoluent vite."
+    },
+    "analogy": "Le même métier que Claude Code, chez un autre employeur.",
+    "example": "Confier à Codex : « Ajoute un formulaire de contact à mon site et teste-le. »",
+    "prereq": ["agent", "chatgpt", "terminal"]
+  },
+  {
+    "id": "cowork", "term": "Cowork", "icon": "🤝", "checked": "2026-11",
+    "watch": ["cowork"],
+    "def": {
+      "simple": "Un mode de l'appli Claude sur ordinateur où l'agent travaille sur tes fichiers à ta place, sans que tu aies à coder.",
+      "standard": "Un mode « agent » de l'application [[claude]] pour ordinateur : tu lui donnes accès à un dossier, il lit, crée, range et transforme des fichiers en plusieurs étapes. C'est l'esprit de [[claude-code]] pour les tâches de bureau, sans [[terminal]].",
+      "expert": "Agent de bureau basé sur la même architecture que Claude Code, avec accès à un dossier local choisi, connecteurs et Skills. L'appli doit rester ouverte pendant le travail."
+    },
+    "analogy": "Un assistant à qui tu confies la clé d'UN tiroir de ton bureau, pas de tout l'immeuble.",
+    "example": "« Dans le dossier Factures, renomme les PDF par date et fournisseur, puis fais-moi un tableau récapitulatif. »",
+    "prereq": ["agent", "claude", "claude-code"]
+  }
+]

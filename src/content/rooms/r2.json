@@ -1,0 +1,106 @@
+{
+  "id": "r2",
+  "index": 2,
+  "code": "SALLE 02",
+  "name": "Salle Mémoire",
+  "day": 2,
+  "roadmapTitle": "Jour 2 · Comment les IA réfléchissent",
+  "tagline": "Contexte, mémoire, erreurs : comprendre la machine pour ne plus être surpris.",
+  "hue": 160,
+  "requires": ["r1"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Le bureau de l'IA",
+      "kicker": "L'IA ne voit que ce qui est posé devant elle.",
+      "introduces": ["contexte", "fenetre-contexte"],
+      "uses": ["token", "conversation", "entrainement", "assistant"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Tu te souviens ? Une nouvelle [[conversation]] repart de zéro. Voici enfin l'explication complète." },
+        { "type": "definition", "notion": "contexte" },
+        { "type": "analogy", "title": "Le bureau et les tiroirs", "md": "L'IA travaille sur un bureau. Elle voit tout ce qui est posé dessus (tes messages, ses réponses, tes fichiers). Ce qui est rangé dans tes tiroirs (tes autres conversations, tes dossiers non joints), elle ne le voit pas.", "art": "desk" },
+        { "type": "definition", "notion": "fenetre-contexte" },
+        { "type": "interactive", "widget": "ContextRam", "caption": "Envoie des messages et regarde la barrette se remplir. Que devient la première information ?" },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Après 200 messages, l'assistant ne respecte plus une consigne donnée tout au début. Quelle est l'explication la plus probable ?", "options": [
+          { "t": "Il est devenu paresseux.", "ok": false, "why": "Un [[llm]] n'a pas d'humeur : ce n'est pas une question de motivation." },
+          { "t": "La consigne est très loin dans un contexte très long : elle a pu être résumée, tronquée ou noyée.", "ok": true, "why": "Exact. La [[fenetre-contexte]] a une taille limitée, et même avant la limite, les détails anciens perdent en poids. Solution : redonner la consigne, ou repartir d'un nouveau fil avec un résumé." },
+          { "t": "Il a oublié parce que son entraînement est terminé.", "ok": false, "why": "Non : l'[[entrainement]] n'a rien à voir avec ce qui se passe dans la conversation." }
+        ] } },
+        { "type": "recap", "points": ["Le [[contexte]] = tout ce que l'IA relit avant de répondre.", "La [[fenetre-contexte]] a une taille maximale, comptée en [[token|tokens]].", "Réflexe : pour une info importante, mets-la dans le contexte (message, fichier) au lieu de supposer que l'IA la connaît."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Mémoire, date de coupure et recherche web",
+      "kicker": "Ce que l'IA sait, ce qu'elle retient, ce qu'elle ignore.",
+      "introduces": ["memoire", "date-coupure", "recherche-web"],
+      "uses": ["contexte", "conversation", "entrainement", "llm"],
+      "blocks": [
+        { "type": "definition", "notion": "memoire" },
+        { "type": "callout", "tone": "info", "md": "La [[memoire]] n'est pas une « vraie » mémoire humaine : ce sont des **notes relues à chaque nouvelle conversation**, donc injectées dans le [[contexte]]. Tu peux les consulter, les corriger ou les désactiver dans les réglages de l'assistant." },
+        { "type": "definition", "notion": "date-coupure" },
+        { "type": "definition", "notion": "recherche-web" },
+        { "type": "example", "title": "Question d'actualité", "before": { "label": "Sans recherche web", "md": "« Quel est le prix actuel de Claude Pro ? » → réponse issue de l'[[entrainement]], peut-être dépassée." }, "after": { "label": "Avec recherche web", "md": "« Cherche sur le web le prix actuel de Claude Pro et donne-moi la source. » → réponse à jour, avec un lien à vérifier." } },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : quel mécanisme explique chaque situation ?", "pairs": [
+          { "l": "L'assistant connaît ton métier dans un nouveau fil", "r": "Mémoire persistante" },
+          { "l": "Il ignore un événement de la semaine dernière", "r": "Date de coupure" },
+          { "l": "Il cite un article paru ce matin avec un lien", "r": "Recherche web" },
+          { "l": "Il retrouve le PDF que tu viens de joindre", "r": "Contexte" }
+        ], "why": "Quatre mécanismes différents, souvent confondus. Les distinguer t'aide à savoir quoi faire quand une réponse te surprend." } },
+        { "type": "recap", "points": ["[[memoire|Mémoire]] = des notes réinjectées dans le contexte, pas un apprentissage.", "[[date-coupure|Date de coupure]] = l'IA ignore ce qui est arrivé après son entraînement.", "[[recherche-web|Recherche web]] = la parade pour l'actualité (sources à vérifier)."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Quand l'IA se trompe",
+      "kicker": "Une réponse assurée n'est pas forcément une réponse juste.",
+      "introduces": ["hallucination", "reflexion"],
+      "uses": ["llm", "contexte", "recherche-web", "modele"],
+      "blocks": [
+        { "type": "definition", "notion": "hallucination" },
+        { "type": "example", "title": "La source qui n'existait pas", "before": { "label": "Demande risquée", "md": "« Donne-moi 3 études scientifiques qui prouvent que le télétravail augmente la productivité. »" }, "after": { "label": "Demande sécurisée", "md": "« Cherche sur le web 3 études sur le télétravail et la productivité. Donne le lien de chacune. Si tu n'en trouves pas, dis-le. »" }, "note": "La première version pousse l'IA à fournir 3 études coûte que coûte : terrain idéal pour une [[hallucination]]. La seconde lui donne une méthode ([[recherche-web]]) et le droit de dire « je ne sais pas »." },
+        { "type": "callout", "tone": "warn", "md": "**Trois réflexes anti-hallucination :**\n- Fournis toi-même les informations importantes (documents, chiffres) dans le [[contexte]].\n- Autorise explicitement l'IA à dire « je ne sais pas ».\n- Vérifie toujours les chiffres, citations, noms et sources avant de les utiliser." },
+        { "type": "definition", "notion": "reflexion" },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu dois comparer 3 devis fournisseurs sur 10 critères et recommander le meilleur. Quelle approche ?", "options": [
+          { "t": "Coller les devis, activer le mode réflexion, demander un tableau comparatif puis une recommandation justifiée.", "ok": true, "why": "Idéal : les données sont dans le [[contexte]] (moins d'hallucination) et la [[reflexion]] aide sur les analyses en plusieurs étapes." },
+          { "t": "Demander « quel est le meilleur fournisseur ? » sans joindre les devis.", "ok": false, "why": "L'IA n'a aucune donnée : elle devinerait, avec un fort risque d'[[hallucination]]." },
+          { "t": "Désactiver la réflexion pour aller plus vite.", "ok": false, "why": "Pour une analyse à 10 critères, prendre le temps de raisonner améliore nettement le résultat." }
+        ] } },
+        { "type": "exercise", "ex": { "kind": "feynman", "q": "Explique avec tes mots pourquoi une IA peut inventer une source, et comment l'éviter.", "model": "Un LLM prédit la suite la plus probable d'un texte. Quand il n'a pas l'information, il produit quelque chose de plausible plutôt que de se taire : c'est une hallucination. Pour l'éviter, on lui fournit les documents dans le contexte, on lui demande de chercher sur le web avec des liens, on l'autorise à dire « je ne sais pas », et on vérifie les sources.", "criteria": ["Explique que l'IA prédit du texte plausible plutôt que de chercher la vérité", "Cite au moins une façon de réduire le risque (fournir des documents, recherche web, droit de dire je ne sais pas)", "Mentionne la vérification humaine"] } },
+        { "type": "recap", "points": ["Une [[hallucination]] = une invention plausible présentée avec assurance.", "Remède : contexte riche, droit au « je ne sais pas », vérification.", "Le [[reflexion|mode réflexion]] aide sur les tâches complexes, pas sur les questions simples."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Corruption de mémoire",
+    "brief": "Les journaux affichent des réponses étranges. Trouve la cause de chaque anomalie.",
+    "scenarios": [
+      { "alert": "L'assistant affirme qu'un logiciel « vient de sortir sa version 3 », alors que la version 5 est disponible depuis un an.", "q": "Cause probable ?", "options": [
+        { "t": "La date de coupure : il répond avec des connaissances anciennes.", "ok": true, "why": "Exact. Parade : lui demander une [[recherche-web]]." },
+        { "t": "Une panne de sa mémoire persistante.", "ok": false, "why": "Non : la [[memoire]] contient des notes sur toi, pas l'actualité des logiciels." },
+        { "t": "Sa fenêtre de contexte est pleine.", "ok": false, "why": "Peu probable : l'information n'a jamais été dans le [[contexte]]." }
+      ] },
+      { "alert": "Dans un nouveau fil, l'assistant te tutoie et parle de ton activité de graphiste, alors que tu ne lui as rien dit aujourd'hui.", "q": "Comment l'expliques-tu ?", "options": [
+        { "t": "Il lit dans tes pensées.", "ok": false, "why": "Non, rassure-toi." },
+        { "t": "Sa mémoire persistante a réinjecté des notes sur toi dans le contexte.", "ok": true, "why": "Exact. Tu peux voir et modifier ces notes dans les réglages." },
+        { "t": "Son entraînement a été refait avec tes messages.", "ok": false, "why": "Non : le [[modele]] n'a pas été réentraîné. Ce sont des notes ([[memoire]])." }
+      ] },
+      { "alert": "Un rapport généré par l'IA cite « une étude de l'INSEE de 2022 » introuvable.", "q": "Que fais-tu ?", "options": [
+        { "t": "Je la publie, l'IA a l'air sûre d'elle.", "ok": false, "why": "L'assurance n'est pas une preuve : c'est le piège de l'[[hallucination]]." },
+        { "t": "Je considère que c'est probablement une hallucination, je demande une recherche avec liens et je vérifie moi-même.", "ok": true, "why": "Exact : vérifier les sources est le réflexe de base." },
+        { "t": "Je redemande la même chose jusqu'à ce qu'elle donne un lien.", "ok": false, "why": "Insister sans méthode peut produire un faux lien. Demande une [[recherche-web]] explicite et vérifie." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Le détecteur d'hallucinations",
+    "goal": "Apprendre à repérer et à prévenir les inventions.",
+    "steps": [
+      "Demande à ton assistant 3 sources sur un sujet de ton métier, sans recherche web.",
+      "Vérifie chaque source : existe-t-elle vraiment ?",
+      "Refais la demande en exigeant une recherche web, des liens, et le droit de dire « je ne sais pas ».",
+      "Compare la fiabilité des deux résultats."
+    ],
+    "success": ["Tu as vu (ou évité) une hallucination de tes propres yeux.", "Tu sais formuler une demande qui réduit ce risque."]
+  }
+}

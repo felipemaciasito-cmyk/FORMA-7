@@ -1,0 +1,85 @@
+{
+  "id": "r4",
+  "index": 4,
+  "code": "SALLE 04",
+  "name": "Salle des Archives",
+  "day": 4,
+  "roadmapTitle": "Jour 4 · Les Projets",
+  "tagline": "Donner ton contexte une fois, et ne plus jamais le répéter.",
+  "hue": 210,
+  "requires": ["r3"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Ne plus jamais se répéter",
+      "kicker": "Ranger une fois, profiter à chaque conversation.",
+      "introduces": ["projet", "instructions-projet", "fichiers-projet"],
+      "uses": ["conversation", "contexte", "prompt", "role", "contraintes", "format-sortie", "hallucination", "iteration"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Rappel de la Salle 02 : chaque [[conversation]] repart de zéro, et l'IA ne voit que son [[contexte]]. Résultat : tu réexpliques sans cesse qui tu es. Les Archives règlent ce problème." },
+        { "type": "definition", "notion": "projet" },
+        { "type": "definition", "notion": "instructions-projet" },
+        { "type": "definition", "notion": "fichiers-projet" },
+        { "type": "interactive", "widget": "ProjectSim", "caption": "Range des documents dans le projet, puis ouvre une nouvelle conversation : regarde ce qu'elle reçoit automatiquement." },
+        { "type": "example", "title": "La différence au quotidien", "before": { "label": "Sans projet", "md": "Chaque matin : « Je suis comptable indépendant, mes clients sont des artisans, je vouvoie, voici mes tarifs… » puis enfin la question." }, "after": { "label": "Avec un projet « Cabinet »", "md": "Tu ouvres une conversation dans le projet et tu écris directement : « Prépare le devis pour la boulangerie Martin. » Tout le reste est déjà chargé." } },
+        { "type": "exercise", "ex": { "kind": "truefalse", "q": "Vrai ou faux ?", "items": [
+          { "s": "Les instructions d'un projet s'appliquent à toutes les conversations de ce projet.", "ok": true, "why": "Oui, c'est tout leur intérêt." },
+          { "s": "Mettre mes tarifs dans les fichiers du projet réduit le risque que l'IA invente des prix.", "ok": true, "why": "Oui : l'information est dans le [[contexte]], l'IA n'a plus à deviner, donc moins d'[[hallucination]]." },
+          { "s": "Un projet réentraîne le modèle avec mes documents.", "ok": false, "why": "Non : les documents sont ajoutés au contexte de chaque conversation. Le modèle, lui, ne change pas." }
+        ] } },
+        { "type": "recap", "points": ["Un [[projet]] = instructions + fichiers + conversations regroupés.", "Les [[instructions-projet|instructions]] = ton prompt permanent (rôle, ton, format).", "Les [[fichiers-projet|fichiers]] = tes documents de référence, toujours sous la main."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Réglages globaux et assistants sur mesure",
+      "kicker": "Chaque information à sa place.",
+      "introduces": ["preferences", "assistant-perso"],
+      "uses": ["projet", "instructions-projet", "fichiers-projet", "assistant", "contexte", "prompt"],
+      "blocks": [
+        { "type": "definition", "notion": "preferences" },
+        { "type": "definition", "notion": "assistant-perso" },
+        { "type": "analogy", "title": "Trois étages de consignes", "md": "**Étage 1 — Préférences** : valables partout (« je suis freelance, réponds en français »).\n\n**Étage 2 — Projet** : valable pour un dossier (« client Dupont : vouvoiement, charte jointe »).\n\n**Étage 3 — Message** : valable pour une demande (« prépare le devis de mars »).", "art": "floors" },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : où ranger chaque information ?", "pairs": [
+          { "l": "« Réponds toujours en français, de façon concise »", "r": "Préférences personnelles" },
+          { "l": "« Pour ce client : vouvoiement et charte verte »", "r": "Instructions de projet" },
+          { "l": "La grille tarifaire 2026 en PDF", "r": "Fichiers de projet" },
+          { "l": "« Prépare le devis de la boulangerie Martin »", "r": "Message de la conversation" }
+        ], "why": "Le bon étage évite les répétitions et les conflits de consignes. Ce qui est général monte, ce qui est ponctuel descend." } },
+        { "type": "recap", "points": ["[[preferences|Préférences]] : général, pour toutes les conversations.", "[[projet|Projet]] : un client, un sujet, un dossier.", "[[assistant-perso|GPTs et Gems]] : l'équivalent chez ChatGPT et Gemini."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Archives en désordre",
+    "brief": "Les rayonnages se sont effondrés. Remets chaque situation dans l'ordre.",
+    "scenarios": [
+      { "alert": "Tu travailles pour 3 clients différents avec des tons différents. Tout est dans tes préférences globales, et l'IA mélange les styles.", "q": "Ta réparation ?", "options": [
+        { "t": "Créer un projet par client, avec ses propres instructions.", "ok": true, "why": "Exact : chaque [[projet]] isole son contexte et ses consignes." },
+        { "t": "Écrire des préférences encore plus longues.", "ok": false, "why": "Les [[preferences]] doivent rester générales ; elles s'appliquent partout." },
+        { "t": "Changer d'assistant pour chaque client.", "ok": false, "why": "Inutile : les projets sont faits pour ça." }
+      ] },
+      { "alert": "Dans le projet « Cabinet », l'IA propose un tarif horaire faux.", "q": "Que vérifies-tu en premier ?", "options": [
+        { "t": "Que la grille tarifaire à jour est bien dans les fichiers du projet.", "ok": true, "why": "Exact : sans le document, l'IA devine. Avec, elle s'appuie dessus." },
+        { "t": "Que le modèle a été réentraîné.", "ok": false, "why": "Un projet ne réentraîne jamais le modèle." },
+        { "t": "Que tu as bien dit « merci ».", "ok": false, "why": "Sans effet sur l'exactitude des chiffres." }
+      ] },
+      { "alert": "Une collègue utilise surtout ChatGPT et cherche l'équivalent des Projets pour une tâche répétitive précise.", "q": "Que lui proposes-tu ?", "options": [
+        { "t": "Créer un GPT personnalisé (ou un projet ChatGPT) avec ses instructions et ses fichiers.", "ok": true, "why": "Exact : c'est l'[[assistant-perso]] de ChatGPT." },
+        { "t": "Coller ses consignes au début de chaque conversation, à vie.", "ok": false, "why": "C'est justement ce qu'on veut éviter." },
+        { "t": "Rien n'existe chez ChatGPT.", "ok": false, "why": "Faux : ChatGPT propose des projets et des GPTs." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Ton premier projet",
+    "goal": "Créer un projet réel pour ton activité.",
+    "steps": [
+      "Dans ton assistant principal, crée un projet nommé d'après ton activité ou ton client principal.",
+      "Écris ses instructions avec rôle, public, ton, contraintes et format habituel (recycle tes prompts de la Salle 03).",
+      "Ajoute 2 fichiers utiles (tarifs, présentation, modèle de document).",
+      "Ouvre une conversation dans le projet et fais une demande courte : vérifie qu'elle tient compte de tout."
+    ],
+    "success": ["Ton projet répond juste sans que tu te répètes.", "Tu sais quel étage de consignes utiliser pour chaque information."]
+  }
+}

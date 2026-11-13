@@ -1,0 +1,87 @@
+{
+  "id": "r6",
+  "index": 6,
+  "code": "SALLE 06",
+  "name": "Salle Réseau",
+  "day": 6,
+  "roadmapTitle": "Jour 6 · Les connecteurs",
+  "tagline": "Brancher l'IA à tes outils : Gmail, Drive, Notion, Slack…",
+  "hue": 140,
+  "requires": ["r5"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Les prises des logiciels",
+      "kicker": "Sans câble, deux machines ne se parlent pas.",
+      "introduces": ["api", "connecteur", "mcp"],
+      "uses": ["assistant", "contexte", "claude"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Jusqu'ici, tu devais copier-coller tes informations dans le [[contexte]]. Dans cette salle, l'IA va chercher elle-même dans tes outils. Commençons par la prise murale." },
+        { "type": "definition", "notion": "api" },
+        { "type": "definition", "notion": "connecteur" },
+        { "type": "interactive", "widget": "PatchBay", "caption": "Branche les câbles entre l'IA et tes outils, accorde les droits, puis lance une demande." },
+        { "type": "definition", "notion": "mcp" },
+        { "type": "callout", "tone": "info", "md": "**FORMA-7 utilise elle-même un [[connecteur]].** Chaque matin, Claude lit le mail de la formation grâce au connecteur Gmail, le transforme en mission, et la range pour toi. Tu es en train d'utiliser ce que tu apprends." },
+        { "type": "exercise", "ex": { "kind": "cloze", "q": "Complète la fiche réseau.", "text": "Une {{API}} est la porte d'entrée officielle d'un logiciel. Un {{connecteur}} l'utilise pour brancher l'assistant à cet outil. Le standard {{MCP}} permet de brancher un même outil à plusieurs IA.", "distractors": ["token", "projet", "Skill"], "why": "API → connecteur → MCP : de la prise du logiciel au câble standard universel." } },
+        { "type": "recap", "points": ["Une [[api]] = la porte officielle d'un logiciel.", "Un [[connecteur]] = le câble entre l'assistant et cet outil.", "[[mcp|MCP]] = le format de prise universel."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Donner les bonnes clés",
+      "kicker": "Un badge d'accès, pas les clés de tout l'immeuble.",
+      "introduces": ["autorisation", "jeton-acces", "donnees-sensibles"],
+      "uses": ["connecteur", "api", "token", "conversation"],
+      "blocks": [
+        { "type": "definition", "notion": "autorisation" },
+        { "type": "definition", "notion": "jeton-acces" },
+        { "type": "callout", "tone": "warn", "md": "**Piège de vocabulaire :** en anglais, un [[jeton-acces]] se dit aussi « token ». Rien à voir avec les [[token|tokens]] de texte de la Salle 00 ! Le contexte de la phrase te dira de quoi on parle." },
+        { "type": "definition", "notion": "donnees-sensibles" },
+        { "type": "example", "title": "Le cas FORMA-7", "after": { "label": "Le jeton que tu vas créer", "md": "Pour lire tes missions privées, FORMA-7 te demandera un jeton GitHub **en lecture seule**, limité à **un seul dépôt**, avec une **date d'expiration**. Moindre droit, périmètre réduit, durée limitée : les trois bons réflexes." } },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu branches l'IA à ta messagerie pour qu'elle résume tes mails chaque matin. Quelles autorisations accordes-tu ?", "options": [
+          { "t": "Lecture seule.", "ok": true, "why": "Exact : résumer n'exige que de lire. Moindre privilège." },
+          { "t": "Lecture, envoi et suppression, au cas où.", "ok": false, "why": "« Au cas où » est la porte ouverte aux mauvaises surprises." },
+          { "t": "Je lui donne mon mot de passe dans la conversation.", "ok": false, "why": "Jamais ! Un mot de passe ou un [[jeton-acces]] ne se colle pas dans une [[conversation]]." }
+        ] } },
+        { "type": "exercise", "ex": { "kind": "truefalse", "q": "Vrai ou faux ?", "items": [
+          { "s": "Quiconque possède mon jeton d'accès peut agir avec ses droits.", "ok": true, "why": "Oui : il faut le garder secret et pouvoir le révoquer." },
+          { "s": "Un jeton d'accès est la même chose qu'un token de texte.", "ok": false, "why": "Non : même mot anglais, deux réalités totalement différentes." },
+          { "s": "Anonymiser les noms des clients avant d'envoyer un tableau est une bonne pratique.", "ok": true, "why": "Oui : protéger les [[donnees-sensibles|données sensibles]] de tes clients est aussi une obligation légale (RGPD)." }
+        ] } },
+        { "type": "recap", "points": ["[[autorisation|Autorisations]] : le minimum utile, révocable.", "[[jeton-acces|Jeton d'accès]] : un secret limité, jamais collé dans une conversation.", "[[donnees-sensibles|Données sensibles]] : réfléchis avant de brancher ou d'envoyer."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Intrusion sur le réseau",
+    "brief": "Des connexions suspectes s'allument sur la baie de brassage. Sécurise-les.",
+    "scenarios": [
+      { "alert": "Un tutoriel en ligne conseille de coller ta clé API dans le chat pour « que l'IA s'en serve ».", "q": "Ta réaction ?", "options": [
+        { "t": "Refuser : un jeton ne se colle jamais dans une conversation.", "ok": true, "why": "Exact. Si c'est déjà fait, révoque le jeton et crée-en un nouveau." },
+        { "t": "Le faire, puis supprimer le message.", "ok": false, "why": "Supprimer le message ne garantit pas que le secret n'a pas été conservé ou lu." },
+        { "t": "Le faire seulement le week-end.", "ok": false, "why": "Aucun rapport." }
+      ] },
+      { "alert": "L'assistant répond : « Je n'ai pas accès à ton agenda. »", "q": "Que manque-t-il ?", "options": [
+        { "t": "Le connecteur Agenda n'est pas branché ou pas autorisé.", "ok": true, "why": "Exact : sans [[connecteur]] autorisé, l'agenda n'est pas dans son [[contexte]]." },
+        { "t": "Le modèle est trop petit.", "ok": false, "why": "La taille du modèle n'y change rien." },
+        { "t": "Il faut écrire la demande en anglais.", "ok": false, "why": "Non." }
+      ] },
+      { "alert": "Un outil inconnu demande l'accès complet à ton Drive pour « résumer un seul document ».", "q": "Ton diagnostic ?", "options": [
+        { "t": "Demande disproportionnée : préférer un accès limité ou partager seulement le document.", "ok": true, "why": "Exact : principe du moindre privilège." },
+        { "t": "C'est normal, tous les outils demandent tout.", "ok": false, "why": "Non : beaucoup d'outils permettent un accès restreint. Méfiance face aux demandes excessives." },
+        { "t": "Accepter puis révoquer dans un an.", "ok": false, "why": "Trop tard : l'accès aura été ouvert tout ce temps." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Premier branchement",
+    "goal": "Connecter ton assistant à UN outil de travail, en sécurité.",
+    "steps": [
+      "Choisis un outil que tu utilises chaque jour (messagerie, Drive, agenda…).",
+      "Dans ton assistant, ouvre la liste des connecteurs et branche celui-ci.",
+      "Accorde le minimum de droits nécessaires et lis ce qui est demandé.",
+      "Teste une demande en lecture : « Résume mes 5 derniers mails importants. »"
+    ],
+    "success": ["Un connecteur actif, avec des droits que tu comprends.", "Une première réponse fondée sur tes vraies données."]
+  }
+}

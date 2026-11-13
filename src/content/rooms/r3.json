@@ -1,0 +1,106 @@
+{
+  "id": "r3",
+  "index": 3,
+  "code": "SALLE 03",
+  "name": "Salle des Communications",
+  "day": 3,
+  "roadmapTitle": "Jour 3 · Leur parler comme un pro",
+  "tagline": "Les réflexes qui transforment une réponse moyenne en réponse juste.",
+  "hue": 35,
+  "requires": ["r2"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Anatomie d'un bon prompt",
+      "kicker": "Quatre pièces suffisent pour changer la qualité des réponses.",
+      "introduces": ["role", "tache", "contraintes", "format-sortie"],
+      "uses": ["prompt", "contexte", "hallucination"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "Un bon [[prompt]] ressemble à un bon brief à un collègue compétent mais qui ne connaît rien de ta situation. Quatre pièces font la différence, plus le [[contexte]] que tu connais déjà." },
+        { "type": "definition", "notion": "role" },
+        { "type": "definition", "notion": "tache" },
+        { "type": "definition", "notion": "contraintes" },
+        { "type": "definition", "notion": "format-sortie" },
+        { "type": "interactive", "widget": "PromptLab", "caption": "Assemble ton prompt pièce par pièce et regarde la jauge de qualité monter." },
+        { "type": "example", "title": "Avant / après", "before": { "label": "Prompt faible", "md": "« Aide-moi pour ma facture impayée. »" }, "after": { "label": "Prompt pro", "md": "« Tu es un assistant administratif pour freelances (**rôle**). Mon client Dubois a 30 jours de retard sur une facture de 1 200 € (**contexte**). Rédige une relance (**tâche**) courtoise mais ferme, en vouvoyant, sans menace juridique (**contraintes**). Format : un mail de 120 mots max avec un objet (**format**). »" } },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : relie chaque morceau de prompt à sa pièce.", "pairs": [
+          { "l": "« Tu es un conseiller RH »", "r": "Rôle" },
+          { "l": "« Rédige une offre d'emploi »", "r": "Tâche" },
+          { "l": "« Sans jargon, 200 mots max »", "r": "Contraintes" },
+          { "l": "« Sous forme de 5 puces »", "r": "Format de sortie" }
+        ], "why": "Ces quatre pièces, plus le contexte, couvrent l'essentiel de ce qu'un professionnel attend d'un brief." } },
+        { "type": "recap", "points": ["[[role|Rôle]] : qui doit être l'IA.", "[[tache|Tâche]] : quoi produire, avec un verbe d'action.", "[[contraintes|Contraintes]] : les règles (ton, longueur, interdits).", "[[format-sortie|Format de sortie]] : la forme exacte du résultat."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Montrer, et faire poser des questions",
+      "kicker": "Deux techniques de pro, simples et redoutables.",
+      "introduces": ["exemple-modele", "questions-prealables"],
+      "uses": ["prompt", "format-sortie", "role", "contexte", "hallucination"],
+      "blocks": [
+        { "type": "definition", "notion": "exemple-modele" },
+        { "type": "analogy", "title": "La photo chez le coiffeur", "md": "Décrire une coupe en mots, c'est risqué. Montrer une photo, c'est immédiat. Un [[exemple-modele]] fait le même effet sur l'IA.", "art": "photo" },
+        { "type": "definition", "notion": "questions-prealables" },
+        { "type": "example", "title": "Le réflexe de l'expert", "after": { "label": "Le prompt du Jour 3", "md": "« Tu es expert-comptable. Pose-moi trois questions avant de répondre. Ensuite seulement, conseille-moi sur le statut le plus adapté à mon activité. »" }, "note": "Tu combines un [[role]] et des [[questions-prealables]] : l'IA collecte ce qui lui manque au lieu de répondre dans le vide." },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Tu veux des posts LinkedIn dans TON style, que tu as du mal à décrire. Meilleure méthode ?", "options": [
+          { "t": "Écrire « Fais-le dans mon style ».", "ok": false, "why": "L'IA ne connaît pas ton style : rien dans son [[contexte]] ne le décrit." },
+          { "t": "Coller 2 ou 3 de tes posts réussis comme exemples modèles.", "ok": true, "why": "Exact : l'[[exemple-modele]] transmet le style mieux qu'une longue description." },
+          { "t": "Demander le style « le plus viral possible ».", "ok": false, "why": "Tu obtiendras un style générique, pas le tien." }
+        ] } },
+        { "type": "recap", "points": ["[[exemple-modele|Exemple modèle]] : montre ce que tu veux, l'IA imite.", "[[questions-prealables|Questions préalables]] : laisse l'IA te demander ce qui lui manque."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Le brouillon n'est qu'un début",
+      "kicker": "Les pros ne s'arrêtent jamais à la première réponse.",
+      "introduces": ["iteration"],
+      "uses": ["conversation", "prompt", "role", "tache", "contraintes", "format-sortie"],
+      "blocks": [
+        { "type": "definition", "notion": "iteration" },
+        { "type": "exercise", "ex": { "kind": "order", "q": "Remets dans l'ordre une séance d'itération efficace.", "items": [
+          "Envoyer un prompt complet (rôle, tâche, contraintes, format)",
+          "Lire la réponse et repérer ce qui ne va pas",
+          "Donner un retour précis : « plus court, garde la structure »",
+          "Valider la version finale",
+          "Sauvegarder le prompt final pour le réutiliser"
+        ], "why": "La dernière étape est souvent oubliée : un prompt qui marche est un actif. En Salle 04 et 05, tu verras comment le rendre permanent." } },
+        { "type": "exercise", "ex": { "kind": "feynman", "q": "Réécris ce prompt faible en prompt pro : « Fais-moi un post sur mon nouveau service. »", "model": "Tu es community manager pour une petite agence de communication. Rédige un post LinkedIn pour annoncer notre nouveau service de création de sites vitrines pour artisans. Ton chaleureux et concret, sans jargon ni emoji excessif, 150 mots maximum. Termine par une question pour inviter aux commentaires. Pose-moi d'abord 2 questions si des informations te manquent.", "criteria": ["Contient un rôle", "Contient une tâche précise avec un verbe d'action", "Contient au moins une contrainte (ton, longueur, interdits)", "Précise un format de sortie"] } },
+        { "type": "recap", "points": ["La première réponse est un brouillon : [[iteration|itère]] avec des retours précis.", "Un prompt qui fonctionne mérite d'être sauvegardé et réutilisé."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Brouillage des transmissions",
+    "brief": "Des réponses médiocres saturent le réseau. Diagnostique chaque prompt.",
+    "scenarios": [
+      { "alert": "Prompt reçu : « Écris un texte sur notre entreprise. » Réponse : un texte générique et creux.", "q": "Que manque-t-il surtout ?", "options": [
+        { "t": "Un contexte, une tâche précise, des contraintes et un format.", "ok": true, "why": "Exact : l'IA a dû tout deviner." },
+        { "t": "Le mot « s'il te plaît ».", "ok": false, "why": "La politesse ne fait pas de mal, mais elle ne remplace pas un brief précis." },
+        { "t": "Rien, il faut juste réessayer.", "ok": false, "why": "Réessayer le même prompt flou redonnera une réponse floue." }
+      ] },
+      { "alert": "Un collègue a obtenu une très bonne réponse après 6 allers-retours. Le lendemain, il recommence tout de zéro.", "q": "Ton conseil ?", "options": [
+        { "t": "C'est normal, on doit toujours repartir de zéro.", "ok": false, "why": "Non : on peut capitaliser." },
+        { "t": "Sauvegarder le prompt final (avec les précisions accumulées) pour le réutiliser directement.", "ok": true, "why": "Exact : c'est le dernier pas de l'[[iteration]]." },
+        { "t": "Utiliser un autre assistant.", "ok": false, "why": "Le problème n'est pas l'outil mais la méthode." }
+      ] },
+      { "alert": "Demande : « Donne-moi le meilleur statut juridique pour moi. » L'IA répond sans rien savoir de la situation.", "q": "Quelle technique aurait évité ça ?", "options": [
+        { "t": "Ajouter « réponds vite ».", "ok": false, "why": "Cela n'apporte aucune information." },
+        { "t": "Demander des questions préalables avant la réponse.", "ok": true, "why": "Exact : avec les [[questions-prealables]], l'IA recueille ta situation avant de conseiller." },
+        { "t": "Demander une réponse plus longue.", "ok": false, "why": "Plus long ne veut pas dire plus juste." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Ta bibliothèque de prompts",
+    "goal": "Créer 3 prompts pro réutilisables pour ton activité.",
+    "steps": [
+      "Liste 3 tâches que tu fais chaque semaine (ex. : répondre à un client, préparer un devis, résumer une réunion).",
+      "Pour chacune, écris un prompt avec rôle, tâche, contraintes et format.",
+      "Teste et itère jusqu'à un résultat satisfaisant.",
+      "Sauvegarde les 3 versions finales dans une note : tu les recycleras en Salle 04 et 05."
+    ],
+    "success": ["3 prompts testés, prêts à l'emploi.", "Tu sais identifier la pièce manquante d'un prompt faible."]
+  }
+}

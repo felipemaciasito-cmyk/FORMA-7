@@ -1,0 +1,16 @@
+(MAIL FICTIF, écrit pour tester le pipeline. Ce n'est pas un mail réel de la formation.)
+
+Objet : Jour 1 — Claude, ChatGPT ou Gemini : lequel choisir ?
+De : Exemple <exemple@example.com>
+
+Bonjour,
+
+Aujourd'hui, on compare les trois grands assistants. Notre conseil : ne prends qu'un seul
+abonnement payant au départ, et apprends à bien t'en servir. Ce soir, ouvre ton assistant et
+demande-lui de comparer deux offres de ton secteur dans un tableau.
+
+Bonus : regarde notre vidéo de 6 minutes : https://example.com/video-jour-1
+Et notre comparatif téléchargeable : https://example.com/comparatif.pdf
+
+À demain, 9 h !
+Se désinscrire : https://example.com/unsubscribe

@@ -1,0 +1,101 @@
+{
+  "id": "r5",
+  "index": 5,
+  "code": "SALLE 05",
+  "name": "Atelier des Skills",
+  "day": 5,
+  "roadmapTitle": "Jour 5 · Les Skills",
+  "tagline": "Apprendre à l'IA tes façons de faire, comme à un collègue.",
+  "hue": 320,
+  "requires": ["r4"],
+  "steps": [
+    {
+      "id": "s1",
+      "title": "Le langage de l'atelier : Markdown",
+      "kicker": "Trois symboles, et ton texte devient structuré.",
+      "introduces": ["markdown"],
+      "uses": ["format-sortie"],
+      "blocks": [
+        { "type": "definition", "notion": "markdown" },
+        { "type": "example", "title": "Ce que tu tapes / ce que tu obtiens", "before": { "label": "Tu tapes", "md": "`# Relance client`\n\n`- Rappeler le montant`\n\n`- Proposer un échéancier`\n\n`**Toujours** vouvoyer`" }, "after": { "label": "Tu obtiens", "md": "Un **titre** « Relance client », une **liste** à deux puces, et le mot « Toujours » en **gras**." } },
+        { "type": "exercise", "ex": { "kind": "wiring", "q": "Câblage : relie chaque symbole Markdown à son effet.", "pairs": [
+          { "l": "# Titre", "r": "Un titre" },
+          { "l": "- élément", "r": "Une puce de liste" },
+          { "l": "**mot**", "r": "Du gras" },
+          { "l": "1. étape", "r": "Une liste numérotée" }
+        ], "why": "Ces quatre symboles suffisent pour écrire les fiches méthode de l'étape suivante, lisibles par toi ET par l'IA." } },
+        { "type": "recap", "points": ["[[markdown|Markdown]] = du texte simple avec quelques symboles de mise en forme.", "Les fichiers Markdown finissent par .md."] }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "Apprendre ta méthode à l'IA",
+      "kicker": "Une fiche procédure que l'IA applique toute seule.",
+      "introduces": ["skill", "skill-md", "entete-skill"],
+      "uses": ["markdown", "prompt", "format-sortie", "projet", "instructions-projet", "iteration"],
+      "blocks": [
+        { "type": "callout", "tone": "ora", "md": "En Salle 03, tu as appris à écrire un bon [[prompt]]. En Salle 04, à le rendre permanent pour un [[projet]]. Ici, tu vas le transformer en **compétence réutilisable partout** : un Skill." },
+        { "type": "definition", "notion": "skill" },
+        { "type": "definition", "notion": "skill-md" },
+        { "type": "definition", "notion": "entete-skill" },
+        { "type": "interactive", "widget": "SkillAnatomy", "caption": "Touche chaque zone du fichier pour comprendre son rôle." },
+        { "type": "example", "title": "Projet ou Skill ?", "before": { "label": "Instructions de projet", "md": "Le **contexte** d'un client ou d'un sujet : qui, quoi, quel ton. Valable dans CE projet." }, "after": { "label": "Skill", "md": "Une **méthode** pour une tâche : comment faire une relance, un devis, un compte-rendu. Utilisable dans n'importe quelle conversation ou projet." } },
+        { "type": "exercise", "ex": { "kind": "qcm", "q": "Quelle description d'en-tête est la meilleure pour un Skill de relance d'impayés ?", "options": [
+          { "t": "description: Relances.", "ok": false, "why": "Trop vague : l'IA ne sait ni ce que fait le Skill, ni quand l'utiliser." },
+          { "t": "description: Rédige une relance d'impayé en 3 niveaux de fermeté. À utiliser quand l'utilisateur parle de facture en retard, de relance ou de client qui ne paie pas.", "ok": true, "why": "Exact : elle dit CE QUE fait le Skill et QUAND l'utiliser, avec les mots que tu emploierais." },
+          { "t": "description: Mon super skill numéro 3.", "ok": false, "why": "Aucune information utile pour que l'IA le déclenche au bon moment." }
+        ] } },
+        { "type": "recap", "points": ["Un [[skill|Skill]] = ta méthode écrite une fois, appliquée à chaque fois.", "Le [[skill-md|SKILL.md]] contient l'[[entete-skill|en-tête]] (nom + description) puis les instructions.", "La description dit QUOI et QUAND."] }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "Des dizaines de Skills, zéro encombrement",
+      "kicker": "Et maintenant, à toi de forger.",
+      "introduces": ["chargement-demande"],
+      "uses": ["skill", "entete-skill", "skill-md", "contexte", "fenetre-contexte"],
+      "blocks": [
+        { "type": "definition", "notion": "chargement-demande" },
+        { "type": "analogy", "title": "Les tranches de la bibliothèque", "md": "Tu ne lis pas tous les livres pour trouver une recette : tu lis les titres sur les tranches, puis tu ouvres le bon. L'IA fait pareil avec les [[entete-skill|en-têtes]] de tes Skills.", "art": "books" },
+        { "type": "exercise", "ex": { "kind": "truefalse", "q": "Vrai ou faux ?", "items": [
+          { "s": "Plus j'ai de Skills, plus ma fenêtre de contexte est saturée dès le départ.", "ok": false, "why": "Non : au départ, seuls les noms et descriptions sont chargés. Le contenu complet n'arrive que si le Skill est utile." },
+          { "s": "Une description floue peut empêcher l'IA d'utiliser mon Skill au bon moment.", "ok": true, "why": "Oui : c'est la description qui déclenche le [[chargement-demande]]." }
+        ] } },
+        { "type": "interactive", "widget": "SkillWorkshop", "caption": "L'Atelier : forge ton premier vrai Skill, vérifie-le, puis enregistre le fichier SKILL.md." },
+        { "type": "recap", "points": ["[[chargement-demande|Chargement à la demande]] : seules les étiquettes sont lues, le bon Skill est ouvert au besoin.", "Soigne la description : c'est le déclencheur.", "Ton Skill est un fichier : tu peux le garder, le partager, l'améliorer."] }
+      ]
+    }
+  ],
+  "incident": {
+    "title": "Court-circuit dans l'atelier",
+    "brief": "Les Skills ne se déclenchent plus correctement. Répare-les.",
+    "scenarios": [
+      { "alert": "Ton Skill « compte-rendu » ne se déclenche jamais quand tu dis « fais-moi la synthèse de la réunion ».", "q": "Cause la plus probable ?", "options": [
+        { "t": "La description n'évoque pas les mots « synthèse » ou « réunion ».", "ok": true, "why": "Exact : l'IA choisit un Skill d'après sa description. Ajoute les formulations que tu utilises vraiment." },
+        { "t": "Le fichier n'est pas en majuscules.", "ok": false, "why": "Le nom du fichier est SKILL.md, mais ce n'est pas la cause ici." },
+        { "t": "Tu as trop de Skills.", "ok": false, "why": "Grâce au [[chargement-demande]], le nombre de Skills n'est pas le problème." }
+      ] },
+      { "alert": "Un collègue veut que l'IA connaisse le contexte de SON client Dupont (ton, charte) dans toutes ses conversations sur ce client.", "q": "Projet ou Skill ?", "options": [
+        { "t": "Un projet : c'est du contexte propre à un client.", "ok": true, "why": "Exact : contexte d'un sujet = [[projet]] ; méthode réutilisable = [[skill]]." },
+        { "t": "Un Skill : c'est toujours mieux.", "ok": false, "why": "Non : chaque outil a son rôle." },
+        { "t": "Les préférences globales.", "ok": false, "why": "Non : elles s'appliqueraient à tous ses clients." }
+      ] },
+      { "alert": "Le SKILL.md commence directement par « # Ma méthode », sans les lignes --- en haut.", "q": "Que manque-t-il ?", "options": [
+        { "t": "L'en-tête avec name et description entre deux lignes « --- ».", "ok": true, "why": "Exact : sans [[entete-skill|en-tête]], l'IA ne sait pas comment s'appelle le Skill ni quand l'utiliser." },
+        { "t": "Une image d'illustration.", "ok": false, "why": "Pas nécessaire." },
+        { "t": "Rien, c'est correct.", "ok": false, "why": "L'en-tête est indispensable." }
+      ] }
+    ]
+  },
+  "project": {
+    "title": "Ton premier Skill en service",
+    "goal": "Transformer ta tâche la plus répétitive en Skill.",
+    "steps": [
+      "Choisis UNE tâche que tu fais au moins une fois par semaine.",
+      "Forge le Skill dans l'Atelier de FORMA-7 (onglet Atelier) et enregistre le SKILL.md.",
+      "Ajoute-le à ton assistant (chez Claude : réglages, rubrique des Skills ou capacités ; l'emplacement exact peut changer).",
+      "Teste-le avec une demande naturelle, sans le nommer : se déclenche-t-il ?"
+    ],
+    "success": ["Ton Skill se déclenche avec une formulation naturelle.", "Le résultat suit tes étapes et ton format."]
+  }
+}

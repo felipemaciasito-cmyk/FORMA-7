@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { MODELS, loadClaude } from "../lib/models";
 import { syncMissions, testGithub, useMissions } from "../lib/data";
+import { deviceLabel, syncNow, useSyncState } from "../lib/sync";
 import { saveFile } from "../lib/share";
 import { sfx } from "../lib/sound";
 import { DEFAULT_PROGRESS, getState, replaceProgress, updateProgress, updateSettings, useProgress, useSettings, type Progress } from "../lib/store";
@@ -11,6 +12,7 @@ export function SettingsView() {
   const s = useSettings();
   const p = useProgress();
   const data = useMissions();
+  const sync = useSyncState();
   const [showTok, setShowTok] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [gh, setGh] = useState<{ loading?: boolean; ok?: string; err?: string }>({});
@@ -36,7 +38,7 @@ export function SettingsView() {
       if (json.version !== 1 || typeof json.energy !== "number") throw new Error("Fichier non reconnu");
       if (!confirm("Remplacer ta progression actuelle par cette sauvegarde ?")) return;
       replaceProgress(json); sfx("power");
-      alert("Sauvegarde restaurée.");
+      alert(getState().settings.syncEnabled ? "Sauvegarde restaurée. Elle sera aussi appliquée à tes autres appareils synchronisés." : "Sauvegarde restaurée.");
     } catch (e) { alert(`Import impossible : ${e instanceof Error ? e.message : e}`); }
   };
 
@@ -57,12 +59,12 @@ export function SettingsView() {
       </Section>
 
       <Section title="📡 Flux de données (missions privées)">
-        <p className="small muted">Chaque matin, Claude transforme le mail de la formation en mission et la range dans ton dépôt GitHub <b>privé</b>. L'appli la lit grâce à un <b>jeton en lecture seule</b>, stocké uniquement sur cet appareil.</p>
+        <p className="small muted">Chaque matin, Claude transforme le mail de la formation en mission et la range dans ton dépôt GitHub <b>privé</b>. L'appli la lit grâce à un <b>jeton d'accès</b> limité à ce dépôt, stocké uniquement sur cet appareil.</p>
         <div className="row">
           <label className="field grow"><span>Compte GitHub</span><input className="input mono" value={s.ghOwner} onChange={(e) => updateSettings({ ghOwner: e.target.value.trim() })} autoCapitalize="off" autoCorrect="off" /></label>
           <label className="field grow"><span>Dépôt</span><input className="input mono" value={s.ghRepo} onChange={(e) => updateSettings({ ghRepo: e.target.value.trim() })} autoCapitalize="off" autoCorrect="off" /></label>
         </div>
-        <label className="field"><span>Jeton d'accès GitHub (lecture seule)</span>
+        <label className="field"><span>Jeton d'accès GitHub</span>
           <div className="row">
             <input className="input mono" type={showTok ? "text" : "password"} value={s.ghToken} placeholder="github_pat_…" onChange={(e) => updateSettings({ ghToken: e.target.value.trim() })} autoCapitalize="off" autoCorrect="off" spellCheck={false} />
             <button className="icon-btn" style={{ flex: "none" }} onClick={() => setShowTok(!showTok)} aria-label="Afficher le jeton"><Icon name="eye" size={18} /></button>
@@ -80,9 +82,9 @@ export function SettingsView() {
           <summary className="small" style={{ color: "var(--cyan)", cursor: "pointer" }}>Créer le jeton, pas à pas</summary>
           <ol className="small" style={{ paddingLeft: 18, lineHeight: 1.6 }}>
             <li>Sur github.com : photo de profil › <b>Settings</b> › <b>Developer settings</b> › <b>Personal access tokens</b> › <b>Fine-grained tokens</b> › <b>Generate new token</b>.</li>
-            <li>Nom : « FORMA-7 iPhone ». Expiration : 90 jours (tu le renouvelleras).</li>
+            <li>Nom : « FORMA-7 ». Expiration : 90 jours (tu le renouvelleras). Tu peux coller le même jeton sur l'iPhone et l'iPad.</li>
             <li><b>Repository access</b> : « Only select repositories » › <b>FORMA-7-data</b> uniquement.</li>
-            <li><b>Permissions › Repository permissions › Contents</b> : <b>Read-only</b>. Rien d'autre.</li>
+            <li><b>Permissions › Repository permissions › Contents</b> : <b>Read and write</b> si tu veux synchroniser ta progression entre appareils, sinon <b>Read-only</b>. Rien d'autre.</li>
             <li>Génère, copie le jeton, colle-le ici, puis « Tester la connexion ».</li>
           </ol>
           <p className="small muted">Les menus de GitHub peuvent changer légèrement de nom. Ne colle jamais ce jeton ailleurs que dans ce champ.</p>
@@ -116,17 +118,27 @@ export function SettingsView() {
         </details>
       </Section>
 
+      <Section title="🔄 Synchronisation entre appareils">
+        <p className="small muted">Retrouve ta progression sur ton iPhone et ton iPad. Elle est enregistrée dans ton dépôt privé (fichier <code>progress/progress.json</code>), à l'ouverture de l'appli, environ 30 secondes après chaque progrès, et quand tu la quittes. Si tu avances sur deux appareils sans connexion, tout est fusionné : rien n'est perdu.</p>
+        <Toggle label="Synchroniser ma progression" on={s.syncEnabled} onChange={(v) => { if (v && !s.ghToken) { alert("Colle d'abord ton jeton GitHub dans « Flux de données » ci-dessus (droits Contents : Read and write)."); return; } updateSettings({ syncEnabled: v }); }} />
+        <div className="small" style={{ marginTop: 8, color: sync.status === "error" ? "var(--red)" : "var(--text-2)" }}>
+          {!s.syncEnabled ? "Désactivée sur cet appareil." : sync.status === "syncing" ? "Synchronisation en cours…" : sync.status === "error" ? sync.error : sync.lastSyncAt ? `Synchronisé le ${new Date(sync.lastSyncAt).toLocaleString("fr-FR")}.` : "En attente de la première synchronisation."}
+        </div>
+        {s.syncEnabled && <button className="btn small subtle block" style={{ marginTop: 10 }} disabled={sync.status === "syncing"} onClick={() => syncNow()}><Icon name="refresh" size={16} /> Synchroniser maintenant</button>}
+        <div className="small dim" style={{ marginTop: 8 }}>Cet appareil : {deviceLabel()} · {s.deviceId.slice(0, 8)}. Active la synchronisation sur chaque appareil, avec le même jeton.</div>
+      </Section>
+
       <Section title="💾 Sauvegarde">
-        <p className="small muted">Ta progression est stockée sur cet appareil. iOS peut, rarement, effacer les données d'un site : exporte une sauvegarde de temps en temps.</p>
+        <p className="small muted">Ta progression est stockée sur cet appareil{s.syncEnabled ? " et synchronisée dans ton dépôt privé" : ""}. Le fichier de sauvegarde contient ta progression, mais jamais ton jeton ni ta clé API.{s.syncEnabled ? "" : " iOS peut, rarement, effacer les données d'un site : exporte une sauvegarde de temps en temps, ou active la synchronisation."}</p>
         <div className="row">
           <button className="btn small subtle grow" onClick={exportBackup}><Icon name="share" size={16} /> Exporter</button>
           <button className="btn small subtle grow" onClick={() => file.current?.click()}>Importer</button>
           <input ref={file} type="file" accept="application/json,.json" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) importBackup(f); e.target.value = ""; }} />
         </div>
-        <button className="btn small ghost block" style={{ marginTop: 10, color: "var(--red)" }} onClick={() => { if (confirm("Tout réinitialiser ? Ta progression sera effacée (pense à exporter avant).")) { replaceProgress(DEFAULT_PROGRESS); location.hash = "#/"; location.reload(); } }}>Réinitialiser la progression</button>
+        <button className="btn small ghost block" style={{ marginTop: 10, color: "var(--red)" }} onClick={() => { if (confirm(s.syncEnabled ? "Tout réinitialiser ? Ta progression sera effacée sur CET appareil ET sur tes autres appareils synchronisés (pense à exporter avant)." : "Tout réinitialiser ? Ta progression sera effacée (pense à exporter avant).")) { replaceProgress(DEFAULT_PROGRESS); setTimeout(async () => { await syncNow(); location.hash = "#/"; location.reload(); }, 400); } }}>Réinitialiser la progression</button>
       </Section>
 
-      <Section title="📱 Installer sur l'iPhone">
+      <Section title="📱 Installer sur l'iPhone ou l'iPad">
         <ol className="small" style={{ paddingLeft: 18, lineHeight: 1.7, margin: 0 }}>
           <li>Ouvre ce site dans <b>Safari</b>.</li>
           <li>Touche le bouton <b>Partager</b> (carré avec une flèche).</li>

@@ -7,6 +7,7 @@ import { setLabelResolver } from "./lib/richtext";
 import { useRoute } from "./lib/router";
 import { useProgress, useSettings, useStore } from "./lib/store";
 import { useAutoSync } from "./lib/data";
+import { useProgressSync } from "./lib/sync";
 import { Boot } from "./components/Boot";
 import { FxLayer, Hud, TabBar } from "./components/Chrome";
 import { MapView } from "./components/MapView";
@@ -24,7 +25,8 @@ export function App() {
   const settings = useSettings();
   const route = useRoute();
   const [booted, setBooted] = useState(false);
-  useAutoSync();
+  useAutoSync(ready);
+  useProgressSync(ready);
 
   useEffect(() => {
     setBadgeCtx({ roomsDone: roomsDoneCount(p), roomsTotal: ROOMS.filter((r) => r.day <= 7).length });

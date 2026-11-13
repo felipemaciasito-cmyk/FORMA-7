@@ -21,6 +21,9 @@ il faut comprendre ses machines (notions), réussir les vérifications (exercice
 - **Signaux du jour** : missions générées chaque matin à partir des mails de la formation (voir Pipeline).
 - **Claude optionnel** : avec une clé API (stockée sur l'appareil), correction des réponses libres,
   réexplication d'une notion, test de prompts et de Skills.
+- **Synchronisation iPhone ↔ iPad** : la progression est fusionnée entre appareils via `progress/progress.json`
+  dans le dépôt privé (jeton « Contents : Read and write »). Fusion sans perte : compteurs par appareil,
+  unions, « le plus récent gagne » pour ce qui se modifie, et une « époque » pour les réinitialisations.
 - **Fiches** de révision exportables en Markdown, hors-ligne, installable sur l'écran d'accueil iOS.
 
 ## Développer
@@ -48,6 +51,6 @@ GitHub Pages (Settings › Pages › Source : **GitHub Actions**). Adresse :
 Les missions privées vivent dans le dépôt **privé** `FORMA-7-data`. Une tâche planifiée Claude
 (connecteurs Gmail et Google Drive) suit `FORMA-7-data/PIPELINE.md` chaque matin : lecture du nouveau
 mail, génération de la mission, validation (`node ../FORMA-7/scripts/validate-content.mjs --data .`),
-push, puis fiche Google Docs. L'appli lit le dépôt privé avec un jeton GitHub en lecture seule.
+push, puis fiche Google Docs. L'appli lit le dépôt privé avec un jeton GitHub limité à ce dépôt.
 
 Exemple de mission fictive pour les tests : `pipeline/fixtures/`.

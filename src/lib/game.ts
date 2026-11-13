@@ -1,4 +1,4 @@
-import { addDays, getState, today, updateProgress, type Progress } from "./store";
+import { addDays, bump, getState, today, updateProgress, type Progress } from "./store";
 import { sfx } from "./sound";
 
 // ---------------- Événements visuels (toasts, célébrations) ----------------
@@ -45,7 +45,7 @@ export const REWARD = {
 export function addEnergy(amount: number, label?: string) {
   const before = levelOf(getState().progress.energy).index;
   updateProgress((p) => {
-    p.energy += amount;
+    bump(p, "energy", amount);
     markActiveDay(p);
   });
   const after = levelOf(getState().progress.energy);
@@ -90,7 +90,7 @@ export function reviewNotion(id: string, ok: boolean) {
     if (!n) return;
     n.box = ok ? Math.min(5, n.box + 1) : 1;
     n.due = addDays(today(), BOX_DAYS[n.box]);
-    p.stats.reviews += 1;
+    bump(p, "reviews");
   });
 }
 
@@ -131,5 +131,5 @@ export function checkBadges() {
 }
 
 export function recordAnswer(ok: boolean) {
-  updateProgress((p) => { p.stats.answers += 1; if (ok) p.stats.correct += 1; markActiveDay(p); });
+  updateProgress((p) => { bump(p, "answers"); if (ok) bump(p, "correct"); markActiveDay(p); });
 }

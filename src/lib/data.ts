@@ -90,11 +90,12 @@ export function useMissions() {
 }
 
 /** Synchronise au démarrage puis quand l'appli revient au premier plan. */
-export function useAutoSync() {
+export function useAutoSync(ready: boolean) {
   useEffect(() => {
+    if (!ready) return;
     loadCachedMissions().then(() => syncMissions());
     const onVis = () => { if (document.visibilityState === "visible") syncMissions(); };
     document.addEventListener("visibilitychange", onVis);
     return () => document.removeEventListener("visibilitychange", onVis);
-  }, []);
+  }, [ready]);
 }

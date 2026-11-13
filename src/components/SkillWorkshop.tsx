@@ -4,7 +4,7 @@ import { addEnergy, checkBadges, fx, REWARD } from "../lib/game";
 import { loadClaude } from "../lib/models";
 import { copyText, saveFile } from "../lib/share";
 import { sfx } from "../lib/sound";
-import { getState, today, updateProgress, useProgress, useSettings, type SavedSkill } from "../lib/store";
+import { getState, nowIso, updateProgress, useProgress, useSettings, type SavedSkill } from "../lib/store";
 import type { SkillTest } from "../lib/claude";
 import { Icon } from "./Icon";
 
@@ -42,7 +42,7 @@ const TEMPLATES: Omit<SavedSkill, "id" | "updatedAt">[] = [
   },
 ];
 
-const blank = (): SavedSkill => ({ id: crypto.randomUUID?.() ?? String(Date.now()), name: "", title: "", description: "", when: "", steps: ["", "", ""], output: "", examples: [{ input: "", output: "" }], avoid: [""], updatedAt: today() });
+const blank = (): SavedSkill => ({ id: crypto.randomUUID?.() ?? String(Date.now()), name: "", title: "", description: "", when: "", steps: ["", "", ""], output: "", examples: [{ input: "", output: "" }], avoid: [""], updatedAt: nowIso() });
 
 const yamlStr = (s: string) => (/[:#"'\n]/.test(s) ? JSON.stringify(s) : s);
 
@@ -98,7 +98,7 @@ export default function SkillWorkshop() {
           <button className="btn block" onClick={() => { sfx("open"); setEditing(blank()); }}><Icon name="plus" size={18} /> Forger un nouveau Skill</button>
           <div className="panel-title" style={{ marginTop: 14 }}>Ou partir d'un modèle</div>
           {TEMPLATES.map((t) => (
-            <button key={t.name} className="choice" onClick={() => { sfx("open"); setEditing({ ...t, steps: [...t.steps], examples: t.examples.map((e) => ({ ...e })), avoid: [...t.avoid], id: crypto.randomUUID?.() ?? String(Date.now()), updatedAt: today() }); }}>
+            <button key={t.name} className="choice" onClick={() => { sfx("open"); setEditing({ ...t, steps: [...t.steps], examples: t.examples.map((e) => ({ ...e })), avoid: [...t.avoid], id: crypto.randomUUID?.() ?? String(Date.now()), updatedAt: nowIso() }); }}>
               <span style={{ fontSize: 20 }}>📐</span>
               <span className="grow"><b className="mono" style={{ fontSize: 14 }}>{t.name}</b><br /><span className="small muted">{t.title}</span></span>
             </button>
@@ -122,7 +122,7 @@ function Editor({ skill, onClose }: { skill: SavedSkill; onClose: () => void }) 
   const set = (patch: Partial<SavedSkill>) => setS((x) => ({ ...x, ...patch }));
 
   const save = (extra?: Partial<SavedSkill>) => {
-    const next = { ...s, ...extra, updatedAt: today() };
+    const next = { ...s, ...extra, updatedAt: nowIso() };
     setS(next);
     updateProgress((p) => {
       const i = p.skills.findIndex((k) => k.id === next.id);
@@ -145,7 +145,7 @@ function Editor({ skill, onClose }: { skill: SavedSkill; onClose: () => void }) 
   };
   const remove = () => {
     if (!confirm("Supprimer ce Skill de l'Atelier ?")) return;
-    updateProgress((p) => { p.skills = p.skills.filter((k) => k.id !== s.id); });
+    updateProgress((p) => { p.skills = p.skills.filter((k) => k.id !== s.id); p.deletedSkills[s.id] = nowIso(); });
     onClose();
   };
   const runTest = async () => {

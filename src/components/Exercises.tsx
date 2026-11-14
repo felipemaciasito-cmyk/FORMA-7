@@ -26,6 +26,12 @@ export function ExerciseView(props: ExProps) {
   return (
     <div className="panel" style={{ borderColor: "rgba(59,232,255,.25)" }}>
       <div className="panel-title"><span className="led" style={{ background: "var(--cyan)", boxShadow: "0 0 8px var(--cyan)" }} />Vérification · {label}</div>
+      {props.solvedBefore && (
+        <div className="row wrap-row" style={{ gap: 8, margin: "-2px 0 12px" }}>
+          <span className="pill led" style={{ flex: "none" }}><Icon name="check" size={12} stroke={2.4} /> Déjà réussie</span>
+          <span className="small dim">Tu peux passer à la suite, ou la refaire pour réviser.</span>
+        </div>
+      )}
       {ex.kind === "qcm" && <Qcm {...props} ex={ex} />}
       {ex.kind === "truefalse" && <TrueFalse {...props} ex={ex} />}
       {ex.kind === "cloze" && <Cloze {...props} ex={ex} />}
@@ -37,7 +43,7 @@ export function ExerciseView(props: ExProps) {
 }
 
 // ---------------- QCM ----------------
-export function Qcm({ ex, onSolved, solvedBefore }: ExProps & { ex: Extract<Exercise, { kind: "qcm" }> }) {
+export function Qcm({ ex, onSolved }: ExProps & { ex: Extract<Exercise, { kind: "qcm" }> }) {
   const options = useMemo(() => shuffle(ex.options), [ex]);
   const [tried, setTried] = useState<number[]>([]);
   const [done, setDone] = useState(false);
@@ -73,7 +79,6 @@ export function Qcm({ ex, onSolved, solvedBefore }: ExProps & { ex: Extract<Exer
           {!options[last].ok && <div className="small muted" style={{ marginTop: 6 }}>Réessaie : une autre réponse est la bonne.</div>}
         </motion.div>
       )}
-      {solvedBefore && !done && <div className="small dim" style={{ marginTop: 8 }}>Déjà réussi auparavant : rejoue pour réviser.</div>}
     </div>
   );
 }
@@ -306,9 +311,18 @@ function Wiring({ ex, onSolved }: ExProps & { ex: Extract<Exercise, { kind: "wir
 }
 
 // ---------------- Avec tes mots (Feynman) ----------------
+// Brouillon de la réponse « Avec tes mots » : gardé sur l'appareil pour ne rien perdre en quittant la leçon.
+const draftKey = (exKey: string) => `forma7:brouillon:${exKey}`;
+function readDraft(exKey: string) { try { return exKey ? localStorage.getItem(draftKey(exKey)) ?? "" : ""; } catch { return ""; } }
+function writeDraft(exKey: string, text: string) {
+  if (!exKey) return;
+  try { if (text.trim()) localStorage.setItem(draftKey(exKey), text); else localStorage.removeItem(draftKey(exKey)); } catch { /* stockage indisponible */ }
+}
+
 function Feynman({ ex, exKey, onSolved }: ExProps & { ex: Extract<Exercise, { kind: "feynman" }> }) {
   const settings = useSettings();
-  const [text, setText] = useState("");
+  const [text, setTextState] = useState(() => readDraft(exKey));
+  const setText = (t: string) => { setTextState(t); writeDraft(exKey, t); };
   const [mode, setMode] = useState<"write" | "self" | "graded">("write");
   const [ticks, setTicks] = useState<boolean[]>(ex.criteria.map(() => false));
   const [grade, setGrade] = useState<FeynmanGrade | null>(null);
@@ -319,6 +333,7 @@ function Feynman({ ex, exKey, onSolved }: ExProps & { ex: Extract<Exercise, { ki
   const finish = (score: number) => {
     updateProgress((p) => { p.feynman[exKey] = Math.max(score, p.feynman[exKey] ?? 0); });
     if (score >= 70) addEnergy(REWARD.feynman, "explication solide");
+    writeDraft(exKey, "");
     setDone(true); sfx("ok"); fx({ type: "burst", color: "#a78bfa" }); onSolved(1);
   };
   const askClaude = async () => {

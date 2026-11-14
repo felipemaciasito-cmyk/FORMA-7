@@ -8,6 +8,7 @@ import type { Counters, NotionState, Progress, SavedSkill } from "./store";
 //  - Compteurs (énergie, réponses, révisions) : un compteur par appareil,
 //    on garde le maximum de chaque appareil, et le total est la somme.
 //  - Ensembles (étapes, badges, incidents, signaux, jours) : union.
+//  - Position dans les leçons en cours : la plus avancée des deux.
 //  - Éléments modifiables (notions, cases cochées, Skills, prénom) : le plus récent gagne.
 // ---------------------------------------------------------------
 
@@ -82,6 +83,7 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
       reviews: Math.max(x.reviews || 0, y.reviews || 0),
     })),
     steps: unionWith(a.steps, b.steps, (x, y) => minStr(x, y)!),
+    lessons: unionWith(a.lessons ?? {}, b.lessons ?? {}, (x, y) => Math.max(x, y)),
     exercises: unionWith(a.exercises, b.exercises, (x, y) => Math.min(x, y)),
     incidents: unionWith(a.incidents, b.incidents, (x, y) => ({ at: minStr(x.at, y.at)!, fusesLeft: Math.max(x.fusesLeft, y.fusesLeft) })),
     notions: unionWith(a.notions, b.notions, newerNotion),

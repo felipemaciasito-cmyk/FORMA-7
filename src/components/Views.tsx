@@ -254,6 +254,7 @@ export function SignalView({ id }: { id: string }) {
   const p = useProgress();
   const m = missions.find((x) => x.id === id);
   const [solved, setSolved] = useState<Record<number, boolean>>({});
+  const [solvedAtOpen] = useState(() => new Set(Object.keys(getState().progress.exercises).filter((k) => k.startsWith(`sig:${id}#`))));
   if (!m) return <div className="wrap"><TopBar title="Signal" onBack={() => go("signaux")} /><p className="muted">Signal introuvable (synchronisation en cours ?).</p></div>;
   const r = getRoom(m.room);
   const done = !!p.missions[m.id];
@@ -303,7 +304,7 @@ export function SignalView({ id }: { id: string }) {
 
       {m.exercises.map((ex, i) => (
         <div key={i} style={{ marginTop: 12 }}>
-          <ExerciseView ex={ex} exKey={`sig:${m.id}#${i}`} solvedBefore={p.exercises[`sig:${m.id}#${i}`] !== undefined} onSolved={(a) => {
+          <ExerciseView ex={ex} exKey={`sig:${m.id}#${i}`} solvedBefore={solvedAtOpen.has(`sig:${m.id}#${i}`)} onSolved={(a) => {
             setSolved((s) => ({ ...s, [i]: true }));
             if (getState().progress.exercises[`sig:${m.id}#${i}`] === undefined) { updateProgress((d) => { d.exercises[`sig:${m.id}#${i}`] = a; }); addEnergy(a <= 1 ? REWARD.exerciseFirst : REWARD.exerciseRetry); }
           }} />

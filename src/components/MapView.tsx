@@ -20,6 +20,7 @@ export function MapView() {
   const due = new Set(dueNotions(p));
   const pendingSignals = missions.filter((m) => !p.missions[m.id]);
   const nextStep = cur.steps.find((s) => !p.steps[stepKey(cur.id, s.id)]);
+  const resumeAt = nextStep ? Math.min(nextStep.blocks.length, p.lessons?.[stepKey(cur.id, nextStep.id)] ?? 0) : 0;
   const height = ROOMS.length * ROW + 40;
 
   const greet = !Object.keys(p.steps).length
@@ -48,7 +49,7 @@ export function MapView() {
       {nextStep && roomUnlocked(p, cur) && (
         <motion.button className="btn block" style={{ ["--hue" as string]: cur.hue, marginBottom: 12 }} whileTap={{ scale: 0.97 }}
           onClick={() => { sfx("open"); go(`salle/${cur.id}/${nextStep.id}`); }}>
-          <Icon name="play" size={18} /> Continuer · {cur.code} · {nextStep.title}
+          <Icon name="play" size={18} /> {resumeAt > 1 ? `Reprendre · ${cur.code} · ${nextStep.title} · ${Math.round((resumeAt / nextStep.blocks.length) * 100)} %` : `Continuer · ${cur.code} · ${nextStep.title}`}
         </motion.button>
       )}
 

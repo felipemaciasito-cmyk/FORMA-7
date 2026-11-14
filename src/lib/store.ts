@@ -36,6 +36,8 @@ export interface Progress {
   /** Un compteur par appareil, pour additionner sans rien perdre. */
   counters: Record<string, Counters>;
   steps: Record<string, string>; // "r1/s2" -> date
+  /** Position dans une leçon en cours : nombre de blocs déjà affichés ("r1/s2" -> 5). */
+  lessons: Record<string, number>;
   exercises: Record<string, number>; // clé d'exercice -> nombre d'essais avant réussite
   incidents: Record<string, { at: string; fusesLeft: number }>;
   notions: Record<string, NotionState>;
@@ -72,6 +74,7 @@ export const DEFAULT_PROGRESS: Progress = {
   energy: 0,
   counters: {},
   steps: {},
+  lessons: {},
   exercises: {},
   incidents: {},
   notions: {},
@@ -127,6 +130,7 @@ export function normalizeProgress(raw: Partial<Progress> | undefined, deviceId: 
     ...(raw ?? {}),
     stats: { ...DEFAULT_PROGRESS.stats, ...(raw?.stats ?? {}) },
     counters: { ...(raw?.counters ?? {}) },
+    lessons: { ...(raw?.lessons ?? {}) },
     deletedSkills: { ...(raw?.deletedSkills ?? {}) },
     checks: { ...(raw?.checks ?? {}) },
     checksAt: { ...(raw?.checksAt ?? {}) },

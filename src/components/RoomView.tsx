@@ -41,6 +41,7 @@ export function RoomView({ id }: { id: string }) {
         {r.steps.map((s, i) => {
           const sdone = !!p.steps[stepKey(r.id, s.id)];
           const open = stepUnlocked(p, r, i);
+          const at = !sdone && open ? Math.min(s.blocks.length, p.lessons?.[stepKey(r.id, s.id)] ?? 0) : 0;
           return (
             <motion.button key={s.id} className="choice" whileTap={{ scale: open ? 0.98 : 1 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
               onClick={() => { if (open) { sfx("open"); go(`salle/${r.id}/${s.id}`); } else { sfx("ko"); fx({ type: "toast", icon: "lock", text: "Termine la baie précédente d'abord", tone: "red" }); } }}
@@ -51,7 +52,9 @@ export function RoomView({ id }: { id: string }) {
                 <span style={{ display: "block", fontWeight: 700 }}>{s.title}</span>
                 <span className="small muted">{s.introduces.length ? s.introduces.map((n) => notion(n)?.term.replace(/ \(.+\)$/, "")).join(" · ") : s.kicker}</span>
               </span>
-              {sdone ? <span className="pill led">OK</span> : open ? <Icon name="play" size={16} /> : <Icon name="lock" size={16} />}
+              {sdone ? <span className="pill led">OK</span>
+                : at > 1 ? <span className="pill cyan" aria-label={`Leçon en cours, ${Math.round((at / s.blocks.length) * 100)} pour cent`}>En cours · {Math.round((at / s.blocks.length) * 100)} %</span>
+                : open ? <Icon name="play" size={16} /> : <Icon name="lock" size={16} />}
             </motion.button>
           );
         })}
@@ -151,13 +154,24 @@ export function StepView({ roomId, stepId }: { roomId: string; stepId: string })
   const step = r?.steps[idx];
   const key = r && step ? stepKey(r.id, step.id) : "";
   const wasDone = !!p.steps[key];
-  const [revealed, setRevealed] = useState(() => (wasDone ? 999 : 1));
+  const total = step?.blocks.length ?? 0;
+  // Reprise : position enregistrée (synchronisée entre appareils) et exercices déjà réussis.
+  const [resumedAt] = useState(() => (wasDone ? 0 : Math.min(total, getState().progress.lessons?.[key] ?? 0)));
+  const [revealed, setRevealed] = useState(() => (wasDone ? 999 : Math.max(1, resumedAt)));
+  const [solvedAtOpen] = useState(() => new Set(Object.keys(getState().progress.exercises).filter((k) => k.startsWith(`${key}#`))));
   const [solved, setSolved] = useState<Record<number, boolean>>({});
   const [finished, setFinished] = useState<null | { energy: number }>(null);
   const bottom = useRef<HTMLDivElement>(null);
   const earned = useRef(0);
 
-  useEffect(() => { if (revealed > 1 && revealed < 999) setTimeout(() => bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 60); }, [revealed]);
+  useEffect(() => { if (revealed > Math.max(1, resumedAt) && revealed < 999) setTimeout(() => bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 60); }, [revealed, resumedAt]);
+  useEffect(() => {
+    if (resumedAt <= 1) return;
+    fx({ type: "toast", icon: "play", text: `Reprise de la baie au bloc ${resumedAt} sur ${total}`, tone: "cyan" });
+    const t = window.setTimeout(() => bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" }), 450);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => { if (finished) setTimeout(() => bottom.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 250); }, [finished]);
 
   const blocks = useMemo(() => step?.blocks ?? [], [step]);
@@ -167,7 +181,14 @@ export function StepView({ roomId, stepId }: { roomId: string; stepId: string })
   const visible = blocks.slice(0, revealed);
   const last = visible[visible.length - 1];
   const lastIdx = visible.length - 1;
-  const blockedByExercise = last?.type === "exercise" && !solved[lastIdx] && !wasDone;
+  const isSolved = (i: number) => !!solved[i] || p.exercises[`${key}#${i}`] !== undefined;
+  const blockedByExercise = last?.type === "exercise" && !isSolved(lastIdx) && !wasDone;
+  const revealNext = () => {
+    sfx("tap");
+    const v = Math.min(blocks.length, revealed + 1);
+    setRevealed(v);
+    updateProgress((d) => { d.lessons = { ...(d.lessons ?? {}), [key]: Math.max(d.lessons?.[key] ?? 0, v) }; });
+  };
   const atEnd = revealed >= blocks.length;
   const pct = Math.min(100, Math.round((Math.min(revealed, blocks.length) / blocks.length) * 100));
 
@@ -206,14 +227,14 @@ export function StepView({ roomId, stepId }: { roomId: string; stepId: string })
         <AnimatePresence initial={false}>
           {visible.map((b, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 24, filter: "blur(4px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }} style={{ marginTop: 14 }}>
-              <BlockView block={b} exKey={`${key}#${i}`} solvedBefore={getState().progress.exercises[`${key}#${i}`] !== undefined} onSolved={onSolved(i)} />
+              <BlockView block={b} exKey={`${key}#${i}`} solvedBefore={solvedAtOpen.has(`${key}#${i}`)} onSolved={onSolved(i)} />
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
-      <div ref={bottom} style={{ marginTop: 22 }}>
+      <div ref={bottom} style={{ marginTop: 22, scrollMarginBottom: "calc(var(--tabbar-h) + var(--safe-bottom) + 20px)" }}>
         {!finished && !atEnd && (
-          <motion.button className="btn block" whileTap={{ scale: 0.97 }} disabled={blockedByExercise} onClick={() => { sfx("tap"); setRevealed((v) => v + 1); }}>
+          <motion.button className="btn block" whileTap={{ scale: 0.97 }} disabled={blockedByExercise} onClick={revealNext}>
             {blockedByExercise ? "Réussis la vérification pour continuer" : <>Continuer <Icon name="chevron-right" size={18} stroke={2.2} /></>}
           </motion.button>
         )}

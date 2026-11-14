@@ -11,6 +11,7 @@ import { useMissions } from "../lib/data";
 import { exportRoomFiche } from "../lib/fiche";
 import { BlockView } from "./Blocks";
 import { TopBar } from "./Chrome";
+import { NotionChip } from "./Emblems";
 import { Icon } from "./Icon";
 import { OraSays } from "./Ora";
 
@@ -42,7 +43,7 @@ export function RoomView({ id }: { id: string }) {
           const open = stepUnlocked(p, r, i);
           return (
             <motion.button key={s.id} className="choice" whileTap={{ scale: open ? 0.98 : 1 }} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
-              onClick={() => { if (open) { sfx("open"); go(`salle/${r.id}/${s.id}`); } else { sfx("ko"); fx({ type: "toast", icon: "🔒", text: "Termine la baie précédente d'abord", tone: "red" }); } }}
+              onClick={() => { if (open) { sfx("open"); go(`salle/${r.id}/${s.id}`); } else { sfx("ko"); fx({ type: "toast", icon: "lock", text: "Termine la baie précédente d'abord", tone: "red" }); } }}
               style={{ alignItems: "center", opacity: open ? 1 : 0.5, borderColor: sdone ? "rgba(77,255,160,.4)" : open && !sdone ? "var(--accent)" : undefined }}>
               <RackIcon state={sdone ? "done" : open ? "open" : "locked"} hue={r.hue} />
               <span className="grow">
@@ -60,7 +61,11 @@ export function RoomView({ id }: { id: string }) {
         <motion.button className="panel" whileTap={{ scale: stepsAll ? 0.98 : 1 }} onClick={() => { if (stepsAll) { sfx("alarm"); go(`incident/${r.id}`); } else { sfx("ko"); } }}
           style={{ width: "100%", textAlign: "left", marginTop: 14, opacity: stepsAll ? 1 : 0.55, borderColor: p.incidents[r.id] ? "rgba(77,255,160,.4)" : "rgba(255,77,109,.45)", background: p.incidents[r.id] ? "rgba(77,255,160,.06)" : "linear-gradient(120deg, rgba(255,77,109,.14), rgba(12,19,34,.9))" }}>
           <div className="row">
-            <span style={{ fontSize: 26 }}>{p.incidents[r.id] ? "🧯" : "🚨"}</span>
+            <span style={{ width: 46, height: 46, borderRadius: 14, display: "grid", placeItems: "center", flex: "none",
+              color: p.incidents[r.id] ? "var(--led)" : "var(--red)", background: p.incidents[r.id] ? "var(--led-soft)" : "var(--red-soft)",
+              border: `1px solid ${p.incidents[r.id] ? "rgba(77,255,160,.4)" : "rgba(255,77,109,.45)"}`, boxShadow: p.incidents[r.id] ? "none" : "0 0 16px rgba(255,77,109,.35)" }}>
+              <Icon name={p.incidents[r.id] ? "extinguisher" : "siren"} size={26} />
+            </span>
             <span className="grow">
               <span className="kicker" style={{ color: p.incidents[r.id] ? "var(--led)" : "var(--red)" }}>{p.incidents[r.id] ? "Incident résolu" : "Incident critique"}</span>
               <span style={{ display: "block", fontWeight: 700 }}>{r.incident.title}</span>
@@ -72,7 +77,7 @@ export function RoomView({ id }: { id: string }) {
 
       {signals.length > 0 && (
         <>
-          <div className="panel-title" style={{ marginTop: 20, color: "var(--amber)" }}>📡 Signaux reçus pour cette salle</div>
+          <div className="panel-title" style={{ marginTop: 20, color: "var(--amber)" }}><Icon name="dish" size={16} /> Signaux reçus pour cette salle</div>
           <div className="stack">
             {signals.map((m) => (
               <button key={m.id} className="choice" onClick={() => go(`signal/${m.id}`)} style={{ alignItems: "center", borderColor: "rgba(255,181,71,.35)" }}>
@@ -114,7 +119,7 @@ function ProjectCard({ r }: { r: Room }) {
   const doneCount = pr.steps.filter((_s, i) => p.checks?.[key(i)]).length;
   return (
     <div className="panel" style={{ marginTop: 20, borderColor: "rgba(167,139,250,.35)", background: "rgba(167,139,250,.06)" }}>
-      <div className="panel-title" style={{ color: "var(--violet)" }}>🌙 Mini-projet du soir · {doneCount}/{pr.steps.length}</div>
+      <div className="panel-title" style={{ color: "var(--violet)" }}><Icon name="moon" size={16} /> Mini-projet du soir · {doneCount}/{pr.steps.length}</div>
       <div className="h3">{pr.title}</div>
       <div className="small muted" style={{ marginBottom: 10 }}>{pr.goal}</div>
       {pr.steps.map((s, i) => {
@@ -129,7 +134,7 @@ function ProjectCard({ r }: { r: Room }) {
               addEnergy(50, "mini-projet terminé");
             }
           }}>
-            <span className="key">{on ? "✓" : i + 1}</span><span>{s}</span>
+            <span className="key">{on ? <Icon name="check" size={14} stroke={2.4} /> : i + 1}</span><span>{s}</span>
           </button>
         );
       })}
@@ -209,32 +214,38 @@ export function StepView({ roomId, stepId }: { roomId: string; stepId: string })
       <div ref={bottom} style={{ marginTop: 22 }}>
         {!finished && !atEnd && (
           <motion.button className="btn block" whileTap={{ scale: 0.97 }} disabled={blockedByExercise} onClick={() => { sfx("tap"); setRevealed((v) => v + 1); }}>
-            {blockedByExercise ? "Réussis la vérification pour continuer" : "Continuer ▸"}
+            {blockedByExercise ? "Réussis la vérification pour continuer" : <>Continuer <Icon name="chevron-right" size={18} stroke={2.2} /></>}
           </motion.button>
         )}
         {!finished && atEnd && (
           <motion.button className="btn block led" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} whileTap={{ scale: 0.97 }} disabled={blockedByExercise} onClick={complete}>
-            ⚡ {wasDone ? "Relancer la baie" : "Rallumer la baie"}
+            <Icon name="bolt" size={18} /> {wasDone ? "Relancer la baie" : "Rallumer la baie"}
           </motion.button>
         )}
         <AnimatePresence>
           {finished && (
             <motion.div className="panel glow" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20 }}
               style={{ textAlign: "center", borderColor: "rgba(77,255,160,.5)", background: "radial-gradient(circle at 50% 0%, rgba(77,255,160,.18), rgba(12,19,34,.95) 70%)" }}>
-              <div style={{ fontSize: 42 }}>⚡</div>
+              <div style={{ display: "grid", placeItems: "center", margin: "2px 0 6px" }}>
+                <span style={{ width: 64, height: 64, borderRadius: "50%", display: "grid", placeItems: "center", color: "var(--led)", background: "radial-gradient(circle, rgba(77,255,160,.28), rgba(77,255,160,.04) 70%)", border: "1px solid rgba(77,255,160,.5)", boxShadow: "0 0 28px rgba(77,255,160,.45)" }}>
+                  <Icon name="bolt" size={34} />
+                </span>
+              </div>
               <div className="h2">Baie {String(idx + 1).padStart(2, "0")} en ligne</div>
               {finished.energy > 0 && <div className="mono" style={{ color: "var(--cyan)", fontSize: 20, margin: "6px 0 10px" }}>+{finished.energy} kW</div>}
               {step.introduces.length > 0 && (
                 <>
-                  <div className="small muted" style={{ marginBottom: 8 }}>Notions ajoutées à ta Base de connaissances :</div>
-                  <div className="row wrap-row" style={{ justifyContent: "center", gap: 6, marginBottom: 14 }}>
-                    {step.introduces.map((n) => <span key={n} className="pill cyan">{notion(n)?.icon} {notion(n)?.term}</span>)}
+                  <div className="small muted" style={{ marginBottom: 10 }}>Modules ajoutés à ta Base de connaissances :</div>
+                  <div className="unlock-grid">
+                    {step.introduces.map((n) => (
+                      <div key={n}><NotionChip id={n} icon={notion(n)?.icon} size={56} trace /><span>{notion(n)?.term.replace(/\s*\(.+\)$/, "")}</span></div>
+                    ))}
                   </div>
                 </>
               )}
               <div className="stack">
                 {next ? <button className="btn block" onClick={() => { setFinished(null); go(`salle/${r.id}/${next.id}`); }}>Baie suivante : {next.title}</button>
-                  : r.incident && !p.incidents[r.id] ? <button className="btn block danger" onClick={() => { sfx("alarm"); go(`incident/${r.id}`); }}>🚨 Affronter l'incident</button>
+                  : r.incident && !p.incidents[r.id] ? <button className="btn block danger" onClick={() => { sfx("alarm"); go(`incident/${r.id}`); }}><Icon name="siren" size={18} /> Affronter l'incident</button>
                   : <button className="btn block" onClick={() => go("")}>Retour à la carte</button>}
                 <button className="btn ghost block" onClick={() => go(`salle/${r.id}`)}>Retour à la salle</button>
               </div>
@@ -303,13 +314,13 @@ export function IncidentView({ roomId }: { roomId: string }) {
         {state === "play" && (
           <motion.div key={i} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} className={shake ? "shake" : ""}>
             <div className="panel" style={{ borderColor: "rgba(255,77,109,.5)", background: "linear-gradient(140deg, rgba(255,77,109,.16), rgba(12,19,34,.9))" }}>
-              <div className="panel-title" style={{ color: "var(--red)" }}>🚨 Message d'alerte</div>
+              <div className="panel-title" style={{ color: "var(--red)" }}><Icon name="siren" size={16} /> Message d'alerte</div>
               <div style={{ fontSize: 17 }}>{sc.alert}</div>
             </div>
             <div className="h3" style={{ margin: "16px 0 10px" }}>{sc.q}</div>
             {opts.map((o, k) => {
               const st = picked.includes(k) ? (o.ok ? "ok" : "ko") : "";
-              return <button key={k} className={`choice ${st}`} onClick={(e) => pick(k, e)} disabled={solvedNow && !picked.includes(k)}><span className="key">{st === "ok" ? "✓" : st === "ko" ? "✕" : "ABC"[k]}</span><span>{o.t}</span></button>;
+              return <button key={k} className={`choice ${st}`} onClick={(e) => pick(k, e)} disabled={solvedNow && !picked.includes(k)}><span className="key">{st === "ok" ? <Icon name="check" size={14} stroke={2.4} /> : st === "ko" ? <Icon name="close" size={13} stroke={2.4} /> : "ABC"[k]}</span><span>{o.t}</span></button>;
             })}
             {last !== undefined && (
               <motion.div key={last} className={`feedback ${opts[last].ok ? "ok" : "ko"}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -317,7 +328,7 @@ export function IncidentView({ roomId }: { roomId: string }) {
                 <BlockView block={{ type: "text", md: opts[last].why }} exKey="" solvedBefore={false} onSolved={() => {}} />
               </motion.div>
             )}
-            {solvedNow && <button className="btn block" style={{ marginTop: 14 }} onClick={nextScenario}>{i + 1 < r.incident.scenarios.length ? "Alerte suivante ▸" : "Rétablir le courant ⚡"}</button>}
+            {solvedNow && <button className="btn block" style={{ marginTop: 14 }} onClick={nextScenario}>{i + 1 < r.incident.scenarios.length ? <>Alerte suivante <Icon name="chevron-right" size={18} stroke={2.2} /></> : <>Rétablir le courant <Icon name="bolt" size={18} /></>}</button>}
           </motion.div>
         )}
         {state === "lost" && (
@@ -329,7 +340,11 @@ export function IncidentView({ roomId }: { roomId: string }) {
         )}
         {state === "won" && (
           <motion.div key="won" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="panel glow" style={{ textAlign: "center", borderColor: "rgba(77,255,160,.5)" }}>
-            <div style={{ fontSize: 46 }}>🧯</div>
+            <div style={{ display: "grid", placeItems: "center", margin: "2px 0 8px" }}>
+              <span style={{ width: 68, height: 68, borderRadius: 20, display: "grid", placeItems: "center", color: "var(--led)", background: "var(--led-soft)", border: "1px solid rgba(77,255,160,.45)", boxShadow: "0 0 28px rgba(77,255,160,.35)" }}>
+                <Icon name="extinguisher" size={38} />
+              </span>
+            </div>
             <div className="h2">Incident maîtrisé</div>
             <div className="muted" style={{ marginBottom: 14 }}>{fuses === 3 ? "Sans un seul fusible grillé. Impressionnant." : `Avec ${fuses} fusible${fuses > 1 ? "s" : ""} restant${fuses > 1 ? "s" : ""}.`} La {r.code} est entièrement en ligne.</div>
             <button className="btn block" onClick={() => go("")}>Retour à la carte</button>

@@ -4,7 +4,8 @@ import { dueNotions, levelOf, onFx, uptime, type FxEvent } from "../lib/game";
 import { go } from "../lib/router";
 import { sfx } from "../lib/sound";
 import { useProgress, useSettings } from "../lib/store";
-import { Icon } from "./Icon";
+import { BadgeEmblem } from "./Emblems";
+import { Icon, type IconId } from "./Icon";
 
 // ---------------- HUD (barre du haut) ----------------
 export function Hud() {
@@ -24,7 +25,7 @@ export function Hud() {
           <Icon name="bolt" size={14} /> {p.energy}
         </motion.span>
         <span className="hud-stat up" aria-label={`Uptime ${up} jours`}><Icon name="flame" size={14} /> {up}j</span>
-        {due > 0 && <button className="hud-stat hot" onClick={() => go("maintenance")} aria-label={`${due} notions à réviser`}>🌡 {due}</button>}
+        {due > 0 && <button className="hud-stat hot" onClick={() => go("maintenance")} aria-label={`${due} notions à réviser`}><Icon name="thermo" size={14} /> {due}</button>}
       </div>
     </header>
   );
@@ -62,7 +63,8 @@ export function TabBar({ active }: { active: string }) {
 }
 
 // ---------------- Effets : toasts + éclats de particules ----------------
-interface Toast { id: number; icon: string; text: string; tone?: string }
+const TONE: Record<string, string> = { led: "var(--led)", cyan: "var(--cyan)", amber: "var(--amber)", red: "var(--red)" };
+interface Toast { id: number; icon: IconId; text: string; tone?: string; badge?: string }
 
 export function FxLayer() {
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -73,7 +75,7 @@ export function FxLayer() {
   useEffect(() => onFx((e: FxEvent) => {
     if (e.type === "toast") {
       const id = Date.now() + Math.random();
-      setToasts((t) => [...t.slice(-2), { id, icon: e.icon, text: e.text, tone: e.tone }]);
+      setToasts((t) => [...t.slice(-2), { id, icon: e.icon, text: e.text, tone: e.tone, badge: e.badge }]);
       setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 2600);
     }
     if (e.type === "burst" && !reduce) burst(canvas.current, e.x, e.y, e.color);
@@ -87,7 +89,7 @@ export function FxLayer() {
           {toasts.map((t) => (
             <motion.div key={t.id} layout className="toast" initial={{ opacity: 0, y: -16, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -10 }}
               style={{ borderColor: t.tone === "led" ? "rgba(77,255,160,.5)" : t.tone === "amber" ? "rgba(255,181,71,.5)" : t.tone === "red" ? "rgba(255,77,109,.5)" : undefined }}>
-              <span className="ic">{t.icon}</span>{t.text}
+              <span className="ic" style={{ color: TONE[t.tone ?? "cyan"] }}>{t.badge ? <BadgeEmblem icon={t.icon} got size={30} /> : <Icon name={t.icon} size={20} />}</span>{t.text}
             </motion.div>
           ))}
         </AnimatePresence>

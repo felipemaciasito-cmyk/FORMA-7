@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "validate": "node scripts/validate-content.mjs",
+    "check:emoji": "node scripts/check-no-emoji.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "build": "node scripts/validate-content.mjs && vite build",
+    "build": "node scripts/validate-content.mjs && node scripts/check-no-emoji.mjs && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

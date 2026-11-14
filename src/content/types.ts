@@ -7,7 +7,8 @@ export type Level = "simple" | "standard" | "expert";
 export interface Notion {
   id: string;
   term: string;
-  icon: string; // un emoji ou un pictogramme court
+  /** Identifiant d'icône maison, à choisir dans src/content/icon-ids.json (jamais d'emoji). Inconnu : glyphe générique. */
+  icon: string;
   def: Record<Level, string>;
   analogy: string;
   example: string;

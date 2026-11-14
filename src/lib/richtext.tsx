@@ -1,12 +1,14 @@
 import { Fragment, type ReactNode } from "react";
+import { stripEmoji } from "./emoji-rules";
 import { openTerm } from "./termBus";
 
 // Mini-rendu de texte : paragraphes, listes « - », **gras**, `code`, et [[notion]] cliquable.
+// Règle « zéro emoji » : tout emoji qui se glisserait dans un texte (mission, réponse de Claude) est retiré à l'affichage.
 
 const INLINE_RE = /(\[\[[a-z0-9-]+(?:\|[^\]]+)?\]\]|\*\*[^*]+\*\*|`[^`]+`)/g;
 
 export function inline(text: string, keyPrefix = "i"): ReactNode[] {
-  const parts = text.split(INLINE_RE).filter((p) => p !== "");
+  const parts = stripEmoji(text).split(INLINE_RE).filter((p) => p !== "");
   return parts.map((part, i) => {
     const k = `${keyPrefix}-${i}`;
     const ref = part.match(/^\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]$/);
@@ -56,5 +58,5 @@ export function RichText({ md, className }: { md: string; className?: string }) 
 
 /** Texte brut sans balises (pour l'export et la synthèse vocale). */
 export function plain(md: string) {
-  return md.replace(/\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g, (_m, id, label) => label ?? labelFor(id)).replace(/\*\*/g, "").replace(/`/g, "");
+  return stripEmoji(md).replace(/\[\[([a-z0-9-]+)(?:\|([^\]]+))?\]\]/g, (_m, id, label) => label ?? labelFor(id)).replace(/\*\*/g, "").replace(/`/g, "");
 }

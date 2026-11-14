@@ -6,7 +6,8 @@ import { saveFile } from "../lib/share";
 import { sfx } from "../lib/sound";
 import { DEFAULT_PROGRESS, getState, replaceProgress, updateProgress, updateSettings, useProgress, useSettings, type Progress } from "../lib/store";
 import { TopBar } from "./Chrome";
-import { Icon } from "./Icon";
+import { go } from "../lib/router";
+import { Icon, type IconId } from "./Icon";
 
 export function SettingsView() {
   const s = useSettings();
@@ -46,7 +47,7 @@ export function SettingsView() {
     <div className="wrap">
       <TopBar title="Réglages" kicker="Salle des machines" />
 
-      <Section title="Profil & confort">
+      <Section icon="sliders" title="Profil & confort">
         <label className="field"><span>Ton prénom</span><input className="input" value={p.name} maxLength={24} onChange={(e) => updateProgress((d) => { d.name = e.target.value; })} /></label>
         <Toggle label="Effets sonores" on={s.sound} onChange={(v) => { updateSettings({ sound: v }); if (v) setTimeout(() => sfx("ok"), 50); }} />
         <label className="field" style={{ marginTop: 12 }}><span>Animations</span>
@@ -58,7 +59,7 @@ export function SettingsView() {
         </label>
       </Section>
 
-      <Section title="📡 Flux de données (missions privées)">
+      <Section icon="dish" title="Flux de données (missions privées)">
         <p className="small muted">Chaque matin, Claude transforme le mail de la formation en mission et la range dans ton dépôt GitHub <b>privé</b>. L'appli la lit grâce à un <b>jeton d'accès</b> limité à ce dépôt, stocké uniquement sur cet appareil.</p>
         <div className="row">
           <label className="field grow"><span>Compte GitHub</span><input className="input mono" value={s.ghOwner} onChange={(e) => updateSettings({ ghOwner: e.target.value.trim() })} autoCapitalize="off" autoCorrect="off" /></label>
@@ -91,7 +92,7 @@ export function SettingsView() {
         </details>
       </Section>
 
-      <Section title="⚡ Claude dans l'appli (optionnel)">
+      <Section icon="spark" title="Claude dans l'appli (optionnel)">
         <p className="small muted">Avec ta propre clé API, Claude corrige tes réponses « avec tes mots », réexplique une notion autrement, et teste tes prompts et tes Skills. Sans clé, tout le reste fonctionne.</p>
         <label className="field"><span>Clé API Claude</span>
           <div className="row">
@@ -118,7 +119,7 @@ export function SettingsView() {
         </details>
       </Section>
 
-      <Section title="🔄 Synchronisation entre appareils">
+      <Section icon="refresh" title="Synchronisation entre appareils">
         <p className="small muted">Retrouve ta progression sur ton iPhone et ton iPad. Elle est enregistrée dans ton dépôt privé (fichier <code>progress/progress.json</code>), à l'ouverture de l'appli, environ 30 secondes après chaque progrès, et quand tu la quittes. Si tu avances sur deux appareils sans connexion, tout est fusionné : rien n'est perdu.</p>
         <Toggle label="Synchroniser ma progression" on={s.syncEnabled} onChange={(v) => { if (v && !s.ghToken) { alert("Colle d'abord ton jeton GitHub dans « Flux de données » ci-dessus (droits Contents : Read and write)."); return; } updateSettings({ syncEnabled: v }); }} />
         <div className="small" style={{ marginTop: 8, color: sync.status === "error" ? "var(--red)" : "var(--text-2)" }}>
@@ -128,7 +129,7 @@ export function SettingsView() {
         <div className="small dim" style={{ marginTop: 8 }}>Cet appareil : {deviceLabel()} · {s.deviceId.slice(0, 8)}. Active la synchronisation sur chaque appareil, avec le même jeton.</div>
       </Section>
 
-      <Section title="💾 Sauvegarde">
+      <Section icon="hdd" title="Sauvegarde">
         <p className="small muted">Ta progression est stockée sur cet appareil{s.syncEnabled ? " et synchronisée dans ton dépôt privé" : ""}. Le fichier de sauvegarde contient ta progression, mais jamais ton jeton ni ta clé API.{s.syncEnabled ? "" : " iOS peut, rarement, effacer les données d'un site : exporte une sauvegarde de temps en temps, ou active la synchronisation."}</p>
         <div className="row">
           <button className="btn small subtle grow" onClick={exportBackup}><Icon name="share" size={16} /> Exporter</button>
@@ -138,7 +139,7 @@ export function SettingsView() {
         <button className="btn small ghost block" style={{ marginTop: 10, color: "var(--red)" }} onClick={() => { if (confirm(s.syncEnabled ? "Tout réinitialiser ? Ta progression sera effacée sur CET appareil ET sur tes autres appareils synchronisés (pense à exporter avant)." : "Tout réinitialiser ? Ta progression sera effacée (pense à exporter avant).")) { replaceProgress(DEFAULT_PROGRESS); setTimeout(async () => { await syncNow(); location.hash = "#/"; location.reload(); }, 400); } }}>Réinitialiser la progression</button>
       </Section>
 
-      <Section title="📱 Installer sur l'iPhone ou l'iPad">
+      <Section icon="phone" title="Installer sur l'iPhone ou l'iPad">
         <ol className="small" style={{ paddingLeft: 18, lineHeight: 1.7, margin: 0 }}>
           <li>Ouvre ce site dans <b>Safari</b>.</li>
           <li>Touche le bouton <b>Partager</b> (carré avec une flèche).</li>
@@ -147,19 +148,22 @@ export function SettingsView() {
         </ol>
       </Section>
 
-      <Section title="ℹ️ À propos">
+      <Section icon="info" title="À propos">
         <p className="small muted" style={{ margin: 0 }}>
           FORMA-7 accompagne « La roadmap 7 jours » de Humains Augmentés. Application personnelle et indépendante, non affiliée à Humains Augmentés, Anthropic, OpenAI ou Google.
           Le contenu de base est original ; les informations sur les produits (prix, fonctions) ont été vérifiées en novembre 2026 et peuvent avoir changé.
           Claude, ChatGPT, Gemini, Gmail et GitHub sont des marques de leurs propriétaires respectifs.
         </p>
+        <button className="btn subtle block small" style={{ marginTop: 12 }} onClick={() => { sfx("open"); go("icones"); }}>
+          <Icon name="neural-chip" size={18} /> Bibliothèque d'icônes de l'appli
+        </button>
       </Section>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return <section className="panel" style={{ marginTop: 14 }}><div className="panel-title">{title}</div>{children}</section>;
+function Section({ title, icon, children }: { title: string; icon: IconId; children: React.ReactNode }) {
+  return <section className="panel" style={{ marginTop: 14 }}><div className="panel-title"><Icon name={icon} size={16} /> {title}</div>{children}</section>;
 }
 
 function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }) {

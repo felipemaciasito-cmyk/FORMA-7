@@ -8,6 +8,7 @@ import { sfx } from "../lib/sound";
 import { useProgress, useSettings } from "../lib/store";
 import { loadClaude } from "../lib/models";
 import { Sheet } from "./Chrome";
+import { NotionChip } from "./Emblems";
 import { Icon } from "./Icon";
 
 const LEVELS: { id: Level; label: string; color: string }[] = [
@@ -57,7 +58,7 @@ export function TermCard({ id, onBack, inline }: { id: string; onBack?: () => vo
     <div>
       <div className="row" style={{ alignItems: "flex-start" }}>
         {onBack && <button className="icon-btn" onClick={onBack} aria-label="Notion précédente"><Icon name="back" /></button>}
-        <div style={{ fontSize: 34, lineHeight: 1 }} aria-hidden="true">{n.icon}</div>
+        <NotionChip id={id} icon={n.icon} size={58} trace={inline && !st} />
         <div className="grow">
           <div className="kicker" style={{ color: "var(--cyan)" }}>Base de connaissances</div>
           <div className="h2" style={{ margin: "2px 0 0" }}>{n.term}</div>
@@ -85,11 +86,11 @@ export function TermCard({ id, onBack, inline }: { id: string; onBack?: () => vo
       </AnimatePresence>
 
       <div className="panel" style={{ background: "rgba(167,139,250,.08)", borderColor: "rgba(167,139,250,.3)" }}>
-        <div className="panel-title" style={{ color: "var(--violet)" }}>🖼 Analogie</div>
+        <div className="panel-title" style={{ color: "var(--violet)" }}><Icon name="frame" size={16} /> Analogie</div>
         <RichText md={n.analogy} />
       </div>
       <div className="panel">
-        <div className="panel-title">🧪 Exemple</div>
+        <div className="panel-title"><Icon name="flask" size={16} /> Exemple</div>
         {n.example.includes("\n") ? <pre className="code-block" style={{ margin: 0 }}>{n.example}</pre> : <RichText md={n.example} />}
       </div>
 
@@ -104,7 +105,7 @@ export function TermCard({ id, onBack, inline }: { id: string; onBack?: () => vo
 
       <div style={{ marginTop: 16 }}>
         <button className="btn subtle block" onClick={reexplain} disabled={alt.loading}>
-          {alt.loading ? "ORA reformule…" : "🤔 Je n'ai toujours pas compris"}
+          {alt.loading ? "ORA reformule…" : <><Icon name="help" size={18} /> Je n'ai toujours pas compris</>}
         </button>
         {alt.text && <div className="feedback info"><span className="tag">ORA reformule</span><RichText md={alt.text} /></div>}
         {alt.error && <div className="feedback ko"><span className="tag">Erreur</span>{alt.error}</div>}

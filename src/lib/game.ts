@@ -1,9 +1,10 @@
 import { addDays, bump, getState, today, updateProgress, type Progress } from "./store";
 import { sfx } from "./sound";
+import type { IconId } from "../components/glyphs";
 
 // ---------------- Événements visuels (toasts, célébrations) ----------------
 export type FxEvent =
-  | { type: "toast"; icon: string; text: string; tone?: "led" | "cyan" | "amber" | "red" }
+  | { type: "toast"; icon: IconId; text: string; tone?: "led" | "cyan" | "amber" | "red"; badge?: string }
   | { type: "burst"; x?: number; y?: number; color?: string }
   | { type: "badge"; id: string };
 const fxListeners = new Set<(e: FxEvent) => void>();
@@ -49,10 +50,10 @@ export function addEnergy(amount: number, label?: string) {
     markActiveDay(p);
   });
   const after = levelOf(getState().progress.energy);
-  if (label) fx({ type: "toast", icon: "⚡", text: `+${amount} kW · ${label}`, tone: "cyan" });
+  if (label) fx({ type: "toast", icon: "bolt", text: `+${amount} kW · ${label}`, tone: "cyan" });
   if (after.index > before) {
     sfx("levelup");
-    fx({ type: "toast", icon: "🛡️", text: `Accréditation : ${after.title}`, tone: "led" });
+    fx({ type: "toast", icon: "shield", text: `Accréditation : ${after.title}`, tone: "led" });
     fx({ type: "burst", color: "#4dffa0" });
   }
   checkBadges();
@@ -100,19 +101,19 @@ export function dueNotions(p: Progress) {
 }
 
 // ---------------- Badges ----------------
-export const BADGES: { id: string; icon: string; title: string; desc: string; test: (p: Progress, ctx: BadgeCtx) => boolean }[] = [
-  { id: "boot", icon: "🔌", title: "Premier démarrage", desc: "Tu as abaissé le levier principal.", test: (p) => p.bootedOnce },
-  { id: "room1", icon: "💡", title: "Première salle", desc: "Une salle entièrement rallumée.", test: (_p, c) => c.roomsDone >= 1 },
-  { id: "half", icon: "🔋", title: "Mi-parcours", desc: "4 salles rallumées.", test: (_p, c) => c.roomsDone >= 4 },
-  { id: "all", icon: "🏛️", title: "Datacenter en ligne", desc: "Toutes les salles du programme sont rallumées.", test: (_p, c) => c.roomsDone >= c.roomsTotal },
-  { id: "nofuse", icon: "🧯", title: "Zéro fusible grillé", desc: "Un incident résolu sans aucune erreur.", test: (p) => Object.values(p.incidents).some((i) => i.fusesLeft === 3) },
-  { id: "up3", icon: "🔥", title: "Uptime 3 jours", desc: "3 jours d'affilée en ligne.", test: (p) => uptime(p.days) >= 3 },
-  { id: "up7", icon: "🌋", title: "Uptime 7 jours", desc: "Une semaine sans coupure.", test: (p) => uptime(p.days) >= 7 },
-  { id: "maint", icon: "🧰", title: "Maintenance assidue", desc: "10 révisions de notions.", test: (p) => p.stats.reviews >= 10 },
-  { id: "base20", icon: "📚", title: "Base bien remplie", desc: "20 notions collectées.", test: (p) => Object.keys(p.notions).length >= 20 },
-  { id: "feyn", icon: "🎙️", title: "Pédagogue", desc: "Une explication « avec tes mots » notée 80 ou plus.", test: (p) => Object.values(p.feynman).some((s) => s >= 80) },
-  { id: "skill", icon: "🛠️", title: "Forgeron de Skills", desc: "Un Skill finalisé dans l'Atelier.", test: (p) => p.skills.some((s) => s.finalized) },
-  { id: "signal", icon: "📡", title: "Signal capté", desc: "Une mission issue d'un mail terminée.", test: (p) => Object.keys(p.missions).length >= 1 },
+export const BADGES: { id: string; icon: IconId; title: string; desc: string; test: (p: Progress, ctx: BadgeCtx) => boolean }[] = [
+  { id: "boot", icon: "lever", title: "Premier démarrage", desc: "Tu as abaissé le levier principal.", test: (p) => p.bootedOnce },
+  { id: "room1", icon: "bulb", title: "Première salle", desc: "Une salle entièrement rallumée.", test: (_p, c) => c.roomsDone >= 1 },
+  { id: "half", icon: "battery-half", title: "Mi-parcours", desc: "4 salles rallumées.", test: (_p, c) => c.roomsDone >= 4 },
+  { id: "all", icon: "rack", title: "Datacenter en ligne", desc: "Toutes les salles du programme sont rallumées.", test: (_p, c) => c.roomsDone >= c.roomsTotal },
+  { id: "nofuse", icon: "extinguisher", title: "Zéro fusible grillé", desc: "Un incident résolu sans aucune erreur.", test: (p) => Object.values(p.incidents).some((i) => i.fusesLeft === 3) },
+  { id: "up3", icon: "flame", title: "Uptime 3 jours", desc: "3 jours d'affilée en ligne.", test: (p) => uptime(p.days) >= 3 },
+  { id: "up7", icon: "blaze", title: "Uptime 7 jours", desc: "Une semaine sans coupure.", test: (p) => uptime(p.days) >= 7 },
+  { id: "maint", icon: "toolbox", title: "Maintenance assidue", desc: "10 révisions de notions.", test: (p) => p.stats.reviews >= 10 },
+  { id: "base20", icon: "books", title: "Base bien remplie", desc: "20 notions collectées.", test: (p) => Object.keys(p.notions).length >= 20 },
+  { id: "feyn", icon: "mic", title: "Pédagogue", desc: "Une explication « avec tes mots » notée 80 ou plus.", test: (p) => Object.values(p.feynman).some((s) => s >= 80) },
+  { id: "skill", icon: "forge", title: "Forgeron de Skills", desc: "Un Skill finalisé dans l'Atelier.", test: (p) => p.skills.some((s) => s.finalized) },
+  { id: "signal", icon: "dish", title: "Signal capté", desc: "Une mission issue d'un mail terminée.", test: (p) => Object.keys(p.missions).length >= 1 },
 ];
 
 export interface BadgeCtx { roomsDone: number; roomsTotal: number }
@@ -126,7 +127,7 @@ export function checkBadges() {
   updateProgress((d) => { for (const b of newOnes) d.badges[b.id] = today(); });
   newOnes.forEach((b, i) => setTimeout(() => {
     sfx("badge");
-    fx({ type: "toast", icon: b.icon, text: `Badge débloqué : ${b.title}`, tone: "amber" });
+    fx({ type: "toast", icon: b.icon, badge: b.id, text: `Badge débloqué : ${b.title}`, tone: "amber" });
   }, 600 + i * 900));
 }
 

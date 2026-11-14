@@ -1,5 +1,6 @@
 import { notion } from "../content";
 import type { Mission, Room } from "../content/types";
+import { stripEmoji } from "./emoji-rules";
 import { plain } from "./richtext";
 import { saveFile } from "./share";
 import { fx } from "./game";
@@ -16,7 +17,7 @@ export function roomFicheMarkdown(r: Room, p: Progress) {
     for (const id of ids) {
       const n = notion(id); if (!n) continue;
       const box = p.notions[id]?.box;
-      lines.push(`### ${n.icon} ${n.term}${box ? ` (boîte ${box}/5)` : ""}`, "", plain(n.def.standard), "", `- **En simple :** ${plain(n.def.simple)}`, `- **Analogie :** ${plain(n.analogy)}`, `- **Exemple :** ${plain(n.example).replace(/\n/g, " ")}`);
+      lines.push(`### ${n.term}${box ? ` (boîte ${box}/5)` : ""}`, "", plain(n.def.standard), "", `- **En simple :** ${plain(n.def.simple)}`, `- **Analogie :** ${plain(n.analogy)}`, `- **Exemple :** ${plain(n.example).replace(/\n/g, " ")}`);
       if (n.checked) lines.push(`- *Info vérifiée en ${n.checked} : à revérifier.*`);
       lines.push("");
     }
@@ -35,7 +36,7 @@ export function missionFicheMarkdown(m: Mission) {
   if (m.tonight.length) lines.push("## À faire dès ce soir", "", ...m.tonight.map((s) => `- [ ] ${plain(s)}`), "");
   if (m.notions.length) {
     lines.push("## Nouvelles notions", "");
-    for (const n of m.notions) lines.push(`### ${n.icon} ${n.term}`, "", plain(n.def.standard), "", `- **Analogie :** ${plain(n.analogy)}`, `- **Exemple :** ${plain(n.example)}`, "");
+    for (const n of m.notions) lines.push(`### ${n.term}`, "", plain(n.def.standard), "", `- **Analogie :** ${plain(n.analogy)}`, `- **Exemple :** ${plain(n.example)}`, "");
   }
   if (m.links.length) lines.push("## Liens", "", ...m.links.map((l) => `- [${l.title}](${l.url}) — ${l.kind} · ${plain(l.why)}`), "");
   if (m.project) lines.push(`## Mini-projet : ${m.project.title}`, "", m.project.goal, "", ...m.project.steps.map((s, i) => `${i + 1}. ${plain(s)}`), "");
@@ -45,9 +46,9 @@ export function missionFicheMarkdown(m: Mission) {
 
 async function save(name: string, md: string) {
   const r = await saveFile(name, md);
-  if (r === "copied") fx({ type: "toast", icon: "📋", text: "Fiche copiée dans le presse-papiers", tone: "cyan" });
-  if (r === "downloaded") fx({ type: "toast", icon: "📄", text: "Fiche téléchargée", tone: "cyan" });
+  if (r === "copied") fx({ type: "toast", icon: "clipboard", text: "Fiche copiée dans le presse-papiers", tone: "cyan" });
+  if (r === "downloaded") fx({ type: "toast", icon: "download", text: "Fiche téléchargée", tone: "cyan" });
 }
 
-export const exportRoomFiche = (r: Room, p: Progress) => save(`FORMA-7-${r.code.replace(/\s+/g, "-")}.md`, roomFicheMarkdown(r, p));
-export const exportMissionFiche = (m: Mission) => save(`FORMA-7-signal-${m.id}.md`, missionFicheMarkdown(m));
+export const exportRoomFiche = (r: Room, p: Progress) => save(`FORMA-7-${r.code.replace(/\s+/g, "-")}.md`, stripEmoji(roomFicheMarkdown(r, p)));
+export const exportMissionFiche = (m: Mission) => save(`FORMA-7-signal-${m.id}.md`, stripEmoji(missionFicheMarkdown(m)));

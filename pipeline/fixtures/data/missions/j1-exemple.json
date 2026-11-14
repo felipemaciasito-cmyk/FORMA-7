@@ -17,7 +17,7 @@
   ],
   "notions": [
     {
-      "id": "tableau-comparatif", "term": "Tableau comparatif", "icon": "📊",
+      "id": "tableau-comparatif", "term": "Tableau comparatif", "icon": "table",
       "def": {
         "simple": "Un tableau qui met plusieurs options côte à côte selon les mêmes critères.",
         "standard": "Une façon de demander à l'IA un [[format-sortie]] très lisible : une ligne par option, une colonne par critère. Idéal pour décider vite.",

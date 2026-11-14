@@ -89,7 +89,7 @@ export default function SkillWorkshop() {
             const ok = skillChecks(s).every((c) => c.ok);
             return (
               <button key={s.id} className="choice" onClick={() => setEditing(s)} style={{ alignItems: "center" }}>
-                <span style={{ fontSize: 22 }}>{s.finalized ? "🛠️" : "📝"}</span>
+                <Icon name={s.finalized ? "expansion-card" : "pencil"} size={24} style={{ color: s.finalized ? "#ff7ab6" : "var(--text-2)" }} />
                 <span className="grow"><b className="mono" style={{ fontSize: 14 }}>{s.name || "(sans nom)"}</b><br /><span className="small muted">{s.title}</span></span>
                 <span className={`pill ${s.finalized ? "led" : ok ? "cyan" : "amber"}`}>{s.finalized ? "En service" : ok ? "Prêt" : "Brouillon"}</span>
               </button>
@@ -99,7 +99,7 @@ export default function SkillWorkshop() {
           <div className="panel-title" style={{ marginTop: 14 }}>Ou partir d'un modèle</div>
           {TEMPLATES.map((t) => (
             <button key={t.name} className="choice" onClick={() => { sfx("open"); setEditing({ ...t, steps: [...t.steps], examples: t.examples.map((e) => ({ ...e })), avoid: [...t.avoid], id: crypto.randomUUID?.() ?? String(Date.now()), updatedAt: nowIso() }); }}>
-              <span style={{ fontSize: 20 }}>📐</span>
+              <Icon name="set-square" size={22} style={{ color: "var(--cyan)" }} />
               <span className="grow"><b className="mono" style={{ fontSize: 14 }}>{t.name}</b><br /><span className="small muted">{t.title}</span></span>
             </button>
           ))}
@@ -242,7 +242,7 @@ function Editor({ skill, onClose }: { skill: SavedSkill; onClose: () => void }) 
       </div>
       {msg && <div className="feedback ok">{msg}</div>}
       <div className="stack" style={{ marginTop: 14 }}>
-        <button className="btn block" style={{ background: "#ff7ab6", boxShadow: "0 8px 30px -10px #ff7ab6" }} disabled={!allOk} onClick={finalize}>🛠️ Mettre en service</button>
+        <button className="btn block" style={{ background: "#ff7ab6", boxShadow: "0 8px 30px -10px #ff7ab6" }} disabled={!allOk} onClick={finalize}><Icon name="power" size={18} /> Mettre en service</button>
         <div className="row">
           <button className="btn subtle grow" onClick={exportMd}><Icon name="share" size={18} /> Enregistrer le fichier</button>
           <button className="btn subtle" onClick={async () => { save(); setMsg((await copyText(md)) ? "Copié dans le presse-papiers." : "Copie impossible."); }} aria-label="Copier"><Icon name="copy" size={18} /></button>

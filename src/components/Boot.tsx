@@ -10,7 +10,7 @@ const BIOS = [
   "Réseau de secours ........... OK",
   "Salles détectées ............ 7 + 1",
   "Alimentation principale ..... 0 %",
-  "⚠  Datacenter hors tension.",
+  "[ALERTE] Datacenter hors tension.",
 ];
 
 export function Boot({ power, onDone }: { power: number; onDone: () => void }) {
@@ -70,7 +70,7 @@ export function Boot({ power, onDone }: { power: number; onDone: () => void }) {
       <div style={{ maxWidth: 560, width: "100%", margin: "0 auto", flex: 1, display: "flex", flexDirection: "column" }}>
         <pre className="mono" style={{ margin: 0, fontSize: 13.5, lineHeight: 1.8, color: "#7fe9ff", whiteSpace: "pre-wrap", textShadow: "0 0 8px rgba(59,232,255,.5)" }}>
           {lines.map((l, i) => (
-            <div key={i} style={{ color: l.startsWith("⚠") ? "var(--amber)" : undefined }} className={i === lines.length - 1 && phase === "bios" ? "caret" : ""}>{l}</div>
+            <div key={i} style={{ color: l.startsWith("[ALERTE]") ? "var(--amber)" : undefined }} className={i === lines.length - 1 && phase === "bios" ? "caret" : ""}>{l}</div>
           ))}
         </pre>
 

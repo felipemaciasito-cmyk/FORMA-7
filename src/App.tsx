@@ -13,6 +13,7 @@ import { FxLayer, Hud, TabBar } from "./components/Chrome";
 import { MapView } from "./components/MapView";
 import { IncidentView, RoomView, StepView } from "./components/RoomView";
 import { SettingsView } from "./components/SettingsView";
+import { IconLibraryView } from "./components/IconLibrary";
 import { TermSheetHost } from "./components/TermSheet";
 import { AtelierView, BaseView, MaintenanceView, SignalList, SignalView } from "./components/Views";
 
@@ -39,7 +40,7 @@ export function App() {
   if (!ready) return <div className="app-bg" />;
 
   const [a, b, c] = route;
-  const tab = a === "base" ? "base" : a === "maintenance" ? "maintenance" : a === "atelier" ? "atelier" : a === "reglages" ? "reglages" : "";
+  const tab = a === "base" ? "base" : a === "maintenance" ? "maintenance" : a === "atelier" ? "atelier" : a === "reglages" || a === "icones" ? "reglages" : "";
   let screen: React.ReactNode;
   let key = route.join("/") || "map";
   if (a === "salle" && b && c) screen = <StepView key={`${b}/${c}`} roomId={b} stepId={c} />;
@@ -49,6 +50,7 @@ export function App() {
   else if (a === "maintenance") screen = <MaintenanceView />;
   else if (a === "atelier") screen = <AtelierView />;
   else if (a === "reglages") screen = <SettingsView />;
+  else if (a === "icones") screen = <IconLibraryView />;
   else if (a === "signaux") screen = <SignalList />;
   else if (a === "signal" && b) screen = <SignalView id={b} />;
   else screen = <MapView />;

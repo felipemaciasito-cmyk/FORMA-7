@@ -1,6 +1,6 @@
 [
   {
-    "id": "ia", "term": "Intelligence artificielle (IA)", "icon": "🧠",
+    "id": "ia", "term": "Intelligence artificielle (IA)", "icon": "neural-chip",
     "watch": ["intelligence artificielle", "IA"],
     "def": {
       "simple": "Un programme informatique capable de faire des choses qui demandent normalement de la réflexion humaine : comprendre une phrase, résumer un texte, reconnaître une image.",
@@ -12,7 +12,7 @@
     "prereq": []
   },
   {
-    "id": "modele", "term": "Modèle (d'IA)", "icon": "🧩",
+    "id": "modele", "term": "Modèle (d'IA)", "icon": "cube",
     "watch": ["modèle d'ia", "modèles d'ia"],
     "def": {
       "simple": "Le « cerveau » d'une IA : un gros fichier qui contient tout ce qu'elle a appris.",
@@ -24,7 +24,7 @@
     "prereq": ["ia"]
   },
   {
-    "id": "entrainement", "term": "Entraînement", "icon": "🏋️",
+    "id": "entrainement", "term": "Entraînement", "icon": "dumbbell",
     "watch": ["entraînement", "entraîné", "entraînée"],
     "def": {
       "simple": "La période où l'IA apprend, en lisant d'énormes quantités de textes. Ensuite, elle n'apprend plus toute seule.",
@@ -36,7 +36,7 @@
     "prereq": ["modele"]
   },
   {
-    "id": "llm", "term": "Modèle de langage (LLM)", "icon": "💬",
+    "id": "llm", "term": "Modèle de langage (LLM)", "icon": "chat-lines",
     "watch": ["llm", "modèle de langage", "modèles de langage", "grand modèle de langage"],
     "def": {
       "simple": "Une IA spécialisée dans le texte : elle lit ce que tu écris et écrit une réponse, mot après mot.",
@@ -48,7 +48,7 @@
     "prereq": ["modele", "entrainement"]
   },
   {
-    "id": "token", "term": "Token", "icon": "🔤",
+    "id": "token", "term": "Token", "icon": "tokens",
     "watch": ["token", "tokens"],
     "def": {
       "simple": "Un petit morceau de texte (un mot entier, un bout de mot ou un signe). L'IA lit et écrit token par token.",
@@ -60,7 +60,7 @@
     "prereq": ["llm"]
   },
   {
-    "id": "prompt", "term": "Prompt", "icon": "⌨️",
+    "id": "prompt", "term": "Prompt", "icon": "keyboard",
     "watch": ["prompt", "prompts"],
     "def": {
       "simple": "Le message que tu écris à l'IA : ta question ou ta demande.",
@@ -72,7 +72,7 @@
     "prereq": ["llm"]
   },
   {
-    "id": "assistant", "term": "Assistant IA (chatbot)", "icon": "🤖",
+    "id": "assistant", "term": "Assistant IA (chatbot)", "icon": "bot",
     "watch": ["chatbot", "chatbots", "assistant ia", "assistants ia"],
     "def": {
       "simple": "Une appli où tu discutes avec une IA comme dans une messagerie.",
@@ -84,7 +84,7 @@
     "prereq": ["llm", "prompt"]
   },
   {
-    "id": "conversation", "term": "Conversation", "icon": "🧵",
+    "id": "conversation", "term": "Conversation", "icon": "bubbles",
     "watch": [],
     "def": {
       "simple": "Un fil de discussion avec l'assistant. Une nouvelle conversation repart de zéro.",
@@ -97,7 +97,7 @@
   },
 
   {
-    "id": "claude", "term": "Claude", "icon": "✳️", "checked": "2026-11",
+    "id": "claude", "term": "Claude", "icon": "mono-cl", "checked": "2026-11",
     "watch": [],
     "def": {
       "simple": "L'assistant IA de l'entreprise Anthropic. Réputé pour la qualité de ses textes et de son code, et pour ses fonctions de travail (Projets, Skills, connecteurs).",
@@ -109,7 +109,7 @@
     "prereq": ["assistant"]
   },
   {
-    "id": "chatgpt", "term": "ChatGPT", "icon": "◎", "checked": "2026-11",
+    "id": "chatgpt", "term": "ChatGPT", "icon": "mono-gpt", "checked": "2026-11",
     "watch": [],
     "def": {
       "simple": "L'assistant IA de l'entreprise OpenAI, le plus connu du grand public. Il sait aussi générer des images.",
@@ -121,7 +121,7 @@
     "prereq": ["assistant"]
   },
   {
-    "id": "gemini", "term": "Gemini", "icon": "✦", "checked": "2026-11",
+    "id": "gemini", "term": "Gemini", "icon": "mono-gem", "checked": "2026-11",
     "watch": [],
     "def": {
       "simple": "L'assistant IA de Google, très lié à Gmail, Google Docs, Drive et Android.",
@@ -133,7 +133,7 @@
     "prereq": ["assistant"]
   },
   {
-    "id": "multimodal", "term": "Multimodal", "icon": "🎛️",
+    "id": "multimodal", "term": "Multimodal", "icon": "media-mix",
     "watch": ["multimodal", "multimodale", "multimodaux"],
     "def": {
       "simple": "Se dit d'une IA qui comprend plusieurs types de contenus : texte, images, voix, fichiers.",
@@ -145,7 +145,7 @@
     "prereq": ["assistant"]
   },
   {
-    "id": "formule", "term": "Formule d'abonnement", "icon": "💳", "checked": "2026-11",
+    "id": "formule", "term": "Formule d'abonnement", "icon": "card", "checked": "2026-11",
     "watch": ["abonnement", "abonnements"],
     "def": {
       "simple": "Le niveau d'accès que tu paies (ou pas) : gratuit pour découvrir, autour de 20 $ par mois pour un usage sérieux, 100 à 200 $ pour un usage intensif.",
@@ -157,7 +157,7 @@
     "prereq": ["assistant"]
   },
   {
-    "id": "limite-usage", "term": "Limite d'utilisation", "icon": "⏳", "checked": "2026-11",
+    "id": "limite-usage", "term": "Limite d'utilisation", "icon": "gauge", "checked": "2026-11",
     "watch": ["limite d'utilisation", "limites d'utilisation", "quota", "quotas"],
     "def": {
       "simple": "Le nombre de messages (ou la quantité de travail) que tu peux faire avant que l'assistant te demande d'attendre.",
@@ -170,7 +170,7 @@
   },
 
   {
-    "id": "contexte", "term": "Contexte", "icon": "📋",
+    "id": "contexte", "term": "Contexte", "icon": "layers",
     "watch": [],
     "def": {
       "simple": "Tout ce que l'IA a sous les yeux au moment de répondre : tes messages, ses réponses, les fichiers joints.",
@@ -182,7 +182,7 @@
     "prereq": ["token", "conversation", "entrainement"]
   },
   {
-    "id": "fenetre-contexte", "term": "Fenêtre de contexte", "icon": "🪟",
+    "id": "fenetre-contexte", "term": "Fenêtre de contexte", "icon": "window",
     "watch": ["fenêtre de contexte"],
     "def": {
       "simple": "La taille maximale du « bureau » de l'IA. Quand il déborde, les plus vieilles informations sont oubliées ou résumées.",
@@ -194,7 +194,7 @@
     "prereq": ["contexte"]
   },
   {
-    "id": "memoire", "term": "Mémoire (persistante)", "icon": "🗄️", "checked": "2026-11",
+    "id": "memoire", "term": "Mémoire (persistante)", "icon": "ram", "checked": "2026-11",
     "watch": ["mémoire persistante"],
     "def": {
       "simple": "Des notes que l'assistant garde sur toi d'une conversation à l'autre, si la fonction est activée.",
@@ -206,7 +206,7 @@
     "prereq": ["contexte", "conversation"]
   },
   {
-    "id": "date-coupure", "term": "Date de coupure", "icon": "📅",
+    "id": "date-coupure", "term": "Date de coupure", "icon": "calendar-cut",
     "watch": ["date de coupure"],
     "def": {
       "simple": "La date à laquelle l'IA a arrêté d'apprendre. Ce qui s'est passé après, elle ne le sait pas (sauf si elle cherche sur le web).",
@@ -218,7 +218,7 @@
     "prereq": ["entrainement", "llm"]
   },
   {
-    "id": "hallucination", "term": "Hallucination", "icon": "🌀",
+    "id": "hallucination", "term": "Hallucination", "icon": "spiral",
     "watch": ["hallucination", "hallucinations", "halluciner", "hallucine"],
     "def": {
       "simple": "Quand l'IA invente une information fausse mais la présente avec assurance.",
@@ -230,7 +230,7 @@
     "prereq": ["llm", "contexte"]
   },
   {
-    "id": "recherche-web", "term": "Recherche web", "icon": "🔎",
+    "id": "recherche-web", "term": "Recherche web", "icon": "globe-search",
     "watch": ["recherche web"],
     "def": {
       "simple": "La capacité de l'assistant à aller chercher des informations récentes sur internet avant de répondre.",
@@ -242,7 +242,7 @@
     "prereq": ["assistant", "date-coupure", "contexte"]
   },
   {
-    "id": "reflexion", "term": "Mode réflexion", "icon": "🤔",
+    "id": "reflexion", "term": "Mode réflexion", "icon": "think",
     "watch": ["mode réflexion", "raisonnement étendu"],
     "def": {
       "simple": "Un réglage où l'IA prend le temps de réfléchir étape par étape avant de répondre. Plus lent, souvent plus juste.",
@@ -255,7 +255,7 @@
   },
 
   {
-    "id": "role", "term": "Rôle", "icon": "🎭",
+    "id": "role", "term": "Rôle", "icon": "id-badge",
     "watch": [],
     "def": {
       "simple": "Dire à l'IA qui elle doit être : « Tu es expert-comptable ». Elle adapte son vocabulaire et ses priorités.",
@@ -267,7 +267,7 @@
     "prereq": ["prompt"]
   },
   {
-    "id": "tache", "term": "Tâche", "icon": "🎯",
+    "id": "tache", "term": "Tâche", "icon": "target",
     "watch": [],
     "def": {
       "simple": "Ce que tu veux exactement que l'IA fasse, avec un verbe d'action clair.",
@@ -279,7 +279,7 @@
     "prereq": ["prompt"]
   },
   {
-    "id": "format-sortie", "term": "Format de sortie", "icon": "📐",
+    "id": "format-sortie", "term": "Format de sortie", "icon": "layout",
     "watch": ["format de sortie"],
     "def": {
       "simple": "La forme que doit avoir la réponse : un tableau, 3 puces, un mail prêt à envoyer, 100 mots maximum…",
@@ -291,7 +291,7 @@
     "prereq": ["prompt"]
   },
   {
-    "id": "contraintes", "term": "Contraintes", "icon": "🚧",
+    "id": "contraintes", "term": "Contraintes", "icon": "barrier",
     "watch": [],
     "def": {
       "simple": "Les règles à respecter : ton, longueur, ce qu'il ne faut pas faire.",
@@ -303,7 +303,7 @@
     "prereq": ["prompt"]
   },
   {
-    "id": "exemple-modele", "term": "Exemple modèle", "icon": "🧪",
+    "id": "exemple-modele", "term": "Exemple modèle", "icon": "doc-copy",
     "watch": ["exemple modèle", "exemples modèles", "few-shot"],
     "def": {
       "simple": "Montrer à l'IA un exemple de ce que tu veux. Elle imite le style et la structure.",
@@ -315,7 +315,7 @@
     "prereq": ["prompt", "format-sortie"]
   },
   {
-    "id": "questions-prealables", "term": "Questions préalables", "icon": "❓",
+    "id": "questions-prealables", "term": "Questions préalables", "icon": "question-bubble",
     "watch": ["questions préalables"],
     "def": {
       "simple": "Demander à l'IA de te poser des questions avant de répondre, pour qu'elle ait toutes les infos.",
@@ -327,7 +327,7 @@
     "prereq": ["prompt", "contexte", "hallucination"]
   },
   {
-    "id": "iteration", "term": "Itération", "icon": "🔁",
+    "id": "iteration", "term": "Itération", "icon": "cycle",
     "watch": ["itérer", "itération", "itérations"],
     "def": {
       "simple": "Améliorer la réponse en plusieurs allers-retours : « plus court », « plus formel », « ajoute un exemple ».",
@@ -340,7 +340,7 @@
   },
 
   {
-    "id": "projet", "term": "Projet", "icon": "🗂️", "checked": "2026-11",
+    "id": "projet", "term": "Projet", "icon": "folder-stack", "checked": "2026-11",
     "watch": ["projet claude", "projets claude"],
     "def": {
       "simple": "Un dossier dans l'assistant où tu ranges une fois pour toutes tes consignes et tes fichiers. Toutes les conversations du dossier en profitent.",
@@ -352,7 +352,7 @@
     "prereq": ["conversation", "contexte"]
   },
   {
-    "id": "instructions-projet", "term": "Instructions de projet", "icon": "📝",
+    "id": "instructions-projet", "term": "Instructions de projet", "icon": "checklist",
     "watch": ["instructions de projet"],
     "def": {
       "simple": "Le texte de consignes permanent d'un projet : qui tu es, ce que tu attends, le ton à employer.",
@@ -364,7 +364,7 @@
     "prereq": ["prompt", "role", "contraintes", "format-sortie"]
   },
   {
-    "id": "fichiers-projet", "term": "Fichiers de projet", "icon": "📎",
+    "id": "fichiers-projet", "term": "Fichiers de projet", "icon": "clip",
     "watch": ["fichiers de projet"],
     "def": {
       "simple": "Les documents que tu déposes dans un projet pour que l'IA puisse s'en servir à chaque fois.",
@@ -376,7 +376,7 @@
     "prereq": ["projet", "hallucination"]
   },
   {
-    "id": "preferences", "term": "Préférences personnelles", "icon": "⚙️", "checked": "2026-11",
+    "id": "preferences", "term": "Préférences personnelles", "icon": "sliders", "checked": "2026-11",
     "watch": ["préférences personnelles", "instructions personnalisées"],
     "def": {
       "simple": "Des consignes générales qui s'appliquent à toutes tes conversations, même hors projet.",
@@ -388,7 +388,7 @@
     "prereq": ["assistant", "contexte", "conversation"]
   },
   {
-    "id": "assistant-perso", "term": "Assistant personnalisé (GPT, Gem)", "icon": "🧑‍🔧", "checked": "2026-11",
+    "id": "assistant-perso", "term": "Assistant personnalisé (GPT, Gem)", "icon": "bot-gear", "checked": "2026-11",
     "watch": ["gpts", "gems"],
     "def": {
       "simple": "Un assistant spécialisé que tu configures une fois (consignes + fichiers) et que tu réutilises : les « GPTs » chez ChatGPT, les « Gems » chez Gemini.",
@@ -401,7 +401,7 @@
   },
 
   {
-    "id": "markdown", "term": "Markdown", "icon": "#️⃣",
+    "id": "markdown", "term": "Markdown", "icon": "hash",
     "watch": ["markdown"],
     "def": {
       "simple": "Une façon simple d'écrire du texte mis en forme avec des symboles : # pour un titre, - pour une puce, **mot** pour du gras.",
@@ -413,7 +413,7 @@
     "prereq": []
   },
   {
-    "id": "skill", "term": "Skill", "icon": "🛠️", "checked": "2026-11",
+    "id": "skill", "term": "Skill", "icon": "expansion-card", "checked": "2026-11",
     "watch": ["skill", "skills"],
     "def": {
       "simple": "Une fiche « méthode » que tu donnes à l'IA pour qu'elle fasse une tâche exactement à ta façon, à chaque fois.",
@@ -425,7 +425,7 @@
     "prereq": ["prompt", "markdown"]
   },
   {
-    "id": "skill-md", "term": "Fichier SKILL.md", "icon": "📄",
+    "id": "skill-md", "term": "Fichier SKILL.md", "icon": "file-md",
     "watch": ["skill.md"],
     "def": {
       "simple": "Le fichier texte qui contient le Skill : un en-tête (nom + description), puis les instructions.",
@@ -437,7 +437,7 @@
     "prereq": ["skill", "markdown", "format-sortie"]
   },
   {
-    "id": "entete-skill", "term": "En-tête d'un Skill", "icon": "🏷️",
+    "id": "entete-skill", "term": "En-tête d'un Skill", "icon": "tag",
     "watch": ["en-tête", "frontmatter"],
     "def": {
       "simple": "Le haut du fichier : le nom du Skill et une description qui dit QUAND l'utiliser.",
@@ -449,7 +449,7 @@
     "prereq": ["skill"]
   },
   {
-    "id": "chargement-demande", "term": "Chargement à la demande", "icon": "📥",
+    "id": "chargement-demande", "term": "Chargement à la demande", "icon": "inbox-down",
     "watch": ["chargement à la demande"],
     "def": {
       "simple": "L'IA ne lit pas tous tes Skills en entier : elle lit seulement leurs étiquettes, et ouvre celui qui correspond.",
@@ -462,7 +462,7 @@
   },
 
   {
-    "id": "api", "term": "API", "icon": "🔌",
+    "id": "api", "term": "API", "icon": "plug",
     "watch": ["api", "apis"],
     "def": {
       "simple": "Une « prise » prévue par un logiciel pour que d'autres programmes puissent lui parler.",
@@ -474,7 +474,7 @@
     "prereq": []
   },
   {
-    "id": "connecteur", "term": "Connecteur", "icon": "🔗", "checked": "2026-11",
+    "id": "connecteur", "term": "Connecteur", "icon": "connector", "checked": "2026-11",
     "watch": ["connecteur", "connecteurs"],
     "def": {
       "simple": "Un branchement entre ton assistant IA et un de tes outils (Gmail, Drive, Notion, Slack…) pour qu'il puisse lire ou agir dedans.",
@@ -486,7 +486,7 @@
     "prereq": ["api", "assistant", "contexte"]
   },
   {
-    "id": "mcp", "term": "MCP (Model Context Protocol)", "icon": "🧷",
+    "id": "mcp", "term": "MCP (Model Context Protocol)", "icon": "hub",
     "watch": ["mcp", "model context protocol"],
     "def": {
       "simple": "Une « prise universelle » pour brancher n'importe quel outil à n'importe quelle IA compatible.",
@@ -498,7 +498,7 @@
     "prereq": ["connecteur", "api"]
   },
   {
-    "id": "autorisation", "term": "Autorisation (permissions)", "icon": "🛂",
+    "id": "autorisation", "term": "Autorisation (permissions)", "icon": "shield-check",
     "watch": ["permission", "permissions", "autorisation", "autorisations"],
     "def": {
       "simple": "Ce que tu permets à l'IA de faire avec tes outils : seulement lire, ou aussi écrire, envoyer, supprimer.",
@@ -510,7 +510,7 @@
     "prereq": ["connecteur"]
   },
   {
-    "id": "jeton-acces", "term": "Jeton d'accès", "icon": "🔑",
+    "id": "jeton-acces", "term": "Jeton d'accès", "icon": "key",
     "watch": ["jeton d'accès", "jetons d'accès"],
     "def": {
       "simple": "Un mot de passe spécial, limité, qu'un service te donne pour qu'une appli puisse accéder à tes données à ta place. À ne pas confondre avec les tokens de texte !",
@@ -522,7 +522,7 @@
     "prereq": ["api", "autorisation", "token"]
   },
   {
-    "id": "donnees-sensibles", "term": "Données sensibles", "icon": "🔒",
+    "id": "donnees-sensibles", "term": "Données sensibles", "icon": "db-lock",
     "watch": ["données sensibles"],
     "def": {
       "simple": "Les informations qu'il faut protéger : mots de passe, données bancaires, santé, données de tes clients.",
@@ -535,7 +535,7 @@
   },
 
   {
-    "id": "agent", "term": "Agent (IA)", "icon": "🦾",
+    "id": "agent", "term": "Agent (IA)", "icon": "robot-arm",
     "watch": ["agent", "agents", "agentique", "agentiques"],
     "def": {
       "simple": "Une IA qui ne se contente pas de répondre : elle agit, étape par étape, jusqu'à ce que la tâche soit finie.",
@@ -547,7 +547,7 @@
     "prereq": ["llm", "outil", "boucle-agent"]
   },
   {
-    "id": "outil", "term": "Outil (pour une IA)", "icon": "🔧",
+    "id": "outil", "term": "Outil (pour une IA)", "icon": "wrench",
     "watch": [],
     "def": {
       "simple": "Une action précise que l'IA a le droit de déclencher : chercher sur le web, lire un fichier, envoyer un mail…",
@@ -559,7 +559,7 @@
     "prereq": ["llm", "connecteur", "contexte"]
   },
   {
-    "id": "boucle-agent", "term": "Boucle d'agent", "icon": "♻️",
+    "id": "boucle-agent", "term": "Boucle d'agent", "icon": "orbit-loop",
     "watch": ["boucle d'agent"],
     "def": {
       "simple": "Le cycle que suit un agent : comprendre l'objectif → planifier → agir → observer le résultat → vérifier → recommencer si besoin.",
@@ -571,7 +571,7 @@
     "prereq": ["llm", "outil", "contexte"]
   },
   {
-    "id": "validation-humaine", "term": "Validation humaine", "icon": "✋",
+    "id": "validation-humaine", "term": "Validation humaine", "icon": "user-check",
     "watch": ["validation humaine"],
     "def": {
       "simple": "Le moment où l'agent s'arrête et te demande « je peux y aller ? » avant une action importante.",
@@ -583,7 +583,7 @@
     "prereq": ["agent", "boucle-agent"]
   },
   {
-    "id": "autonomie", "term": "Niveau d'autonomie", "icon": "🎚️",
+    "id": "autonomie", "term": "Niveau d'autonomie", "icon": "fader",
     "watch": ["autonomie"],
     "def": {
       "simple": "Jusqu'où tu laisses l'agent agir seul avant qu'il te demande ton avis.",
@@ -595,7 +595,7 @@
     "prereq": ["agent", "validation-humaine", "autorisation"]
   },
   {
-    "id": "terminal", "term": "Terminal", "icon": "🖥️",
+    "id": "terminal", "term": "Terminal", "icon": "terminal",
     "watch": ["terminal", "ligne de commande"],
     "def": {
       "simple": "Une fenêtre où l'on donne des ordres à l'ordinateur en tapant du texte, sans boutons.",
@@ -607,7 +607,7 @@
     "prereq": ["agent"]
   },
   {
-    "id": "claude-code", "term": "Claude Code", "icon": "✳️", "checked": "2026-11",
+    "id": "claude-code", "term": "Claude Code", "icon": "mono-cc", "checked": "2026-11",
     "watch": ["claude code"],
     "def": {
       "simple": "L'agent d'Anthropic pour programmer : il écrit, corrige et teste du code à ta place.",
@@ -619,7 +619,7 @@
     "prereq": ["agent", "claude", "terminal"]
   },
   {
-    "id": "codex", "term": "Codex", "icon": "◎", "checked": "2026-11",
+    "id": "codex", "term": "Codex", "icon": "mono-cdx", "checked": "2026-11",
     "watch": ["codex"],
     "def": {
       "simple": "L'agent d'OpenAI (ChatGPT) pour programmer.",
@@ -631,7 +631,7 @@
     "prereq": ["agent", "chatgpt", "terminal"]
   },
   {
-    "id": "cowork", "term": "Cowork", "icon": "🤝", "checked": "2026-11",
+    "id": "cowork", "term": "Cowork", "icon": "mono-cw", "checked": "2026-11",
     "watch": ["cowork"],
     "def": {
       "simple": "Un mode de l'appli Claude sur ordinateur où l'agent travaille sur tes fichiers à ta place, sans que tu aies à coder.",

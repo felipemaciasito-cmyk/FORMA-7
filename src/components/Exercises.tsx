@@ -7,6 +7,7 @@ import { sfx } from "../lib/sound";
 import { updateProgress, useSettings } from "../lib/store";
 import { loadClaude } from "../lib/models";
 import type { FeynmanGrade } from "../lib/claude";
+import { Icon } from "./Icon";
 
 export interface ExProps { ex: Exercise; exKey: string; solvedBefore: boolean; onSolved: (attempts: number) => void }
 
@@ -59,7 +60,7 @@ export function Qcm({ ex, onSolved, solvedBefore }: ExProps & { ex: Extract<Exer
           const state = tried.includes(i) ? (o.ok ? "ok" : "ko") : "";
           return (
             <button key={i} className={`choice ${state} ${shakeI === i ? "shake" : ""}`} onClick={(e) => pick(i, e)} disabled={done && !tried.includes(i)} aria-pressed={tried.includes(i)}>
-              <span className="key">{state === "ok" ? "✓" : state === "ko" ? "✕" : LETTERS[i]}</span>
+              <span className="key">{state === "ok" ? <Icon name="check" size={14} stroke={2.4} /> : state === "ko" ? <Icon name="close" size={13} stroke={2.4} /> : LETTERS[i]}</span>
               <span className="grow">{inline(o.t, `o${i}`)}</span>
             </button>
           );
@@ -196,8 +197,8 @@ function Order({ ex, onSolved }: ExProps & { ex: Extract<Exercise, { kind: "orde
               <span className="grow">{inline(it, `r${i}`)}</span>
               {!done && (
                 <span className="row" style={{ gap: 4 }}>
-                  <button className="icon-btn" style={{ width: 32, height: 32 }} onClick={() => move(i, -1)} aria-label="Monter">▲</button>
-                  <button className="icon-btn" style={{ width: 32, height: 32 }} onClick={() => move(i, 1)} aria-label="Descendre">▼</button>
+                  <button className="icon-btn" style={{ width: 32, height: 32 }} onClick={() => move(i, -1)} aria-label="Monter"><Icon name="chevron-up" size={16} stroke={2.2} /></button>
+                  <button className="icon-btn" style={{ width: 32, height: 32 }} onClick={() => move(i, 1)} aria-label="Descendre"><Icon name="chevron-down" size={16} stroke={2.2} /></button>
                 </span>
               )}
             </div>
@@ -348,7 +349,7 @@ function Feynman({ ex, exKey, onSolved }: ExProps & { ex: Extract<Exercise, { ki
           <div className="panel-title" style={{ marginTop: 14 }}>Coche ce que ta réponse contient vraiment</div>
           {ex.criteria.map((c, i) => (
             <button key={i} className={`choice ${ticks[i] ? "ok" : ""}`} disabled={done} onClick={() => setTicks((t) => t.map((v, k) => (k === i ? !v : v)))}>
-              <span className="key">{ticks[i] ? "✓" : ""}</span><span>{c}</span>
+              <span className="key">{ticks[i] ? <Icon name="check" size={14} stroke={2.4} /> : ""}</span><span>{c}</span>
             </button>
           ))}
           {!done && <button className="btn block" style={{ marginTop: 12 }} onClick={() => finish(Math.round((ticks.filter(Boolean).length / ticks.length) * 100))}>Valider mon auto-évaluation</button>}
@@ -360,7 +361,7 @@ function Feynman({ ex, exKey, onSolved }: ExProps & { ex: Extract<Exercise, { ki
           <span className="tag">Claude · {grade.score}/100 · {grade.verdict}</span>
           {grade.strengths.length > 0 && <><b>Points forts</b><ul style={{ margin: "4px 0 8px", paddingLeft: 18 }}>{grade.strengths.map((s, i) => <li key={i}>{s}</li>)}</ul></>}
           {grade.fixes.length > 0 && <><b>À corriger</b><ul style={{ margin: "4px 0 8px", paddingLeft: 18 }}>{grade.fixes.map((s, i) => <li key={i}>{s}</li>)}</ul></>}
-          <div className="small">💡 {grade.tip}</div>
+          <div className="small" style={{ display: "flex", gap: 8 }}><Icon name="bulb" size={16} style={{ color: "var(--amber)", marginTop: 2 }} /><span>{grade.tip}</span></div>
           <details style={{ marginTop: 8 }}><summary className="small muted">Voir la réponse modèle</summary><RichText md={ex.model} /></details>
         </div>
       )}

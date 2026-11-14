@@ -1,12 +1,14 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 import { sfx } from "../../lib/sound";
+import { Icon } from "../Icon";
 
 // Comparateur des trois cœurs. Infos vérifiées en novembre 2026 : tendances, pas classements.
+// Monogrammes neutres dans des puces : aucun logo de marque.
 const CORES = [
-  { id: "claude", name: "Claude", by: "Anthropic", glyph: "✳", hue: 22 },
-  { id: "chatgpt", name: "ChatGPT", by: "OpenAI", glyph: "◎", hue: 160 },
-  { id: "gemini", name: "Gemini", by: "Google", glyph: "✦", hue: 220 },
+  { id: "claude", name: "Claude", by: "Anthropic", mono: "mono-cl", hue: 22 },
+  { id: "chatgpt", name: "ChatGPT", by: "OpenAI", mono: "mono-gpt", hue: 160 },
+  { id: "gemini", name: "Gemini", by: "Google", mono: "mono-gem", hue: 220 },
 ];
 
 const NEEDS: { label: string; fit: string[]; note: string }[] = [
@@ -31,7 +33,13 @@ export default function CoreCompare() {
           return (
             <motion.div key={c.id} animate={{ opacity: on ? 1 : 0.28, scale: first ? 1.04 : 1 }} transition={{ type: "spring", stiffness: 300, damping: 22 }}
               style={{ borderRadius: 14, padding: "14px 8px", textAlign: "center", border: `1px solid hsl(${c.hue} 90% 60% / ${on ? 0.6 : 0.15})`, background: `linear-gradient(180deg, hsl(${c.hue} 80% 50% / ${on ? 0.18 : 0.04}), transparent)`, boxShadow: on && n ? `0 0 24px hsl(${c.hue} 90% 55% / .35)` : "none" }}>
-              <div style={{ fontSize: 28, color: `hsl(${c.hue} 90% 66%)`, lineHeight: 1 }}>{c.glyph}</div>
+              <div style={{ display: "grid", placeItems: "center" }}>
+                <span style={{ width: 46, height: 46, borderRadius: 13, display: "grid", placeItems: "center", color: `hsl(${c.hue} 90% 70%)`,
+                  background: `linear-gradient(160deg, hsl(${c.hue} 80% 50% / .22), rgba(8,13,24,.9))`, border: `1.5px solid hsl(${c.hue} 90% 62% / ${on ? 0.75 : 0.25})`,
+                  boxShadow: on ? `inset 0 0 10px hsl(${c.hue} 90% 60% / .25)` : "none" }}>
+                  <Icon name={c.mono} size={34} />
+                </span>
+              </div>
               <div style={{ fontWeight: 700, marginTop: 6 }}>{c.name}</div>
               <div className="mono" style={{ fontSize: 10, color: "var(--text-3)" }}>{c.by}</div>
               <div className="row" style={{ justifyContent: "center", gap: 3, marginTop: 8 }}>

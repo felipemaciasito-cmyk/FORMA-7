@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { sfx } from "../../lib/sound";
+import { Icon } from "../Icon";
 import { useSettings } from "../../lib/store";
 import { loadClaude } from "../../lib/models";
 
@@ -42,7 +43,7 @@ export default function PromptLab() {
           return (
             <motion.button key={p.id} whileTap={{ scale: 0.94 }} onClick={() => toggle(p.id)} className="chip"
               style={{ borderColor: p.color, background: active ? p.color : "transparent", color: active ? "#05070d" : p.color }}>
-              {active ? "✓ " : "+ "}{p.label}
+              <Icon name={active ? "check" : "plus"} size={14} stroke={2.2} />{p.label}
             </motion.button>
           );
         })}
@@ -72,7 +73,7 @@ export default function PromptLab() {
       </div>
       {settings.apiKey && (
         <div style={{ marginTop: 12 }}>
-          <button className="btn ghost block" onClick={tryLive} disabled={live.loading || !on.includes("task")}>{live.loading ? "Claude rédige…" : "⚡ Tester ce prompt avec Claude, pour de vrai"}</button>
+          <button className="btn ghost block" onClick={tryLive} disabled={live.loading || !on.includes("task")}>{live.loading ? "Claude rédige…" : <><Icon name="spark" size={18} /> Tester ce prompt avec Claude, pour de vrai</>}</button>
           {live.text && <div className="feedback info"><span className="tag">Réponse réelle de Claude</span><pre style={{ margin: 0, whiteSpace: "pre-wrap", font: "14px/1.5 var(--font)" }}>{live.text}</pre></div>}
           {live.error && <div className="feedback ko"><span className="tag">Erreur</span>{live.error}</div>}
         </div>

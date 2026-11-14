@@ -2,7 +2,19 @@ import { useEffect, useSyncExternalStore } from "react";
 import { get, set } from "idb-keyval";
 import { registerMissionNotions } from "../content";
 import type { DataIndex, Mission } from "../content/types";
+import { stripEmoji } from "./emoji-rules";
 import { getState } from "./store";
+
+/** Règle « zéro emoji » : nettoie toutes les chaînes d'une mission (sauf liens), au cas où une donnée en contiendrait. */
+function cleanMission(m: Mission): Mission {
+  const walk = (v: unknown, key = ""): unknown => {
+    if (typeof v === "string") return key === "url" || key === "gmailUrl" ? v : stripEmoji(v);
+    if (Array.isArray(v)) return v.map((x) => walk(x, key));
+    if (v && typeof v === "object") return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, walk(x, k)]));
+    return v;
+  };
+  return walk(m) as Mission;
+}
 
 // ---------------------------------------------------------------
 // Lecture des missions privées (dépôt GitHub forma-7-data) via l'API
@@ -45,7 +57,7 @@ async function gh(path: string) {
 export async function loadCachedMissions() {
   try {
     const c = await get<DataState>(CACHE);
-    if (c?.missions) setDs({ missions: c.missions, updatedAt: c.updatedAt, fetchedAt: c.fetchedAt });
+    if (c?.missions) setDs({ missions: c.missions.map(cleanMission), updatedAt: c.updatedAt, fetchedAt: c.fetchedAt });
   } catch { /* cache absent */ }
 }
 
@@ -63,7 +75,7 @@ export function syncMissions(): Promise<void> {
       for (const e of idx.missions ?? []) {
         const cached = known.get(e.id);
         if (cached && cached.receivedAt === e.receivedAt) { missions.push(cached); continue; }
-        missions.push((await gh(e.file)) as Mission);
+        missions.push(cleanMission((await gh(e.file)) as Mission));
       }
       missions.sort((a, b) => a.receivedAt.localeCompare(b.receivedAt));
       const fetchedAt = new Date().toISOString();

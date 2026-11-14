@@ -275,6 +275,26 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.45; }
   background: rgba(10, 18, 34, 0.95); border: 1px solid var(--line-strong); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); font-weight: 600; }
 .toast .ic { font-size: 20px; }
 
+/* ---------- Icônes, puces de module, emblèmes ---------- */
+.ico { display: inline-block; vertical-align: -0.18em; flex: none; }
+.btn .ico, .chip .ico, .pill .ico { vertical-align: middle; }
+.panel-title > svg { flex: none; }
+.choice .key svg { display: block; }
+.toast .ic { display: grid; place-items: center; flex: none; }
+.mchip, .emblem { display: block; flex: none; overflow: visible; }
+.mc-blink { animation: blink 1s steps(1) infinite; }
+.mc-trace .tr { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: mc-draw 1.1s cubic-bezier(.65, 0, .25, 1) forwards; }
+.mc-trace .mc-glyph .tr { animation-delay: .3s; animation-duration: 1s; }
+.mc-trace .fi { opacity: 0; animation: mc-fade .45s .95s forwards; }
+@keyframes mc-draw { to { stroke-dashoffset: 0; } }
+@keyframes mc-fade { to { opacity: 1; } }
+.notion-tile { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.unlock-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 10px; margin-bottom: 14px; }
+.unlock-grid > div { width: 92px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; line-height: 1.2; }
+.icon-sheet { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+.icon-sheet > div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px; border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); text-align: center; font: 600 9.5px var(--mono); color: var(--text-3); word-break: break-word; }
+
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
 @keyframes flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; } 20%, 24%, 55% { opacity: .35; } }
 @keyframes pulse-ring { 0% { transform: scale(.8); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }

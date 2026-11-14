@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import type { Block, WidgetId } from "../content/types";
 import { RichText } from "../lib/richtext";
 import { Art } from "./Art";
+import { Icon, type IconId } from "./Icon";
 import { ExerciseView } from "./Exercises";
 import { OraSays } from "./Ora";
 import { TermCard } from "./TermSheet";
@@ -33,7 +34,7 @@ export function BlockView({ block, exKey, solvedBefore, onSolved }: { block: Blo
     case "analogy":
       return (
         <div className="panel" style={{ background: "rgba(167,139,250,.07)", borderColor: "rgba(167,139,250,.3)" }}>
-          <div className="panel-title" style={{ color: "var(--violet)" }}>🖼 Analogie</div>
+          <div className="panel-title" style={{ color: "var(--violet)" }}><Icon name="frame" size={16} /> Analogie</div>
           {block.art && <div style={{ margin: "-4px 0 8px" }}><Art name={block.art} /></div>}
           <div className="h3">{block.title}</div>
           <RichText md={block.md} />
@@ -52,7 +53,7 @@ export function BlockView({ block, exKey, solvedBefore, onSolved }: { block: Blo
     case "example":
       return (
         <div>
-          <div className="panel-title">🧪 {block.title}</div>
+          <div className="panel-title"><Icon name="flask" size={16} /> {block.title}</div>
           <div style={{ display: "grid", gap: 10 }}>
             {block.before && (
               <div className="panel" style={{ borderColor: "rgba(255,77,109,.3)", background: "rgba(255,77,109,.06)" }}>
@@ -70,10 +71,10 @@ export function BlockView({ block, exKey, solvedBefore, onSolved }: { block: Blo
       );
     case "callout": {
       if (block.tone === "ora") return <OraSays md={block.md} />;
-      const tone = { info: ["var(--cyan)", "ℹ️ À retenir"], warn: ["var(--amber)", "⚠️ Attention"], volatile: ["var(--amber)", "🕒 Info qui évolue"] }[block.tone];
+      const tone = ({ info: ["var(--cyan)", "info", "À retenir"], warn: ["var(--amber)", "warn", "Attention"], volatile: ["var(--amber)", "clock", "Info qui évolue"] } as Record<string, [string, IconId, string]>)[block.tone];
       return (
         <div className="panel" style={{ borderColor: `color-mix(in srgb, ${tone[0]} 40%, transparent)`, background: `color-mix(in srgb, ${tone[0]} 8%, transparent)` }}>
-          <div className="panel-title" style={{ color: tone[0] }}>{tone[1]}</div>
+          <div className="panel-title" style={{ color: tone[0] }}><Icon name={tone[1]} size={16} /> {tone[2]}</div>
           <RichText md={block.md} />
         </div>
       );

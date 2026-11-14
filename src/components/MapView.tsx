@@ -81,7 +81,7 @@ export function MapView() {
                 if (!unlocked) {
                   sfx("ko");
                   const req = ROOMS.find((x) => x.id === r.requires[0]);
-                  fx({ type: "toast", icon: "🔒", text: `Verrouillée : rallume d'abord ${req ? req.code : "la salle précédente"}`, tone: "red" });
+                  fx({ type: "toast", icon: "lock", text: `Verrouillée : rallume d'abord ${req ? req.code : "la salle précédente"}`, tone: "red" });
                   return;
                 }
                 sfx("open");

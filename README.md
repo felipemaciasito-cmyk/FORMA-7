@@ -31,14 +31,22 @@ il faut comprendre ses machines (notions), réussir les vérifications (exercice
 ```bash
 npm install
 npm run dev        # serveur de développement
-npm run validate   # validateur « zéro zone de flou »
-npm run build      # validation + build de production (dist/)
+npm run validate     # validateur « zéro zone de flou » (+ zéro emoji dans le contenu)
+npm run check:emoji  # contrôle « zéro emoji » du code (src/, index.html, public/)
+npm run build        # validations + build de production (dist/)
 ```
 
 Contenu : `src/content/glossary.json` (notions) et `src/content/rooms/*.json` (salles). Les termes
 techniques s'écrivent `[[id]]` ou `[[id|texte affiché]]`.
 
-Icônes : `node scripts/gen-icons.mjs` (nécessite Playwright et Chromium).
+**Zéro emoji.** L'appli n'affiche jamais d'emoji : les pictogrammes sont des icônes maison
+(`src/components/glyphs.ts`, grille de 24, trait de 1,8). Leurs identifiants sont listés dans
+`src/content/icon-ids.json`, lu à la fois par l'appli et par le validateur : le champ `icon` d'une notion
+doit en faire partie. Les notions s'affichent dans des « puces de module » hexagonales et les badges dans
+des emblèmes octogonaux (`src/components/Emblems.tsx`). Catalogue complet dans l'appli : Réglages ›
+À propos › Bibliothèque d'icônes.
+
+Icônes de l'appli (écran d'accueil) : `node scripts/gen-icons.mjs` (nécessite Playwright et Chromium).
 
 ## Déploiement
 

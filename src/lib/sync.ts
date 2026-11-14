@@ -106,7 +106,7 @@ export function syncNow(): Promise<void> {
         if (mergedCanon !== canonical(local)) {
           const gained = Object.keys(merged.steps).length - Object.keys(local.steps).length;
           applySyncedProgress(merged);
-          if (gained > 0 || merged.energy > local.energy) fx({ type: "toast", icon: "🔄", text: "Progression récupérée depuis ton autre appareil", tone: "cyan" });
+          if (gained > 0 || merged.energy > local.energy) fx({ type: "toast", icon: "refresh", text: "Progression récupérée depuis ton autre appareil", tone: "cyan" });
         }
         if (!remote.progress || mergedCanon !== canonical(remote.progress)) {
           try { await putRemote(merged, remote.sha); }

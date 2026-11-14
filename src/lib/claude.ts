@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { stripEmoji } from "./emoji-rules";
 import { getState } from "./store";
 
 // ---------------------------------------------------------------
@@ -39,7 +40,7 @@ async function ask(opts: { system: string; user: string; maxTokens?: number; eff
     const res = await client().beta.messages.create({
       model,
       max_tokens: opts.maxTokens ?? 4000,
-      system: opts.system,
+      system: `${opts.system}\n\nN'utilise jamais d'emoji ni de pictogramme décoratif dans ta réponse.`,
       messages: [{ role: "user", content: opts.user }],
       output_config: {
         effort: opts.effort ?? "low",
@@ -50,7 +51,7 @@ async function ask(opts: { system: string; user: string; maxTokens?: number; eff
     if (res.stop_reason === "refusal") throw new ClaudeError("refusal", "Claude a refusé de traiter cette demande.");
     const text = res.content.map((b) => (b.type === "text" ? b.text : "")).join("").trim();
     if (!text) throw new ClaudeError("empty", "Réponse vide.");
-    return text;
+    return stripEmoji(text);
   } catch (e) {
     throw friendly(e);
   }

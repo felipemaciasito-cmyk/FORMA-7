@@ -14,12 +14,16 @@
 //     en clair dans une étape avant que sa notion soit introduite.
 //  6. Les exercices sont bien formés (au moins une bonne réponse, etc.).
 //  7. Option --data <dossier> : valide aussi les missions issues des mails.
+//  8. Zéro emoji : aucun emoji ni symbole décoratif dans le glossaire, les
+//     salles et les missions ; le champ « icon » d'une notion est un
+//     identifiant de src/content/icon-ids.json.
 //
 // Usage : node scripts/validate-content.mjs [--data ../forma-7-data]
 // =====================================================================
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { codepoint, findEmoji } from "../src/lib/emoji-rules.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
@@ -37,6 +41,31 @@ const glossary = readJSON(join(contentDir, "glossary.json"));
 const roomsDir = join(contentDir, "rooms");
 const rooms = readdirSync(roomsDir).filter((f) => f.endsWith(".json")).map((f) => ({ file: f, ...readJSON(join(roomsDir, f)) }))
   .sort((a, b) => a.index - b.index);
+
+const iconIds = readJSON(join(contentDir, "icon-ids.json"));
+const ICONS = new Set([...Object.keys(iconIds.notions), ...Object.keys(iconIds.interface)]);
+
+// ---------- 8. Zéro emoji ----------
+/** Signale chaque emoji présent dans n'importe quelle chaîne (y compris les clés). */
+function checkNoEmoji(obj, where) {
+  const seen = new Set();
+  const walk = (v, path) => {
+    if (typeof v === "string") {
+      for (const { char } of findEmoji(v)) {
+        const k = `${path}:${char}`;
+        if (seen.has(k)) continue;
+        seen.add(k);
+        err(where, `emoji interdit « ${char} » (${codepoint(char)}) dans ${path || "le texte"} : remplace-le par des mots, ou par un identifiant d'icône de src/content/icon-ids.json pour le champ icon. Texte : « ${v.slice(0, 70)} »`);
+      }
+    } else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`));
+    else if (v && typeof v === "object") for (const [k, x] of Object.entries(v)) { walk(k, path ? `${path}.${k}` : k); walk(x, path ? `${path}.${k}` : k); }
+  };
+  walk(obj, "");
+}
+function checkIcon(n, where) {
+  if (!n.icon) err(where, `notion ${n.id} : champ icon manquant (identifiant de src/content/icon-ids.json)`);
+  else if (!ICONS.has(n.icon)) err(where, `notion ${n.id} : icône « ${n.icon} » inconnue. Choisis un identifiant dans src/content/icon-ids.json (section « notions »), par exemple « ${[...Object.keys(iconIds.notions)].slice(0, 4).join(" », « ")} ».`);
+}
 
 const byId = new Map();
 for (const n of glossary) {
@@ -77,6 +106,7 @@ for (const n of glossary) {
   if (!n.analogy) err(w, "analogie manquante");
   if (!n.example) err(w, "exemple manquant");
   if (!n.term) err(w, "terme manquant");
+  checkIcon(n, "glossaire");
   for (const p of n.prereq ?? []) if (!byId.has(p)) err(w, `prérequis inconnu : ${p}`);
 }
 // boucles de prérequis
@@ -91,6 +121,9 @@ for (const n of glossary) {
   };
   for (const n of glossary) visit(n.id, []);
 }
+
+checkNoEmoji(glossary, "glossaire");
+for (const room of rooms) checkNoEmoji(room, room.file);
 
 // ---------- 6. Exercices ----------
 function checkExercise(ex, where) {
@@ -202,12 +235,14 @@ if (dataArg > -1) {
   if (!existsSync(idxPath)) err("data", `index.json introuvable dans ${dataDir}`);
   else {
     const idx = readJSON(idxPath);
+    checkNoEmoji(idx, "index.json");
     const allKnown = new Set(glossary.map((n) => n.id));
     for (const entry of idx.missions ?? []) {
       const p = join(dataDir, entry.file);
       const w = `mission ${entry.id}`;
       if (!existsSync(p)) { err(w, `fichier manquant : ${entry.file}`); continue; }
       const m = readJSON(p);
+      checkNoEmoji(m, w);
       for (const f of ["id", "day", "room", "title", "receivedAt", "summary", "tonight", "notions", "links", "exercises"]) if (m[f] === undefined) err(w, `champ manquant : ${f}`);
       if (m.id !== entry.id) err(w, "l'id du fichier ne correspond pas à index.json");
       if (!roomIds.has(m.room)) err(w, `salle inconnue : ${m.room}`);
@@ -216,6 +251,7 @@ if (dataArg > -1) {
         if (allKnown.has(n.id) && !local.has(n.id) && byId.has(n.id)) err(w, `notion « ${n.id} » existe déjà dans le glossaire : réutilise [[${n.id}]] au lieu de la redéfinir`);
         for (const lv of ["simple", "standard", "expert"]) if (!n.def?.[lv]) err(w, `notion ${n.id} : définition ${lv} manquante`);
         if (!n.analogy || !n.example) err(w, `notion ${n.id} : analogie ou exemple manquant`);
+        checkIcon(n, w);
         for (const pr of n.prereq ?? []) if (!allKnown.has(pr) && !local.has(pr)) err(w, `notion ${n.id} : prérequis inconnu ${pr}`);
         local.add(n.id);
       }

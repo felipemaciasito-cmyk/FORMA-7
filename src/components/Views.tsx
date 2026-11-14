@@ -11,9 +11,10 @@ import { useMissions } from "../lib/data";
 import { exportMissionFiche } from "../lib/fiche";
 import { openTerm } from "../lib/termBus";
 import { BlockView } from "./Blocks";
+import { BadgeEmblem, NotionChip, notionHue } from "./Emblems";
 import { TopBar } from "./Chrome";
 import { ExerciseView } from "./Exercises";
-import { Icon } from "./Icon";
+import { Icon, type IconId } from "./Icon";
 import { OraSays } from "./Ora";
 import SkillWorkshop from "./SkillWorkshop";
 
@@ -46,16 +47,17 @@ export function BaseView({ focus }: { focus?: string }) {
         {list.map((n, i) => {
           const st = p.notions[n.id];
           const origin = notionOrigin(n.id);
+          const open = !!(st || origin.missionId);
+          const hot = due.has(n.id);
           return (
             <motion.button key={n.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 20) * 0.02 }} whileTap={{ scale: 0.95 }}
-              onClick={() => { if (st || origin.missionId) openTerm(n.id); else { sfx("ko"); fx({ type: "toast", icon: "🔒", text: `Tu découvriras cette notion en ${origin.room?.code ?? "salle suivante"}`, tone: "red" }); } }}
-              className="panel" style={{ marginTop: 0, padding: 12, textAlign: "left", minHeight: 108, borderColor: due.has(n.id) ? "rgba(255,77,109,.5)" : st ? "rgba(59,232,255,.3)" : undefined, opacity: st || origin.missionId ? 1 : 0.55 }}>
-              <div style={{ fontSize: 26, filter: st || origin.missionId ? "none" : "grayscale(1) brightness(.5)" }}>{st || origin.missionId ? n.icon : "❔"}</div>
-              <div style={{ fontWeight: 700, fontSize: 14, marginTop: 6, lineHeight: 1.25 }}>{st || origin.missionId ? n.term : "Notion verrouillée"}</div>
-              <div className="mono" style={{ fontSize: 10, color: "var(--text-3)", marginTop: 4 }}>
-                {st ? `BOÎTE ${st.box}/5${due.has(n.id) ? " · 🌡" : ""}` : origin.missionId ? "SIGNAL" : origin.room?.code}
+              onClick={() => { if (open) openTerm(n.id); else { sfx("ko"); fx({ type: "toast", icon: "lock", text: `Tu découvriras cette notion en ${origin.room?.code ?? "salle suivante"}`, tone: "red" }); } }}
+              className="panel notion-tile" style={{ marginTop: 0, padding: 12, textAlign: "left", minHeight: 128, borderColor: hot ? "rgba(255,77,109,.5)" : st ? `hsl(${notionHue(n.id)} 90% 60% / .32)` : undefined, opacity: open ? 1 : 0.6 }}>
+              <NotionChip id={n.id} icon={n.icon} size={46} locked={!open} />
+              <div style={{ fontWeight: 700, fontSize: 14, lineHeight: 1.25 }}>{open ? n.term : "Notion verrouillée"}</div>
+              <div className="mono" style={{ fontSize: 10, color: hot ? "var(--red)" : "var(--text-3)", display: "flex", alignItems: "center", gap: 4 }}>
+                {st ? <>BOÎTE {st.box}/5{hot && <><Icon name="thermo" size={11} /> SURCHAUFFE</>}</> : origin.missionId ? "SIGNAL" : origin.room?.code}
               </div>
-              {st && <div style={{ display: "flex", gap: 3, marginTop: 6 }}>{[1, 2, 3, 4, 5].map((b) => <span key={b} style={{ flex: 1, height: 3, borderRadius: 2, background: b <= st.box ? "var(--cyan)" : "rgba(255,255,255,.08)" }} />)}</div>}
             </motion.button>
           );
         })}
@@ -73,9 +75,10 @@ export function BaseView({ focus }: { focus?: string }) {
         {BADGES.map((b) => {
           const got = p.badges[b.id];
           return (
-            <div key={b.id} className="panel" style={{ marginTop: 0, padding: 12, textAlign: "center", opacity: got ? 1 : 0.45, borderColor: got ? "rgba(255,181,71,.45)" : undefined }}>
-              <div style={{ fontSize: 30, filter: got ? "drop-shadow(0 0 10px rgba(255,181,71,.6))" : "grayscale(1)" }}>{b.icon}</div>
-              <div style={{ fontWeight: 700, fontSize: 13.5, marginTop: 4 }}>{b.title}</div>
+            <div key={b.id} className="panel" style={{ marginTop: 0, padding: 12, textAlign: "center", opacity: got ? 1 : 0.72, borderColor: got ? "rgba(255,181,71,.45)" : undefined,
+              background: got ? "linear-gradient(170deg, rgba(255,181,71,.10), rgba(12,19,34,.85) 55%)" : undefined }}>
+              <div style={{ display: "grid", placeItems: "center", margin: "2px 0 6px" }}><BadgeEmblem icon={b.icon} got={!!got} size={58} label={got ? `Badge obtenu : ${b.title}` : `Badge à débloquer : ${b.title}`} /></div>
+              <div style={{ fontWeight: 700, fontSize: 13.5, marginTop: 4, color: got ? "var(--text)" : "var(--text-2)" }}>{b.title}</div>
               <div className="small muted" style={{ fontSize: 12 }}>{b.desc}</div>
             </div>
           );
@@ -156,7 +159,7 @@ export function MaintenanceView() {
         <div className="small muted" style={{ marginTop: 10 }}>Chaque réussite fait monter la notion d'une boîte, et l'espace jusqu'à la prochaine révision s'allonge. Une erreur la renvoie en boîte 1.</div>
       </div>
       <div className="stack" style={{ marginTop: 14 }}>
-        <button className="btn block danger" disabled={!due.length} onClick={() => start(due)}>🌡 Refroidir {due.length} notion{due.length > 1 ? "s" : ""}</button>
+        <button className="btn block danger" disabled={!due.length} onClick={() => start(due)}><Icon name="thermo" size={18} /> Refroidir {due.length} notion{due.length > 1 ? "s" : ""}</button>
         <button className="btn ghost block" disabled={learned.length < 4} onClick={() => start(learned)}>Entraînement libre</button>
         {learned.length > 0 && learned.length < 4 && <div className="small dim">L'entraînement libre s'ouvre dès 4 notions collectées.</div>}
       </div>
@@ -181,14 +184,14 @@ function ReviewCard({ id, pool, onDone }: { id: string; pool: string[]; onDone: 
         {choices.map((c) => {
           const cn = notion(c)!;
           const st = picked ? (c === id ? "ok" : c === picked ? "ko" : "") : "";
-          return <button key={c} className={`choice ${st}`} disabled={!!picked} onClick={() => { setPicked(c); sfx(c === id ? "ok" : "ko"); setTimeout(() => onDone(c === id), c === id ? 700 : 1600); }}><span className="key">{cn.icon}</span><span>{cn.term}</span></button>;
+          return <button key={c} className={`choice ${st}`} disabled={!!picked} onClick={() => { setPicked(c); sfx(c === id ? "ok" : "ko"); setTimeout(() => onDone(c === id), c === id ? 700 : 1600); }}><span className="key" style={{ width: 30, height: 30, color: `hsl(${notionHue(c)} 100% 70%)` }}><Icon name={cn.icon} size={20} /></span><span>{cn.term}</span></button>;
         })}
       </div>
     );
   }
   return (
     <div className="panel" style={{ textAlign: "center", minHeight: 260 }}>
-      <div style={{ fontSize: 44 }}>{n.icon}</div>
+      <div style={{ display: "grid", placeItems: "center", margin: "4px 0 8px" }}><NotionChip id={id} icon={n.icon} size={78} /></div>
       <div className="h2">{n.term}</div>
       {!reveal ? (
         <>
@@ -198,7 +201,7 @@ function ReviewCard({ id, pool, onDone }: { id: string; pool: string[]; onDone: 
       ) : (
         <motion.div initial={{ rotateX: 90, opacity: 0 }} animate={{ rotateX: 0, opacity: 1 }} style={{ textAlign: "left" }}>
           <div style={{ margin: "12px 0" }}><RichText md={n.def.standard} /></div>
-          <div className="small muted" style={{ marginBottom: 14 }}>🖼 {n.analogy}</div>
+          <div className="small muted" style={{ marginBottom: 14, display: "flex", gap: 8 }}><Icon name="frame" size={16} style={{ color: "var(--violet)", marginTop: 2 }} /><span>{n.analogy}</span></div>
           <div className="row">
             <button className="btn danger grow" onClick={() => { sfx("ko"); onDone(false); }}>À revoir</button>
             <button className="btn led grow" onClick={() => { sfx("ok"); onDone(true); }}>Je savais</button>
@@ -244,7 +247,7 @@ export function SignalList() {
   );
 }
 
-const KIND_ICON: Record<string, string> = { video: "🎬", outil: "🧰", ressource: "📚", article: "📰", autre: "🔗" };
+const KIND_ICON: Record<string, IconId> = { video: "video", outil: "toolbox", ressource: "book", article: "article", autre: "link" };
 
 export function SignalView({ id }: { id: string }) {
   const { missions } = useMissions();
@@ -266,18 +269,18 @@ export function SignalView({ id }: { id: string }) {
     <div className="wrap" style={{ ["--hue" as string]: 38 }}>
       <TopBar title={m.title} kicker={`Signal · ${m.day >= 1 && m.day <= 7 ? `Jour ${m.day}` : m.day === 8 ? "Bonus" : "Ressource"} · ${r?.code ?? ""}`} onBack={() => go("signaux")} />
       <div className="panel" style={{ borderColor: "rgba(255,181,71,.4)", background: "linear-gradient(140deg, rgba(255,181,71,.12), rgba(12,19,34,.9))" }}>
-        <div className="panel-title" style={{ color: "var(--amber)" }}>📡 Transmission décodée</div>
+        <div className="panel-title" style={{ color: "var(--amber)" }}><Icon name="dish" size={16} /> Transmission décodée</div>
         <div className="small muted">Reçu le {new Date(m.receivedAt).toLocaleString("fr-FR")}{m.source?.subject ? ` · « ${m.source.subject} »` : ""}</div>
         <ul style={{ margin: "10px 0 0", paddingLeft: 18 }}>{m.summary.map((s, i) => <li key={i} style={{ margin: "6px 0" }}><RichText md={s} /></li>)}</ul>
-        {m.source?.gmailUrl && <a className="small" href={m.source.gmailUrl} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: 10 }}>Ouvrir le mail d'origine ↗</a>}
+        {m.source?.gmailUrl && <a className="small" href={m.source.gmailUrl} target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 10 }}>Ouvrir le mail d'origine <Icon name="external" size={14} /></a>}
       </div>
 
       {m.tonight.length > 0 && (
         <div className="panel">
-          <div className="panel-title">🌙 À faire dès ce soir</div>
+          <div className="panel-title"><Icon name="moon" size={16} /> À faire dès ce soir</div>
           {m.tonight.map((t, i) => {
             const k = `sig:${m.id}:t${i}`; const on = !!p.checks?.[k];
-            return <button key={i} className={`choice ${on ? "ok" : ""}`} onClick={() => { sfx(on ? "tap" : "ok"); updateProgress((d) => { d.checks = { ...(d.checks ?? {}), [k]: !on }; }); }}><span className="key">{on ? "✓" : i + 1}</span><RichText md={t} /></button>;
+            return <button key={i} className={`choice ${on ? "ok" : ""}`} onClick={() => { sfx(on ? "tap" : "ok"); updateProgress((d) => { d.checks = { ...(d.checks ?? {}), [k]: !on }; }); }}><span className="key">{on ? <Icon name="check" size={14} stroke={2.4} /> : i + 1}</span><RichText md={t} /></button>;
           })}
         </div>
       )}
@@ -287,12 +290,12 @@ export function SignalView({ id }: { id: string }) {
 
       {m.links.length > 0 && (
         <div className="panel">
-          <div className="panel-title">🔗 Liens du signal</div>
+          <div className="panel-title"><Icon name="link" size={16} /> Liens du signal</div>
           {m.links.map((l, i) => (
             <a key={i} href={l.url} target="_blank" rel="noreferrer" className="choice" style={{ textDecoration: "none", color: "inherit" }}>
-              <span style={{ fontSize: 20 }}>{KIND_ICON[l.kind] ?? "🔗"}</span>
+              <Icon name={KIND_ICON[l.kind] ?? "link"} size={22} style={{ color: "var(--amber)" }} />
               <span className="grow"><b>{l.title}</b><br /><span className="small muted"><RichText md={l.why} /></span></span>
-              <Icon name="link" size={16} />
+              <Icon name="external" size={16} />
             </a>
           ))}
         </div>
@@ -309,7 +312,7 @@ export function SignalView({ id }: { id: string }) {
 
       {m.project && (
         <div className="panel" style={{ borderColor: "rgba(167,139,250,.35)" }}>
-          <div className="panel-title" style={{ color: "var(--violet)" }}>🌙 Mini-projet : {m.project.title}</div>
+          <div className="panel-title" style={{ color: "var(--violet)" }}><Icon name="moon" size={16} /> Mini-projet : {m.project.title}</div>
           <div className="small muted" style={{ marginBottom: 8 }}>{m.project.goal}</div>
           <ol style={{ margin: 0, paddingLeft: 20 }}>{m.project.steps.map((s, i) => <li key={i} style={{ margin: "6px 0" }}><RichText md={s} /></li>)}</ol>
           <div className="small" style={{ marginTop: 8 }}><b>Réussi si :</b> {m.project.success.join(" ")}</div>
@@ -317,7 +320,7 @@ export function SignalView({ id }: { id: string }) {
       )}
 
       <div className="stack" style={{ marginTop: 18 }}>
-        <button className="btn block" style={{ background: "var(--amber)" }} disabled={done || !allSolved} onClick={accomplish}>{done ? "✓ Signal traité" : allSolved ? "📡 Marquer le signal comme traité" : "Réussis les exercices pour valider"}</button>
+        <button className="btn block" style={{ background: "var(--amber)" }} disabled={done || !allSolved} onClick={accomplish}>{done ? <><Icon name="check" size={18} stroke={2.4} /> Signal traité</> : allSolved ? <><Icon name="dish" size={18} /> Marquer le signal comme traité</> : "Réussis les exercices pour valider"}</button>
         <button className="btn ghost block" onClick={() => exportMissionFiche(m)}><Icon name="share" size={18} /> Exporter la fiche du signal</button>
       </div>
     </div>

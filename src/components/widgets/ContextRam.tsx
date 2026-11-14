@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { sfx } from "../../lib/sound";
+import { Icon } from "../Icon";
 
 // Une barrette de mémoire = la fenêtre de contexte. Les messages s'y empilent, les plus anciens tombent.
 const CAP = 12;
@@ -9,8 +10,8 @@ const SCRIPT = [
   { who: "ia", t: "Enchanté Léa ! Comment puis-je t'aider ?", size: 2 },
   { who: "toi", t: "Écris un post pour la fête des mères.", size: 2 },
   { who: "ia", t: "Voici un post : « Offrez des fleurs… »", size: 3 },
-  { who: "toi", t: "Plus court, et ajoute un emoji.", size: 1 },
-  { who: "ia", t: "« Pour maman 💐 … »", size: 2 },
+  { who: "toi", t: "Plus court, et plus tendre.", size: 1 },
+  { who: "ia", t: "« Pour maman, des fleurs et tout notre amour… »", size: 2 },
   { who: "toi", t: "Maintenant, une idée de promo.", size: 2 },
   { who: "ia", t: "-10 % sur les bouquets du jeudi.", size: 2 },
 ];
@@ -73,7 +74,7 @@ export default function ContextRam() {
       )}
       <div className="row" style={{ marginTop: 12 }}>
         <button className="btn grow" onClick={send} disabled={i >= SCRIPT.length}>{i === 0 ? "Envoyer le 1er message" : i >= SCRIPT.length ? "Conversation terminée" : "Message suivant"}</button>
-        <button className="btn subtle" onClick={reset}>↺</button>
+        <button className="btn subtle" onClick={reset} aria-label="Recommencer"><Icon name="refresh" size={18} /></button>
       </div>
       <label className="row" style={{ marginTop: 12, gap: 10, cursor: "pointer" }}>
         <input type="checkbox" checked={memory} onChange={(e) => { setMemory(e.target.checked); sfx("tap"); }} style={{ width: 20, height: 20, accentColor: "#a78bfa" }} />

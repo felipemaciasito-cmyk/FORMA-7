@@ -62,3 +62,5 @@ mail, génération de la mission, validation (`node ../FORMA-7/scripts/validate-
 push, puis fiche Google Docs. L'appli lit le dépôt privé avec un jeton GitHub limité à ce dépôt.
 
 Exemple de mission fictive pour les tests : `pipeline/fixtures/`.
+
+Cette application est dédiée à progresser dans ses compétences en IA
